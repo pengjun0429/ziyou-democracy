@@ -281,6 +281,80 @@ h3 {
     min-width: 80px;
 }
 
+.join-container {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2rem;
+}
+
+.join-intro h3 {
+    color: #2c3e50;
+    margin-bottom: 1rem;
+}
+
+.join-benefits {
+    background: #e8f8f5;
+    padding: 1.5rem;
+    border-radius: 8px;
+    margin-top: 1.5rem;
+    border-left: 4px solid #27ae60;
+}
+
+.join-benefits h4 {
+    color: #1a5276;
+    margin-bottom: 0.8rem;
+}
+
+.join-benefits ul {
+    list-style: disc;
+    margin-left: 1.5rem;
+}
+
+.join-benefits li {
+    margin-bottom: 0.5rem;
+    color: #34495e;
+}
+
+.join-form {
+    background: #f8f9fa;
+    padding: 2rem;
+    border-radius: 8px;
+    border: 1px solid #ddd;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+}
+
+.join-form p {
+    margin-bottom: 1.5rem;
+    color: #34495e;
+    font-size: 1.1rem;
+}
+
+.join-btn {
+    display: inline-block;
+    background: #27ae60;
+    color: white;
+    padding: 1rem 2.5rem;
+    border-radius: 8px;
+    text-decoration: none;
+    font-size: 1.2rem;
+    font-weight: bold;
+    transition: background-color 0.3s;
+}
+
+.join-btn:hover {
+    background: #219a52;
+}
+
+@media (max-width: 768px) {
+    .join-container {
+        grid-template-columns: 1fr;
+    }
+}
+
 footer {
     background: #2c3e50;
     color: white;
