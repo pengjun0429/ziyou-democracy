@@ -355,6 +355,24 @@ h3 {
     color: #7f8c8d;
 }
 
+.join-documents {
+    background: #fef9e7;
+    padding: 1.5rem;
+    border-radius: 8px;
+    margin-top: 1.5rem;
+    border-left: 4px solid #f39c12;
+}
+
+.join-documents h4 {
+    color: #1a5276;
+    margin-bottom: 0.8rem;
+}
+
+.join-documents p {
+    margin-bottom: 0.5rem;
+    color: #34495e;
+}
+
 @media (max-width: 768px) {
     .join-container {
         grid-template-columns: 1fr;
