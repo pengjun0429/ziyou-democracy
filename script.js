@@ -178,15 +178,6 @@ document.addEventListener('DOMContentLoaded', function() {
         return laws[lawType] || '<p>法規內容載入中...</p>';
     }
     
-    // 快速操作按鈕功能
-    const actionButtons = document.querySelectorAll('.action-btn');
-    actionButtons.forEach(button => {
-        button.addEventListener('click', function() {
-            const action = this.textContent;
-            showNotification(`正在執行：${action}`);
-        });
-    });
-    
     // 通知功能
     function showNotification(message) {
         const notification = document.createElement('div');
