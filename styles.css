@@ -349,6 +349,12 @@ h3 {
     background: #219a52;
 }
 
+.join-note {
+    margin-top: 1rem;
+    font-size: 0.85rem;
+    color: #7f8c8d;
+}
+
 @media (max-width: 768px) {
     .join-container {
         grid-template-columns: 1fr;
