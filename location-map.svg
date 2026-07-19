@@ -1,0 +1,124 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 600" width="800" height="600">
+  <defs>
+    <clipPath id="globe">
+      <circle cx="300" cy="300" r="250"/>
+    </clipPath>
+  </defs>
+  
+  <!-- 背景 -->
+  <rect width="800" height="600" fill="#f8f9fa"/>
+  
+  <!-- 地球背景 -->
+  <circle cx="300" cy="300" r="250" fill="#d4e6f1" stroke="#85c1e9" stroke-width="2"/>
+  
+  <!-- 經緯線 -->
+  <g clip-path="url(#globe)" opacity="0.3">
+    <!-- 赤道 -->
+    <ellipse cx="300" cy="300" rx="250" ry="10" fill="none" stroke="#5dade2" stroke-width="1"/>
+    <!-- 南北回歸線 -->
+    <ellipse cx="300" cy="260" rx="230" ry="8" fill="none" stroke="#5dade2" stroke-width="0.5"/>
+    <ellipse cx="300" cy="340" rx="230" ry="8" fill="none" stroke="#5dade2" stroke-width="0.5"/>
+    <!-- 子午線 -->
+    <ellipse cx="300" cy="300" rx="10" ry="250" fill="none" stroke="#5dade2" stroke-width="1"/>
+    <ellipse cx="300" cy="300" rx="80" ry="250" fill="none" stroke="#5dade2" stroke-width="0.5"/>
+    <ellipse cx="300" cy="300" rx="150" ry="250" fill="none" stroke="#5dade2" stroke-width="0.5"/>
+    <ellipse cx="300" cy="300" rx="210" ry="250" fill="none" stroke="#5dade2" stroke-width="0.5"/>
+  </g>
+  
+  <!-- 亞洲大陸輪廓（簡化） -->
+  <g clip-path="url(#globe)">
+    <path d="M 280 180 
+             C 310 170, 350 180, 380 200 
+             C 400 210, 420 230, 430 260 
+             C 440 290, 430 320, 410 340 
+             C 390 360, 370 370, 350 380 
+             C 330 390, 310 400, 290 410 
+             C 270 420, 250 430, 230 430 
+             C 210 430, 200 420, 195 400 
+             C 190 380, 195 360, 200 340 
+             C 205 320, 200 300, 190 280 
+             C 180 260, 170 240, 175 220 
+             C 180 200, 200 185, 220 180 
+             C 240 175, 260 178, 280 180 Z" 
+          fill="#a9dfbf" stroke="#27ae60" stroke-width="1"/>
+    
+    <!-- 台灣島（綠色高亮） -->
+    <path d="M 340 305 
+             C 345 298, 355 295, 362 300 
+             C 368 305, 370 315, 368 325 
+             C 366 335, 358 345, 350 350 
+             C 342 355, 335 350, 332 340 
+             C 329 330, 332 315, 340 305 Z" 
+          fill="#27ae60" stroke="#1e8449" stroke-width="1.5"/>
+    
+    <!-- 台灣標記圓點 -->
+    <circle cx="355" cy="320" r="6" fill="#e74c3c" stroke="#c0392b" stroke-width="1.5"/>
+  </g>
+  
+  <!-- 連接線 -->
+  <path d="M 360 325 L 420 200 L 620 200" fill="none" stroke="#333" stroke-width="2" stroke-dasharray="5,3"/>
+  
+  <!-- 插圖框（教室平面圖） -->
+  <rect x="420" y="80" width="320" height="220" rx="8" fill="white" stroke="#333" stroke-width="2"/>
+  
+  <!-- 插圖標題 -->
+  <text x="580" y="105" text-anchor="middle" font-family="Microsoft JhengHei, sans-serif" font-size="14" font-weight="bold" fill="#2c3e50">鳳甲國中 8資版教室</text>
+  
+  <!-- 教室平面圖 -->
+  <g transform="translate(440, 120)">
+    <!-- 教室外框 -->
+    <rect x="0" y="0" width="280" height="150" rx="4" fill="#fafafa" stroke="#bbb" stroke-width="1"/>
+    
+    <!-- 講台 -->
+    <rect x="10" y="10" width="260" height="20" rx="3" fill="#85c1e9" stroke="#3498db" stroke-width="1"/>
+    <text x="140" y="25" text-anchor="middle" font-family="Microsoft JhengHei, sans-serif" font-size="10" fill="#1a5276">講台</text>
+    
+    <!-- 座位區 -->
+    <g>
+      <!-- 第一排 -->
+      <rect x="15" y="40" width="30" height="20" rx="2" fill="#aed6f1" stroke="#85c1e9" stroke-width="0.5"/>
+      <rect x="55" y="40" width="30" height="20" rx="2" fill="#aed6f1" stroke="#85c1e9" stroke-width="0.5"/>
+      <rect x="95" y="40" width="30" height="20" rx="2" fill="#aed6f1" stroke="#85c1e9" stroke-width="0.5"/>
+      <rect x="135" y="40" width="30" height="20" rx="2" fill="#aed6f1" stroke="#85c1e9" stroke-width="0.5"/>
+      <rect x="175" y="40" width="30" height="20" rx="2" fill="#aed6f1" stroke="#85c1e9" stroke-width="0.5"/>
+      <rect x="215" y="40" width="30" height="20" rx="2" fill="#aed6f1" stroke="#85c1e9" stroke-width="0.5"/>
+      <!-- 第二排 -->
+      <rect x="15" y="65" width="30" height="20" rx="2" fill="#aed6f1" stroke="#85c1e9" stroke-width="0.5"/>
+      <rect x="55" y="65" width="30" height="20" rx="2" fill="#aed6f1" stroke="#85c1e9" stroke-width="0.5"/>
+      <rect x="95" y="65" width="30" height="20" rx="2" fill="#aed6f1" stroke="#85c1e9" stroke-width="0.5"/>
+      <rect x="135" y="65" width="30" height="20" rx="2" fill="#aed6f1" stroke="#85c1e9" stroke-width="0.5"/>
+      <rect x="175" y="65" width="30" height="20" rx="2" fill="#aed6f1" stroke="#85c1e9" stroke-width="0.5"/>
+      <rect x="215" y="65" width="30" height="20" rx="2" fill="#aed6f1" stroke="#85c1e9" stroke-width="0.5"/>
+      <!-- 第三排 -->
+      <rect x="15" y="90" width="30" height="20" rx="2" fill="#aed6f1" stroke="#85c1e9" stroke-width="0.5"/>
+      <rect x="55" y="90" width="30" height="20" rx="2" fill="#aed6f1" stroke="#85c1e9" stroke-width="0.5"/>
+      <rect x="95" y="90" width="30" height="20" rx="2" fill="#aed6f1" stroke="#85c1e9" stroke-width="0.5"/>
+      <rect x="135" y="90" width="30" height="20" rx="2" fill="#aed6f1" stroke="#85c1e9" stroke-width="0.5"/>
+      <rect x="175" y="90" width="30" height="20" rx="2" fill="#aed6f1" stroke="#85c1e9" stroke-width="0.5"/>
+      <rect x="215" y="90" width="30" height="20" rx="2" fill="#aed6f1" stroke="#85c1e9" stroke-width="0.5"/>
+      <!-- 第四排 -->
+      <rect x="15" y="115" width="30" height="20" rx="2" fill="#aed6f1" stroke="#85c1e9" stroke-width="0.5"/>
+      <rect x="55" y="115" width="30" height="20" rx="2" fill="#aed6f1" stroke="#85c1e9" stroke-width="0.5"/>
+      <rect x="95" y="115" width="30" height="20" rx="2" fill="#aed6f1" stroke="#85c1e9" stroke-width="0.5"/>
+      <rect x="135" y="115" width="30" height="20" rx="2" fill="#aed6f1" stroke="#85c1e9" stroke-width="0.5"/>
+      <rect x="175" y="115" width="30" height="20" rx="2" fill="#aed6f1" stroke="#85c1e9" stroke-width="0.5"/>
+      <rect x="215" y="115" width="30" height="20" rx="2" fill="#aed6f1" stroke="#85c1e9" stroke-width="0.5"/>
+    </g>
+    
+    <!-- 門 -->
+    <rect x="0" y="120" width="15" height="25" fill="#f5b041" stroke="#e67e22" stroke-width="1"/>
+    <text x="7" y="138" text-anchor="middle" font-family="Microsoft JhengHei, sans-serif" font-size="7" fill="#784212" transform="rotate(-90, 7, 138)">門</text>
+    
+    <!-- 窗戶 -->
+    <rect x="255" y="40" width="20" height="100" fill="#aed6f1" stroke="#3498db" stroke-width="1"/>
+    <line x1="265" y1="40" x2="265" y2="140" stroke="#3498db" stroke-width="0.5"/>
+    <line x1="255" y1="90" x2="275" y2="90" stroke="#3498db" stroke-width="0.5"/>
+  </g>
+  
+  <!-- 主權範圍指示 -->
+  <text x="580" y="310" text-anchor="middle" font-family="Microsoft JhengHei, sans-serif" font-size="11" fill="#2c3e50">【國家主權範圍】</text>
+  
+  <!-- 國名標題 -->
+  <text x="300" y="560" text-anchor="middle" font-family="Microsoft JhengHei, sans-serif" font-size="22" font-weight="bold" fill="#1a5276">資優民主國位置圖</text>
+  <text x="300" y="585" text-anchor="middle" font-family="Microsoft JhengHei, sans-serif" font-size="12" fill="#5d6d7e">Location Map of Democratic Meritocracy of Ziyu</text>
+</svg>

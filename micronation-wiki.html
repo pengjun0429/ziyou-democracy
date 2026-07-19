@@ -1,0 +1,593 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>微國家百科 - 資優民主國</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        .wiki-container {
+            display: grid;
+            grid-template-columns: 280px 1fr;
+            gap: 2rem;
+        }
+        
+        .wiki-sidebar {
+            background: #f8f9fa;
+            padding: 1.5rem;
+            border-radius: 8px;
+            border-right: 3px solid #3498db;
+            position: sticky;
+            top: 80px;
+            height: fit-content;
+        }
+        
+        .wiki-sidebar h3 {
+            color: #2c3e50;
+            margin-bottom: 1rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 2px solid #3498db;
+        }
+        
+        .wiki-nav {
+            list-style: none;
+        }
+        
+        .wiki-nav li {
+            margin-bottom: 0.5rem;
+        }
+        
+        .wiki-nav a {
+            display: block;
+            padding: 0.5rem;
+            color: #34495e;
+            text-decoration: none;
+            border-radius: 4px;
+            transition: all 0.3s;
+        }
+        
+        .wiki-nav a:hover {
+            background: #3498db;
+            color: white;
+        }
+        
+        .wiki-nav a.active {
+            background: #2980b9;
+            color: white;
+        }
+        
+        .wiki-content {
+            background: white;
+            padding: 2rem;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        
+        .wiki-article {
+            margin-bottom: 3rem;
+        }
+        
+        .wiki-article h2 {
+            color: #2c3e50;
+            margin-bottom: 1rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 2px solid #3498db;
+        }
+        
+        .wiki-article h3 {
+            color: #34495e;
+            margin: 1.5rem 0 1rem;
+        }
+        
+        .micronation-card {
+            background: #f8f9fa;
+            padding: 1.5rem;
+            border-radius: 8px;
+            margin-bottom: 1.5rem;
+            border-left: 4px solid #e74c3c;
+            transition: transform 0.3s;
+        }
+        
+        .micronation-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+        
+        .micronation-card h4 {
+            color: #2c3e50;
+            margin-bottom: 0.5rem;
+            font-size: 1.2rem;
+        }
+        
+        .micronation-card .location {
+            color: #7f8c8d;
+            font-size: 0.9rem;
+            margin-bottom: 0.5rem;
+        }
+        
+        .micronation-card .description {
+            color: #34495e;
+            line-height: 1.6;
+        }
+        
+        .micronation-card .status {
+            display: inline-block;
+            padding: 0.25rem 0.5rem;
+            border-radius: 4px;
+            font-size: 0.8rem;
+            margin-top: 0.5rem;
+        }
+        
+        .status-active {
+            background: #27ae60;
+            color: white;
+        }
+        
+        .status-inactive {
+            background: #95a5a6;
+            color: white;
+        }
+        
+        .status-disputed {
+            background: #f39c12;
+            color: white;
+        }
+        
+        .comparison-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 1rem;
+        }
+        
+        .comparison-table th,
+        .comparison-table td {
+            padding: 0.75rem;
+            text-align: left;
+            border-bottom: 1px solid #ecf0f1;
+        }
+        
+        .comparison-table th {
+            background: #3498db;
+            color: white;
+        }
+        
+        .comparison-table tr:hover {
+            background: #f8f9fa;
+        }
+        
+        .highlight-box {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 2rem;
+            border-radius: 8px;
+            margin: 2rem 0;
+        }
+        
+        .highlight-box h3 {
+            margin-top: 0;
+        }
+        
+        .search-wiki {
+            margin-bottom: 1.5rem;
+        }
+        
+        .search-wiki input {
+            width: 100%;
+            padding: 0.75rem;
+            border: 2px solid #ddd;
+            border-radius: 4px;
+            font-size: 1rem;
+        }
+        
+        .search-wiki input:focus {
+            border-color: #3498db;
+            outline: none;
+        }
+        
+        .tag {
+            display: inline-block;
+            background: #ecf0f1;
+            padding: 0.25rem 0.5rem;
+            border-radius: 4px;
+            font-size: 0.8rem;
+            margin-right: 0.5rem;
+            color: #34495e;
+        }
+        
+        .timeline-mini {
+            border-left: 3px solid #3498db;
+            padding-left: 1rem;
+            margin: 1rem 0;
+        }
+        
+        .timeline-mini-item {
+            position: relative;
+            margin-bottom: 1rem;
+        }
+        
+        .timeline-mini-item::before {
+            content: '';
+            position: absolute;
+            left: -1.5rem;
+            top: 5px;
+            width: 10px;
+            height: 10px;
+            background: #3498db;
+            border-radius: 50%;
+        }
+        
+        .timeline-mini-item .year {
+            font-weight: bold;
+            color: #2980b9;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="header-content">
+            <h1>微國家百科</h1>
+            <p>探索全球私人國家與未被承認的政治實體</p>
+        </div>
+    </header>
+    
+    <nav>
+        <ul>
+            <li><a href="index.html">資優民主國</a></li>
+            <li><a href="micronation-wiki.html" class="active">微國家百科</a></li>
+            <li><a href="document-manager.html">文件管理</a></li>
+            <li><a href="#about">關於百科</a></li>
+        </ul>
+    </nav>
+    
+    <main>
+        <div class="wiki-container">
+            <div class="wiki-sidebar">
+                <h3>百科導覽</h3>
+                <ul class="wiki-nav">
+                    <li><a href="#definition" class="active">什麼是微國家</a></li>
+                    <li><a href="#famous">知名微國家</a></li>
+                    <li><a href="#history">微國家歷史</a></li>
+                    <li><a href="#categories">微國家分類</a></li>
+                    <li><a href="#comparison">比較表</a></li>
+                    <li><a href="#our-nation">資優民主國</a></li>
+                    <li><a href="#resources">相關資源</a></li>
+                </ul>
+                
+                <div class="search-wiki">
+                    <input type="text" id="wikiSearch" placeholder="搜尋微國家...">
+                </div>
+            </div>
+            
+            <div class="wiki-content">
+                <article id="definition" class="wiki-article">
+                    <h2>什麼是微國家（Micronation）</h2>
+                    <p>微國家（Micronation），又稱「私人國家」或「模型國家」，是指那些宣稱擁有國家主權但未獲得國際社會普遍承認的政治實體。這些實體通常有自己的國旗、貨幣、護照、政府體系，甚至領土主張，但不被聯合國或任何主權國家正式承認。</p>
+                    
+                    <div class="highlight-box">
+                        <h3>微國家 vs 微型國家</h3>
+                        <p><strong>微國家（Micronation）</strong>：未獲國際承認的私人國家，如西蘭公國、利伯蘭自由共和國。</p>
+                        <p><strong>微型國家（Microstate）</strong>：獲得國際承認但面積或人口極小的主權國家，如梵蒂岡、摩納哥、列支敦斯登。</p>
+                    </div>
+                    
+                    <h3>微國家的特徵</h3>
+                    <ul>
+                        <li>宣稱擁有主權但未獲國際承認</li>
+                        <li>通常有自己的國旗、國歌、貨幣</li>
+                        <li>可能有實際領土或僅存在於網路/精神層面</li>
+                        <li>有自己的憲法和政府體系</li>
+                        <li>部分發售護照、爵位或貨幣給外部人士</li>
+                    </ul>
+                </article>
+                
+                <article id="famous" class="wiki-article">
+                    <h2>全球知名微國家</h2>
+                    
+                    <div class="micronation-card" data-search="sealand 西蘭">
+                        <h4>西蘭公國（Principality of Sealand）</h4>
+                        <div class="location">英國東岸，北海怒濤塔</div>
+                        <div class="description">
+                            全世界最知名的微國家，座落在二戰時期英國建造的海上軍事建築「怒濤塔」上。1967年由退役軍人帕迪·羅伊·貝茨宣布建立，佔地僅550平方公尺。曾發生政變事件，西德政府曾派外交官交涉。目前由貝茨之子麥克繼承王位。
+                        </div>
+                        <div class="timeline-mini">
+                            <div class="timeline-mini-item">
+                                <span class="year">1966</span> 貝茨一家搬入怒濤塔
+                            </div>
+                            <div class="timeline-mini-item">
+                                <span class="year">1967</span> 宣布成立西蘭公國
+                            </div>
+                            <div class="timeline-mini-item">
+                                <span class="year">1978</span> 發生政變事件
+                            </div>
+                        </div>
+                        <span class="status status-active">運作中</span>
+                        <span class="tag">海上國家</span>
+                        <span class="tag">歷史最悠久</span>
+                    </div>
+                    
+                    <div class="micronation-card" data-search="liberland 利伯蘭">
+                        <h4>利伯蘭自由共和國（Free Republic of Liberland）</h4>
+                        <div class="location">塞爾維亞與克羅埃西亞邊境</div>
+                        <div class="description">
+                            2015年由捷克人維特·耶德利奇卡建立，位於多瑙河畔一塊因兩國邊境爭議而無人居住的7平方公里土地上。雖然塞爾維亞和克羅埃西亞都不承認其主權，但兩國唯一共識是不讓任何第三方取得這塊土地。
+                        </div>
+                        <span class="status status-disputed">主權爭議中</span>
+                        <span class="tag">邊境爭議</span>
+                        <span class="tag">有實際領土</span>
+                    </div>
+                    
+                    <div class="micronation-card" data-search="christiania 克里斯蒂安尼亞 自由城">
+                        <h4>克里斯蒂安尼亞自由城（Freetown Christiania）</h4>
+                        <div class="location">丹麥首都哥本哈根</div>
+                        <div class="description">
+                            1971年由無政府主義者建立的自治社區，佔地約0.34平方公里，現有約850名居民。以獨特的建築風格、壁畫和藝文活動聞名，是哥本哈根著名觀光景點。丹麥政府不承認其國家地位，但給予一定自治權。
+                        </div>
+                        <span class="status status-active">運作中</span>
+                        <span class="tag">無政府主義</span>
+                        <span class="tag">自治社區</span>
+                    </div>
+                    
+                    <div class="micronation-card" data-search="aerican empire 亞利加帝國">
+                        <h4>亞利加帝國（Aerican Empire）</h4>
+                        <div class="location">網路國家 / 澳洲墨爾本</div>
+                        <div class="description">
+                            1987年由Eric Lis等人建立的網路國家，聲稱領土包括澳洲的一部分、南極土地、火星上的土地等。以幽默和創意聞名，發行自己的貨幣「亞利加元」和護照。創辦者之一Eric Lis本身是精神科醫生。
+                        </div>
+                        <span class="status status-active">運作中</span>
+                        <span class="tag">網路國家</span>
+                        <span class="tag">幽默風格</span>
+                    </div>
+                    
+                    <div class="micronation-card" data-search="wy 維公國 澳洲">
+                        <h4>維公國（Principality of Wy）</h4>
+                        <div class="location">澳洲雪梨</div>
+                        <div class="description">
+                            2004年由Paul Johnson建立，起因是與鄰居的私人車道糾紛。他宣布自家為獨立公國「維公國」，但本人仍視自己為澳洲人並按時繳稅。此案例展示了微國家如何源於日常生活衝突。
+                        </div>
+                        <span class="status status-active">運作中</span>
+                        <span class="tag">家庭國家</span>
+                        <span class="tag">源於糾紛</span>
+                    </div>
+                    
+                    <div class="micronation-card" data-search="eden 伊旦王國">
+                        <h4>伊旦王國（Kingdom of Edan）</h4>
+                        <div class="location">無固定領土</div>
+                        <div class="description">
+                            由「理查國王」建立的無領土微國家，宗旨是為沒有國籍的人們提供出路。強調是個人化且精簡的政府，吸引那些討厭國家機器的人。展示了微國家作為身份認同工具的可能性。
+                        </div>
+                        <span class="status status-active">運作中</span>
+                        <span class="tag">無領土</span>
+                        <span class="tag">身份認同</span>
+                    </div>
+                </article>
+                
+                <article id="history" class="wiki-article">
+                    <h2>微國家歷史發展</h2>
+                    
+                    <div class="timeline-mini">
+                        <div class="timeline-mini-item">
+                            <span class="year">19世紀</span> 最早的微國家案例出現，主要是個人宣稱主權的嘗試
+                        </div>
+                        <div class="timeline-mini-item">
+                            <span class="year">1960年代</span> 西蘭公國建立，成為微國家運動的象徵
+                        </div>
+                        <div class="timeline-mini-item">
+                            <span class="year">1970年代</span> 克里斯蒂安尼亞自由城等實驗性社區出現
+                        </div>
+                        <div class="timeline-mini-item">
+                            <span class="year">1980-90年代</span> 隨著網路發展，網路微國家開始出現
+                        </div>
+                        <div class="timeline-mini-item">
+                            <span class="year">2000年代</span> 微國家數量增加，開始有定期峰會（MicroCon）
+                        </div>
+                        <div class="timeline-mini-item">
+                            <span class="year">2010年代至今</span> 利伯蘭等新微國家建立，議題持續受到關注
+                        </div>
+                    </div>
+                </article>
+                
+                <article id="categories" class="wiki-article">
+                    <h2>微國家分類</h2>
+                    
+                    <h3>按領土性質分類</h3>
+                    <ul>
+                        <li><strong>實體領土型</strong>：擁有實際控制的土地（如西蘭公國、利伯蘭）</li>
+                        <li><strong>網路國家型</strong>：主要存在於網路空間（如亞利加帝國）</li>
+                        <li><strong>精神象徵型</strong>：代表某種理念或身份認同（如伊旦王國）</li>
+                        <li><strong>家庭國家型</strong>：以個人或家庭住所為領土（如維公國）</li>
+                    </ul>
+                    
+                    <h3>按成立動機分類</h3>
+                    <ul>
+                        <li><strong>政治抗議型</strong>：因不滿現狀而建立（如克里斯蒂安尼亞）</li>
+                        <li><strong>幽默創意型</strong>：以趣味為主要目的（如亞利加帝國）</li>
+                        <li><strong>實際需求型</strong>：解決實際問題（如利伯蘭利用邊境爭議）</li>
+                        <li><strong>身份認同型</strong>：提供新的身份認同（如伊旦王國）</li>
+                    </ul>
+                </article>
+                
+                <article id="comparison" class="wiki-article">
+                    <h2>微國家比較表</h2>
+                    
+                    <table class="comparison-table">
+                        <thead>
+                            <tr>
+                                <th>名稱</th>
+                                <th>成立年份</th>
+                                <th>位置</th>
+                                <th>領土類型</th>
+                                <th>特點</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>西蘭公國</td>
+                                <td>1967</td>
+                                <td>英國北海</td>
+                                <td>海上建築</td>
+                                <td>歷史最悠久，曾發生政變</td>
+                            </tr>
+                            <tr>
+                                <td>利伯蘭</td>
+                                <td>2015</td>
+                                <td>塞爾維亞/克羅埃西亞邊境</td>
+                                <td>河岸土地</td>
+                                <td>利用邊境爭議建立</td>
+                            </tr>
+                            <tr>
+                                <td>克里斯蒂安尼亞</td>
+                                <td>1971</td>
+                                <td>丹麥哥本哈根</td>
+                                <td>城市社區</td>
+                                <td>無政府主義實驗</td>
+                            </tr>
+                            <tr>
+                                <td>亞利加帝國</td>
+                                <td>1987</td>
+                                <td>網路/澳洲</td>
+                                <td>虛擬+部分實際</td>
+                                <td>幽默風格，聲稱火星領土</td>
+                            </tr>
+                            <tr>
+                                <td>維公國</td>
+                                <td>2004</td>
+                                <td>澳洲雪梨</td>
+                                <td>私人住所</td>
+                                <td>源於鄰居糾紛</td>
+                            </tr>
+                            <tr>
+                                <td>伊旦王國</td>
+                                <td>-</td>
+                                <td>無固定領土</td>
+                                <td>精神象徵</td>
+                                <td>為無國籍者提供出路</td>
+                            </tr>
+                            <tr>
+                                <td><strong>資優民主國</strong></td>
+                                <td><strong>2026</strong></td>
+                                <td><strong>鳳甲基地</strong></td>
+                                <td><strong>教室領土</strong></td>
+                                <td><strong>反內卷，快樂學習</strong></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </article>
+                
+                <article id="our-nation" class="wiki-article">
+                    <h2>資優民主國在微國家中的定位</h2>
+                    
+                    <div class="highlight-box">
+                        <h3>資優民主國：教育領域的微國家先鋒</h3>
+                        <p>資優民主國作為一個新興微國家，具有以下獨特定位：</p>
+                    </div>
+                    
+                    <h3>獨特性</h3>
+                    <ul>
+                        <li><strong>教育導向</strong>：以「反對惡性內卷，捍衛自由學習」為核心價值</li>
+                        <li><strong>教室領土</strong>：以教室及學習空間為統治範圍</li>
+                        <li><strong>法治完備</strong>：擁有完整憲法和多項專門法規</li>
+                        <li><strong>戰時狀態</strong>：與「卓越人民共和國」處於宣戰狀態</li>
+                    </ul>
+                    
+                    <h3>與其他微國家的比較</h3>
+                    <ul>
+                        <li>比西蘭公國更強調教育理念</li>
+                        <li>比利伯蘭有更完整的法律體系</li>
+                        <li>比克里斯蒂安尼亞有更明確的組織結構</li>
+                        <li>比亞利加帝國更注重實際運作</li>
+                    </ul>
+                    
+                    <h3>未來發展</h3>
+                    <p>資優民主國有望成為教育領域微國家的典範，展示如何在小規模環境中實踐民主法治與快樂學習的理念。</p>
+                </article>
+                
+                <article id="resources" class="wiki-article">
+                    <h2>相關資源</h2>
+                    
+                    <h3>推薦閱讀</h3>
+                    <ul>
+                        <li>DQ地球輯輯隊 - 《自己的國家自己立：在「微國家」概念下，人人都可當一國之主》</li>
+                        <li>維基百科 - 微型國家、私人國家</li>
+                        <li>MicroCon（微國家峰會）官方資訊</li>
+                    </ul>
+                    
+                    <h3>相關組織</h3>
+                    <ul>
+                        <li>MicroCon - 全球微國家峰會</li>
+                        <li>各微國家官方網站</li>
+                    </ul>
+                </article>
+            </div>
+        </div>
+    </main>
+    
+    <footer>
+        <div class="footer-content">
+            <p>微國家百科 - 由資優民主國維護</p>
+            <p>探索全球私人國家與未被承認的政治實體</p>
+        </div>
+    </footer>
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // 搜尋功能
+            const searchInput = document.getElementById('wikiSearch');
+            searchInput.addEventListener('input', function() {
+                const query = this.value.toLowerCase();
+                const cards = document.querySelectorAll('.micronation-card');
+                
+                cards.forEach(card => {
+                    const searchText = card.getAttribute('data-search').toLowerCase() + 
+                                       card.textContent.toLowerCase();
+                    if (searchText.includes(query)) {
+                        card.style.display = 'block';
+                    } else {
+                        card.style.display = 'none';
+                    }
+                });
+            });
+            
+            // 導覽連結點擊
+            document.querySelectorAll('.wiki-nav a').forEach(link => {
+                link.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const targetId = this.getAttribute('href').substring(1);
+                    const targetElement = document.getElementById(targetId);
+                    
+                    if (targetElement) {
+                        targetElement.scrollIntoView({
+                            behavior: 'smooth',
+                            block: 'start'
+                        });
+                        
+                        // 更新導覽狀態
+                        document.querySelectorAll('.wiki-nav a').forEach(a => {
+                            a.classList.remove('active');
+                        });
+                        this.classList.add('active');
+                    }
+                });
+            });
+            
+            // 滾動時更新導覽
+            window.addEventListener('scroll', function() {
+                const sections = document.querySelectorAll('.wiki-article');
+                let currentSection = '';
+                
+                sections.forEach(section => {
+                    const sectionTop = section.offsetTop;
+                    if (pageYOffset >= sectionTop - 200) {
+                        currentSection = section.getAttribute('id');
+                    }
+                });
+                
+                document.querySelectorAll('.wiki-nav a').forEach(link => {
+                    link.classList.remove('active');
+                    if (link.getAttribute('href') === '#' + currentSection) {
+                        link.classList.add('active');
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html>
