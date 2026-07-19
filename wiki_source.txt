@@ -9,7 +9,7 @@
 |ethnic_groups=資優班全體人民
 |government_type=民主與中央集權兼具之特殊憲政政體
 |leader_title1=總統
-|leader_name1=蘇泳旭
+|leader_name1=
 |legislature=立法院
 |established=2026年5月28日
 |established_event1=建國
@@ -33,6 +33,7 @@
 |population_census=資優班全體國民
 |currency=新臺幣
 |loctext=鳳甲國中8資版教室及各直轄特區
+|official_website=https://pengjun0429.github.io/ziyou-democracy/
 |micronation=yes
 }}
 
@@ -95,7 +96,7 @@
 == 政府組織 ==
 
 === 國家元首 ===
-* 總統：蘇泳旭
+* 總統
 * 副總統：（從缺）
 
 === 五院 ===
