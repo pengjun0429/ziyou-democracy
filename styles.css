@@ -207,6 +207,32 @@ h3 {
     border-left: 4px solid #27ae60;
 }
 
+.diplomacy-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 2rem;
+}
+
+.diplomacy-intro {
+    text-align: center;
+    max-width: 600px;
+}
+
+.diplomacy-intro h3 {
+    color: #2c3e50;
+    margin-bottom: 1rem;
+}
+
+.diplomacy-intro p {
+    color: #34495e;
+    line-height: 1.6;
+}
+
+.diplomacy-button {
+    text-align: center;
+}
+
 .dashboard-container {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
@@ -373,12 +399,6 @@ h3 {
     color: #34495e;
 }
 
-@media (max-width: 768px) {
-    .join-container {
-        grid-template-columns: 1fr;
-    }
-}
-
 footer {
     background: #2c3e50;
     color: white;
@@ -393,16 +413,111 @@ footer {
 
 @media (max-width: 768px) {
     .header-content h1 {
-        font-size: 2rem;
+        font-size: 1.8rem;
+    }
+    
+    .header-content p {
+        font-size: 0.9rem;
     }
     
     nav ul {
         flex-direction: column;
         align-items: center;
+        padding: 0.5rem;
     }
     
     nav ul li {
-        margin: 0.5rem 0;
+        margin: 0.3rem 0;
     }
     
+    nav ul li a {
+        padding: 0.4rem 0.8rem;
+        font-size: 0.9rem;
+    }
+    
+    main {
+        padding: 1rem;
+    }
+    
+    .section {
+        padding: 1.2rem;
+    }
+    
+    h2 {
+        font-size: 1.3rem;
+    }
+    
+    .national-info {
+        grid-template-columns: 1fr;
+        gap: 1rem;
+    }
+    
+    .info-item {
+        padding: 1rem;
+    }
+    
+    .government-structure {
+        grid-template-columns: 1fr;
+    }
+    
+    .laws-container {
+        grid-template-columns: 1fr;
+    }
+    
+    .dashboard-container {
+        grid-template-columns: 1fr;
+    }
+    
+    .join-container {
+        grid-template-columns: 1fr;
+    }
+    
+    .join-intro {
+        text-align: center;
+    }
+    
+    .timeline-item {
+        padding-left: 1rem;
+    }
+    
+    .event-item {
+        flex-direction: column;
+        gap: 0.3rem;
+    }
+    
+    .stat-item {
+        flex-direction: column;
+        gap: 0.3rem;
+        text-align: center;
+    }
+    
+    .micronation-card {
+        padding: 1rem;
+    }
+    
+    .wiki-container {
+        grid-template-columns: 1fr;
+    }
+    
+    .wiki-sidebar {
+        position: static;
+        margin-bottom: 1rem;
+    }
+    
+    .comparison-table {
+        font-size: 0.8rem;
+    }
+    
+    .comparison-table th,
+    .comparison-table td {
+        padding: 0.5rem;
+    }
+    
+    .timeline-mini-item {
+        font-size: 0.9rem;
+    }
+    
+    .diplomacy-container {
+        padding: 1rem 0;
+    }
 }
