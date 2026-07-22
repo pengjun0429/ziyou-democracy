@@ -1,0 +1,441 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>資優民主國 - 國民管理系統</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        .manager-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+        }
+        
+        .add-section, .list-section {
+            background: white;
+            padding: 2rem;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: #2c3e50;
+            font-weight: bold;
+        }
+        
+        .form-group input, .form-group select, .form-group textarea {
+            width: 100%;
+            padding: 0.75rem;
+            border: 2px solid #ddd;
+            border-radius: 4px;
+            font-size: 1rem;
+        }
+        
+        .form-group input:focus, .form-group select:focus {
+            border-color: #3498db;
+            outline: none;
+        }
+        
+        .id-preview {
+            background: #e8f8f5;
+            padding: 1rem;
+            border-radius: 4px;
+            margin-bottom: 1rem;
+            text-align: center;
+        }
+        
+        .id-preview .id-number {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #1a5276;
+            letter-spacing: 2px;
+        }
+        
+        .btn {
+            padding: 0.75rem 1.5rem;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 1rem;
+            font-weight: bold;
+        }
+        
+        .btn-primary {
+            background: #3498db;
+            color: white;
+            width: 100%;
+        }
+        
+        .btn-primary:hover {
+            background: #2980b9;
+        }
+        
+        .btn-danger {
+            background: #e74c3c;
+            color: white;
+            padding: 0.4rem 0.8rem;
+            font-size: 0.85rem;
+        }
+        
+        .btn-danger:hover {
+            background: #c0392b;
+        }
+        
+        .search-box {
+            margin-bottom: 1rem;
+        }
+        
+        .search-box input {
+            width: 100%;
+            padding: 0.5rem;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+        
+        .citizen-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        
+        .citizen-table th {
+            background: #2c3e50;
+            color: white;
+            padding: 0.75rem;
+            text-align: left;
+        }
+        
+        .citizen-table td {
+            padding: 0.75rem;
+            border-bottom: 1px solid #ecf0f1;
+        }
+        
+        .citizen-table tr:hover {
+            background: #f8f9fa;
+        }
+        
+        .stats-bar {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 1rem;
+            flex-wrap: wrap;
+        }
+        
+        .stat-box {
+            background: #f8f9fa;
+            padding: 0.8rem 1.2rem;
+            border-radius: 6px;
+            border-left: 3px solid #3498db;
+        }
+        
+        .stat-box .num {
+            font-size: 1.3rem;
+            font-weight: bold;
+            color: #2c3e50;
+        }
+        
+        .stat-box .label {
+            font-size: 0.85rem;
+            color: #7f8c8d;
+        }
+        
+        .type-badge {
+            display: inline-block;
+            padding: 0.2rem 0.5rem;
+            border-radius: 4px;
+            font-size: 0.8rem;
+            color: white;
+        }
+        
+        .type-class {
+            background: #27ae60;
+        }
+        
+        .type-personal {
+            background: #3498db;
+        }
+        
+        .actions {
+            display: flex;
+            gap: 0.5rem;
+            margin-top: 1rem;
+        }
+        
+        .btn-export {
+            background: #27ae60;
+            color: white;
+        }
+        
+        .btn-export:hover {
+            background: #219a52;
+        }
+        
+        .btn-reset {
+            background: #e67e22;
+            color: white;
+        }
+        
+        .btn-reset:hover {
+            background: #d35400;
+        }
+        
+        .modal {
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            background: rgba(0,0,0,0.5);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+        
+        .modal-content {
+            background: white;
+            padding: 2rem;
+            border-radius: 8px;
+            max-width: 500px;
+            width: 90%;
+        }
+        
+        .modal-content h3 {
+            margin-bottom: 1rem;
+        }
+        
+        .modal-content .btn {
+            margin-right: 0.5rem;
+        }
+        
+        .id-column {
+            font-family: monospace;
+            letter-spacing: 1px;
+        }
+        
+        @media (max-width: 768px) {
+            .manager-container {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="header-content">
+            <h1>資優民主國 國民管理系統</h1>
+            <p>管理國民資料與身分字號</p>
+        </div>
+    </header>
+    
+    <nav>
+        <ul>
+            <li><a href="index.html">返回主頁</a></li>
+            <li><a href="#manager">國民管理</a></li>
+            <li><a href="#list">國民列表</a></li>
+        </ul>
+    </nav>
+    
+    <main>
+        <div class="stats-bar">
+            <div class="stat-box">
+                <div class="num" id="totalCount">0</div>
+                <div class="label">國民總數</div>
+            </div>
+            <div class="stat-box">
+                <div class="num" id="classCount">0</div>
+                <div class="label">班級申請</div>
+            </div>
+            <div class="stat-box">
+                <div class="num" id="personalCount">0</div>
+                <div class="label">個人申請</div>
+            </div>
+        </div>
+        
+        <div class="manager-container">
+            <div class="add-section">
+                <h2>新增國民</h2>
+                <div class="form-group">
+                    <label>姓名</label>
+                    <input type="text" id="nameInput" placeholder="請輸入姓名">
+                </div>
+                <div class="form-group">
+                    <label>申請類型</label>
+                    <select id="typeSelect">
+                        <option value="personal">個人申請</option>
+                        <option value="class">班級申請</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>學校/班級</label>
+                    <input type="text" id="schoolInput" placeholder="例如：鳳甲國中 8年級 資優班">
+                </div>
+                <div class="id-preview">
+                    <div style="font-size:0.85rem;color:#7f8c8d;margin-bottom:0.3rem;">產生的身分字號</div>
+                    <div class="id-number" id="idPreview">ZY-00001</div>
+                </div>
+                <button class="btn btn-primary" onclick="addCitizen()">加入國民</button>
+            </div>
+            
+            <div class="list-section">
+                <h2>國民列表</h2>
+                <div class="search-box">
+                    <input type="text" id="searchInput" placeholder="搜尋姓名或身分字號..." oninput="renderTable()">
+                </div>
+                <div style="overflow-x:auto;">
+                    <table class="citizen-table">
+                        <thead>
+                            <tr>
+                                <th>身分字號</th>
+                                <th>姓名</th>
+                                <th>類型</th>
+                                <th>學校/班級</th>
+                                <th>操作</th>
+                            </tr>
+                        </thead>
+                        <tbody id="tableBody"></tbody>
+                    </table>
+                </div>
+                <div class="actions">
+                    <button class="btn btn-export" onclick="exportData()">匯出 CSV</button>
+                    <button class="btn btn-reset" onclick="resetData()">清除全部</button>
+                </div>
+            </div>
+        </div>
+    </main>
+    
+    <footer>
+        <div class="footer-content">
+            <p>資優民主國 國民管理系統 &copy; 2026</p>
+        </div>
+    </footer>
+    
+    <script>
+        let citizens = JSON.parse(localStorage.getItem('citizens')) || [];
+        let idCounter = citizens.length > 0 ? Math.max(...citizens.map(c => parseInt(c.id.replace('ZY-','')))) : 0;
+        
+        function generateId() {
+            idCounter++;
+            return 'ZY-' + String(idCounter).padStart(5, '0');
+        }
+        
+        function updateIdPreview() {
+            document.getElementById('idPreview').textContent = generateId();
+            idCounter--;
+        }
+        
+        function addCitizen() {
+            var name = document.getElementById('nameInput').value.trim();
+            var type = document.getElementById('typeSelect').value;
+            var school = document.getElementById('schoolInput').value.trim();
+            
+            if (!name) {
+                alert('請輸入姓名');
+                return;
+            }
+            
+            var id = generateId();
+            var now = new Date();
+            var dateStr = now.getFullYear() + '/' + (now.getMonth()+1) + '/' + now.getDate();
+            
+            citizens.push({
+                id: id,
+                name: name,
+                type: type,
+                school: school,
+                date: dateStr
+            });
+            
+            localStorage.setItem('citizens', JSON.stringify(citizens));
+            
+            document.getElementById('nameInput').value = '';
+            document.getElementById('schoolInput').value = '';
+            updateIdPreview();
+            updateStats();
+            renderTable();
+        }
+        
+        function deleteCitizen(index) {
+            citizens.splice(index, 1);
+            localStorage.setItem('citizens', JSON.stringify(citizens));
+            updateStats();
+            renderTable();
+        }
+        
+        function renderTable() {
+            var query = document.getElementById('searchInput').value.toLowerCase();
+            var filtered = citizens.filter(function(c) {
+                return c.name.includes(query) || c.id.toLowerCase().includes(query);
+            });
+            
+            var html = '';
+            for (var i = 0; i < filtered.length; i++) {
+                var c = filtered[i];
+                var realIndex = citizens.indexOf(c);
+                var typeText = c.type === 'class' ? '班級' : '個人';
+                var typeClass = c.type === 'class' ? 'type-class' : 'type-personal';
+                
+                html += '<tr>' +
+                    '<td class="id-column">' + c.id + '</td>' +
+                    '<td>' + c.name + '</td>' +
+                    '<td><span class="type-badge ' + typeClass + '">' + typeText + '</span></td>' +
+                    '<td>' + (c.school || '-') + '</td>' +
+                    '<td><button class="btn btn-danger" onclick="deleteCitizen(' + realIndex + ')">刪除</button></td>' +
+                '</tr>';
+            }
+            
+            document.getElementById('tableBody').innerHTML = html || '<tr><td colspan="5" style="text-align:center;color:#95a5a6;">尚無國民資料</td></tr>';
+        }
+        
+        function updateStats() {
+            document.getElementById('totalCount').textContent = citizens.length;
+            document.getElementById('classCount').textContent = citizens.filter(function(c) { return c.type === 'class'; }).length;
+            document.getElementById('personalCount').textContent = citizens.filter(function(c) { return c.type === 'personal'; }).length;
+        }
+        
+        function exportData() {
+            if (citizens.length === 0) {
+                alert('尚無國民資料');
+                return;
+            }
+            
+            var csv = '身分字號,姓名,類型,學校/班級,加入日期\n';
+            for (var i = 0; i < citizens.length; i++) {
+                var c = citizens[i];
+                csv += c.id + ',' + c.name + ',' + (c.type === 'class' ? '班級' : '個人') + ',' + (c.school || '') + ',' + c.date + '\n';
+            }
+            
+            var blob = new Blob(['\uFEFF' + csv], { type: 'text/csv;charset=utf-8;' });
+            var link = document.createElement('a');
+            link.href = URL.createObjectURL(blob);
+            link.download = '資優民主國國民資料.csv';
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+        }
+        
+        function resetData() {
+            if (citizens.length === 0) return;
+            if (confirm('確定要清除所有國民資料嗎？')) {
+                citizens = [];
+                idCounter = 0;
+                localStorage.setItem('citizens', JSON.stringify(citizens));
+                updateStats();
+                renderTable();
+            }
+        }
+        
+        document.getElementById('nameInput').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') addCitizen();
+        });
+        
+        updateIdPreview();
+        updateStats();
+        renderTable();
+    </script>
+</body>
+</html>
