@@ -278,19 +278,24 @@
                     <div style="font-size:0.85rem;color:#7f8c8d;margin-bottom:0.3rem;">產生的身分字號</div>
                     <div class="id-number" id="idPreview">ZY-00001</div>
                 </div>
+                <div class="id-preview">
+                    <div style="font-size:0.85rem;color:#7f8c8d;margin-bottom:0.3rem;">產生的護照號碼</div>
+                    <div class="id-number" id="passportPreview">ZP-00001</div>
+                </div>
                 <button class="btn btn-primary" onclick="addCitizen()">加入國民</button>
             </div>
             
             <div class="list-section">
                 <h2>國民列表</h2>
                 <div class="search-box">
-                    <input type="text" id="searchInput" placeholder="搜尋姓名或身分字號..." oninput="renderTable()">
+                    <input type="text" id="searchInput" placeholder="搜尋姓名、身分字號或護照號碼..." oninput="renderTable()">
                 </div>
                 <div style="overflow-x:auto;">
                     <table class="citizen-table">
                         <thead>
                             <tr>
                                 <th>身分字號</th>
+                                <th>護照號碼</th>
                                 <th>姓名</th>
                                 <th>類型</th>
                                 <th>學校/班級</th>
@@ -317,15 +322,23 @@
     <script>
         let citizens = JSON.parse(localStorage.getItem('citizens')) || [];
         let idCounter = citizens.length > 0 ? Math.max(...citizens.map(c => parseInt(c.id.replace('ZY-','')))) : 0;
+        let passportCounter = citizens.length > 0 ? Math.max(...citizens.map(c => parseInt((c.passport || 'ZP-00000').replace('ZP-','')))) : 0;
         
         function generateId() {
             idCounter++;
             return 'ZY-' + String(idCounter).padStart(5, '0');
         }
         
+        function generatePassport() {
+            passportCounter++;
+            return 'ZP-' + String(passportCounter).padStart(5, '0');
+        }
+        
         function updateIdPreview() {
             document.getElementById('idPreview').textContent = generateId();
             idCounter--;
+            document.getElementById('passportPreview').textContent = generatePassport();
+            passportCounter--;
         }
         
         function addCitizen() {
@@ -339,11 +352,13 @@
             }
             
             var id = generateId();
+            var passport = generatePassport();
             var now = new Date();
             var dateStr = now.getFullYear() + '/' + (now.getMonth()+1) + '/' + now.getDate();
             
             citizens.push({
                 id: id,
+                passport: passport,
                 name: name,
                 type: type,
                 school: school,
@@ -381,6 +396,7 @@
                 
                 html += '<tr>' +
                     '<td class="id-column">' + c.id + '</td>' +
+                    '<td class="id-column">' + (c.passport || 'ZP-00000') + '</td>' +
                     '<td>' + c.name + '</td>' +
                     '<td><span class="type-badge ' + typeClass + '">' + typeText + '</span></td>' +
                     '<td>' + (c.school || '-') + '</td>' +
@@ -388,7 +404,7 @@
                 '</tr>';
             }
             
-            document.getElementById('tableBody').innerHTML = html || '<tr><td colspan="5" style="text-align:center;color:#95a5a6;">尚無國民資料</td></tr>';
+            document.getElementById('tableBody').innerHTML = html || '<tr><td colspan="6" style="text-align:center;color:#95a5a6;">尚無國民資料</td></tr>';
         }
         
         function updateStats() {
@@ -403,10 +419,10 @@
                 return;
             }
             
-            var csv = '身分字號,姓名,類型,學校/班級,加入日期\n';
+            var csv = '身分字號,護照號碼,姓名,類型,學校/班級,加入日期\n';
             for (var i = 0; i < citizens.length; i++) {
                 var c = citizens[i];
-                csv += c.id + ',' + c.name + ',' + (c.type === 'class' ? '班級' : '個人') + ',' + (c.school || '') + ',' + c.date + '\n';
+                csv += c.id + ',' + (c.passport || 'ZP-00000') + ',' + c.name + ',' + (c.type === 'class' ? '班級' : '個人') + ',' + (c.school || '') + ',' + c.date + '\n';
             }
             
             var blob = new Blob(['\uFEFF' + csv], { type: 'text/csv;charset=utf-8;' });
