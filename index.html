@@ -153,12 +153,12 @@
                     <h3><span data-site-editable="title_operation_metrics">運作指標</span> <span>⚡</span></h3>
                     <div class="status-grid">
                         <div class="status-box">
-                            <div class="status-box-val" id="days-since-founding">100</div>
-                            <div class="status-box-lbl">建國歷經日數</div>
+                            <div class="status-box-val" id="days-since-founding" data-site-editable="dashboard_days_founding">100</div>
+                            <div class="status-box-lbl" data-site-editable="dashboard_days_label">建國歷經日數</div>
                         </div>
                         <div class="status-box">
-                            <div class="status-box-val" style="color: var(--status-green);">DEFCON 5</div>
-                            <div class="status-box-lbl">國防警戒（和平）</div>
+                            <div class="status-box-val" style="color: var(--status-green);" data-site-editable="dashboard_defcon">DEFCON 5</div>
+                            <div class="status-box-lbl" data-site-editable="dashboard_defcon_label">國防警戒（和平）</div>
                         </div>
                     </div>
                     <div class="stats" style="margin-top: 1rem;">
@@ -236,7 +236,7 @@
                 </div>
             </div>
 
-            <p class="intro-lead" style="margin-bottom: 2rem;">
+            <p class="intro-lead" style="margin-bottom: 2rem;" data-site-editable="briefing_intro">
                 資優民主國落實「主權在民、透明施政」之立國精神，全面公開國家關鍵發展指標。
                 以下儀表板由國家數據庫結合 <strong>D3.js 資料視覺化引擎</strong> 即時繪製，提供全國國民公開查驗憲法條款與施政方針之認同滿意度。
             </p>
@@ -247,32 +247,32 @@
                     <div class="kpi-icon">👥</div>
                     <div class="kpi-content">
                         <div class="kpi-value" id="kpiTotalPopulation"><span data-site-editable="kpi_population">48</span> <span class="kpi-unit">人</span></div>
-                        <div class="kpi-label">登記國民人口總量</div>
-                        <div class="kpi-sub">創國至今成長率 <strong>+500%</strong></div>
+                        <div class="kpi-label" data-site-editable="kpi_population_label">登記國民人口總量</div>
+                        <div class="kpi-sub" data-site-editable="kpi_population_sub">創國至今成長率 <strong>+500%</strong></div>
                     </div>
                 </div>
                 <div class="briefing-kpi-card highlight">
                     <div class="kpi-icon">📜</div>
                     <div class="kpi-content">
                         <div class="kpi-value" id="kpiConstitutionScore"><span data-site-editable="kpi_constitution_score">98.6</span> <span class="kpi-unit">%</span></div>
-                        <div class="kpi-label">大憲章總體滿意度</div>
-                        <div class="kpi-sub">反內卷與自主思辨核心條款認同</div>
+                        <div class="kpi-label" data-site-editable="kpi_constitution_label">大憲章總體滿意度</div>
+                        <div class="kpi-sub" data-site-editable="kpi_constitution_sub">反內卷與自主思辨核心條款認同</div>
                     </div>
                 </div>
                 <div class="briefing-kpi-card">
                     <div class="kpi-icon">🔍</div>
                     <div class="kpi-content">
-                        <div class="kpi-value">100 <span class="kpi-unit">%</span></div>
-                        <div class="kpi-label">法規與公報開源率</div>
-                        <div class="kpi-sub">所有法案條文全部公開透明審閱</div>
+                        <div class="kpi-value"><span data-site-editable="kpi_opensource">100</span> <span class="kpi-unit">%</span></div>
+                        <div class="kpi-label" data-site-editable="kpi_opensource_label">法規與公報開源率</div>
+                        <div class="kpi-sub" data-site-editable="kpi_opensource_sub">所有法案條文全部公開透明審閱</div>
                     </div>
                 </div>
                 <div class="briefing-kpi-card">
                     <div class="kpi-icon">⚡</div>
                     <div class="kpi-content">
-                        <div class="kpi-value">&lt; 24 <span class="kpi-unit">hr</span></div>
-                        <div class="kpi-label">入籍審核透明時效</div>
-                        <div class="kpi-sub">身分證與國民護照即時發放</div>
+                        <div class="kpi-value"><span data-site-editable="kpi_speed">&lt; 24</span> <span class="kpi-unit">hr</span></div>
+                        <div class="kpi-label" data-site-editable="kpi_speed_label">入籍審核透明時效</div>
+                        <div class="kpi-sub" data-site-editable="kpi_speed_sub">身分證與國民護照即時發放</div>
                     </div>
                 </div>
             </div>
@@ -341,7 +341,7 @@
                 <div class="section-badge" data-site-editable="sec_badge_history">國家正史 ‧ 永久檔案</div>
             </div>
             
-            <div class="timeline">
+            <div class="timeline" data-site-editable="timeline_events">
                 <div class="timeline-item">
                     <div class="timeline-card">
                         <div class="timeline-header">
@@ -973,6 +973,53 @@
                     <div class="site-form-group full-width">
                         <label for="cfg_news_events">新聞事件列表</label>
                         <textarea id="cfg_news_events" rows="5" style="font-family: monospace; font-size: 0.85rem;"></textarea>
+                    </div>
+
+                    <!-- 儀表板數值設定 -->
+                    <div class="site-form-group full-width" style="margin-top: 1rem; border-top: 2px dashed var(--border-color); padding-top: 1rem;">
+                        <h4 style="margin: 0 0 0.5rem 0; color: var(--primary-900); font-size: 1.05rem;">📊 儀表板數值與簡報設定</h4>
+                    </div>
+                    <div class="site-form-group">
+                        <label for="cfg_dashboard_days_founding">建國歷經日數</label>
+                        <input type="text" id="cfg_dashboard_days_founding">
+                    </div>
+                    <div class="site-form-group">
+                        <label for="cfg_dashboard_days_label">日數標籤</label>
+                        <input type="text" id="cfg_dashboard_days_label">
+                    </div>
+                    <div class="site-form-group">
+                        <label for="cfg_dashboard_defcon">國防等級</label>
+                        <input type="text" id="cfg_dashboard_defcon">
+                    </div>
+                    <div class="site-form-group">
+                        <label for="cfg_dashboard_defcon_label">國防標籤</label>
+                        <input type="text" id="cfg_dashboard_defcon_label">
+                    </div>
+                    <div class="site-form-group full-width">
+                        <label for="cfg_briefing_intro">國家簡報引言 (HTML)</label>
+                        <textarea id="cfg_briefing_intro" rows="3" style="font-family: monospace; font-size: 0.85rem;"></textarea>
+                    </div>
+
+                    <!-- KPI 數值設定 -->
+                    <div class="site-form-group full-width" style="margin-top: 1rem; border-top: 2px dashed var(--border-color); padding-top: 1rem;">
+                        <h4 style="margin: 0 0 0.5rem 0; color: var(--primary-900); font-size: 1.05rem;">🔍 KPI 數值設定</h4>
+                    </div>
+                    <div class="site-form-group">
+                        <label for="cfg_kpi_opensource">開源率數值</label>
+                        <input type="text" id="cfg_kpi_opensource">
+                    </div>
+                    <div class="site-form-group">
+                        <label for="cfg_kpi_speed">審核時效數值</label>
+                        <input type="text" id="cfg_kpi_speed">
+                    </div>
+
+                    <!-- 歷史時間軸設定 -->
+                    <div class="site-form-group full-width" style="margin-top: 1rem; border-top: 2px dashed var(--border-color); padding-top: 1rem;">
+                        <h4 style="margin: 0 0 0.5rem 0; color: var(--primary-900); font-size: 1.05rem;">⏳ 歷史時間軸 (HTML)</h4>
+                    </div>
+                    <div class="site-form-group full-width">
+                        <label for="cfg_timeline_events">歷史事件列表</label>
+                        <textarea id="cfg_timeline_events" rows="6" style="font-family: monospace; font-size: 0.85rem;"></textarea>
                     </div>
                 </div>
 
