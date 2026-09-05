@@ -498,11 +498,16 @@ document.addEventListener('DOMContentLoaded', function() {
 
         // 重新渲染 D3 圖表（如果有新資料）
         if (content.chart_breakdown || content.chart_gauge_score) {
-            setTimeout(() => {
-                if (typeof initNationalBriefingCharts === 'function') {
-                    initNationalBriefingCharts();
+            setTimeout(function() {
+                const gaugeEl = document.getElementById('constitutionGaugeContainer');
+                const barsEl = document.getElementById('constitutionBarsContainer');
+                if (gaugeEl && barsEl && typeof d3 !== 'undefined') {
+                    // 清空並重繪
+                    gaugeEl.innerHTML = '';
+                    barsEl.innerHTML = '';
+                    renderD3GaugeAndBars();
                 }
-            }, 100);
+            }, 200);
         }
 
         // 更新 meta description
@@ -1037,6 +1042,35 @@ document.addEventListener('DOMContentLoaded', function() {
             return;
         }
 
+        renderD3GaugeAndBars();
+
+        // 監聽容器寬度動態變更
+        let resizeTimer = null;
+        const barsContainer = document.getElementById('constitutionBarsContainer');
+        if (window.ResizeObserver && barsContainer) {
+            const ro = new ResizeObserver(() => {
+                clearTimeout(resizeTimer);
+                resizeTimer = setTimeout(() => {
+                    renderD3GaugeAndBars();
+                }, 150);
+            });
+            ro.observe(barsContainer);
+        }
+
+        // 綁定重播按鈕
+        const btnReplay = document.getElementById('btnReplayGrowth');
+        if (btnReplay) {
+            btnReplay.addEventListener('click', function() {
+                renderD3GaugeAndBars();
+                showSiteToast('↻ 已重播憲法滿意度儀表板動畫');
+            });
+        }
+    }
+
+    // 可重用的 D3 圖表渲染函數
+    function renderD3GaugeAndBars() {
+        if (typeof d3 === 'undefined') return;
+
         // 憲法滿意度各條款細項評分 (從 CMS 載入)
         let constitutionBreakdown;
         try {
@@ -1236,32 +1270,6 @@ document.addEventListener('DOMContentLoaded', function() {
                         tooltip.style.opacity = '0';
                     });
             });
-        }
-
-        // 初次渲染
-        renderConstitutionGauge();
-        renderConstitutionBars();
-
-        // 綁定重播按鈕
-        const btnReplay = document.getElementById('btnReplayGrowth');
-        if (btnReplay) {
-            btnReplay.addEventListener('click', function() {
-                renderConstitutionGauge();
-                renderConstitutionBars();
-                showSiteToast('↻ 已重播憲法滿意度儀表板動畫');
-            });
-        }
-
-        // 監聽容器寬度動態變更
-        let resizeTimer = null;
-        if (window.ResizeObserver && barsContainer) {
-            const ro = new ResizeObserver(() => {
-                clearTimeout(resizeTimer);
-                resizeTimer = setTimeout(() => {
-                    renderConstitutionBars();
-                }, 150);
-            });
-            ro.observe(barsContainer);
         }
     }
 
