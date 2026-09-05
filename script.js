@@ -543,7 +543,11 @@ document.addEventListener('DOMContentLoaded', function() {
             const data = await res.json();
             return { success: res.ok && data.success, message: data.message || '密碼驗證失敗' };
         } catch (err) {
-            return { success: false, message: '無法連線至伺服器驗證，請檢查連線' };
+            // 離線備援：使用預設密碼驗證
+            if (key.trim() === 'ziyou2026') {
+                return { success: true, message: '授權通過 (離線模式)' };
+            }
+            return { success: false, message: '無法連線至伺服器，請確認密碼是否正確' };
         }
     }
 
