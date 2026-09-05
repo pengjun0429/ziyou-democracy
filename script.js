@@ -531,52 +531,98 @@ document.addEventListener('DOMContentLoaded', function() {
         return collected;
     }
 
-    // 載入網站內容（直接使用 localStorage，跳過 API）
-    function loadSiteContent() {
+    // 載入網站內容（API 優先，localStorage 後備）
+    async function loadSiteContent() {
+        try {
+            const res = await safeFetch('/api/site-content');
+            if (res.ok) {
+                const data = await res.json();
+                if (data && data.success && data.content) {
+                    currentSiteContent = Object.assign({}, DEFAULT_SITE_CONTENT, data.content);
+                    applySiteContentToDOM(currentSiteContent);
+                    return;
+                }
+            }
+        } catch (e) {}
+
+        // localStorage 後備
         try {
             const local = localStorage.getItem('ziyou_live_site_content');
             if (local) {
                 currentSiteContent = Object.assign({}, DEFAULT_SITE_CONTENT, JSON.parse(local));
                 applySiteContentToDOM(currentSiteContent);
             }
-        } catch (err) {
-            console.error('解析 localStorage 失敗:', err);
-        }
+        } catch (err) {}
     }
 
     // 管理員編輯密碼 (KEY) 授權管理
     let currentEditKey = sessionStorage.getItem('ziyou_site_key') || '';
 
-    // 驗證 KEY 密碼（純前端）
-    function verifyAdminKey(key) {
+    // 驗證 KEY 密碼
+    async function verifyAdminKey(key) {
         if (!key || !key.trim()) {
             return { success: false, message: '請輸入授權密碼' };
         }
-        if (key.trim() === 'ziyou2026') {
-            return { success: true, message: '授權通過' };
+        try {
+            const res = await safeFetch('/api/auth/verify-key', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ key: key.trim() })
+            });
+            const data = await res.json();
+            return { success: res.ok && data.success, message: data.message || '密碼驗證失敗' };
+        } catch (err) {
+            // 離線備援
+            if (key.trim() === 'ziyou2026') {
+                return { success: true, message: '授權通過 (離線模式)' };
+            }
+            return { success: false, message: '無法連線，請確認密碼' };
         }
-        return { success: false, message: '密碼錯誤，請重新輸入' };
     }
 
-    // 儲存網站內容（純 localStorage）
-    function saveSiteContent(contentToSave) {
+    // 儲存網站內容（localStorage + API）
+    async function saveSiteContent(contentToSave) {
         currentSiteContent = Object.assign({}, currentSiteContent, contentToSave);
         
+        // 1. 存入 localStorage
         try {
             localStorage.setItem('ziyou_live_site_content', JSON.stringify(currentSiteContent));
-        } catch (e) {
-            console.warn('localStorage 寫入失敗:', e);
-        }
+        } catch (e) {}
+
+        // 2. 存入 API (Vercel KV)
+        try {
+            const res = await safeFetch('/api/site-content', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'x-edit-key': currentEditKey
+                },
+                body: JSON.stringify(currentSiteContent)
+            });
+            if (res.ok) {
+                applySiteContentToDOM(currentSiteContent);
+                showSiteToast('✅ 已同步至伺服器 (Vercel KV)');
+                return;
+            }
+        } catch (e) {}
 
         applySiteContentToDOM(currentSiteContent);
-        showSiteToast('✅ 內容已儲存於本機瀏覽器');
+        showSiteToast('✅ 已儲存於本機瀏覽器');
     }
 
     // 重設網站內容為原始預設
-    function resetSiteContent() {
+    async function resetSiteContent() {
         if (!confirm('確定要將全站內容還原為系統原廠預設嗎？所有自訂修改將被清除。')) {
             return;
         }
+
+        // 清除 API
+        try {
+            await safeFetch('/api/site-content/reset', {
+                method: 'POST',
+                headers: { 'x-edit-key': currentEditKey }
+            });
+        } catch (e) {}
 
         localStorage.removeItem('ziyou_live_site_content');
         currentSiteContent = Object.assign({}, DEFAULT_SITE_CONTENT);
@@ -655,7 +701,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
         // 若尚未進入編輯模式，檢查是否有儲存且有效的 key
         if (currentEditKey) {
-            const verifyRes = verifyAdminKey(currentEditKey);
+            const verifyRes = await verifyAdminKey(currentEditKey);
             if (verifyRes.success) {
                 activateEditMode();
                 showSiteToast('✏️ 已驗證 KEY 授權，點擊任一文字即可直接修改！');
@@ -736,7 +782,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 submitBtn.innerHTML = '<span>⏳</span> 驗證中...';
             }
 
-            const result = verifyAdminKey(inputVal);
+            const result = await verifyAdminKey(inputVal);
 
             if (submitBtn) {
                 submitBtn.disabled = false;
