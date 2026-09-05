@@ -504,7 +504,6 @@ document.addEventListener('DOMContentLoaded', function() {
                 }
             }, 100);
         }
-    }
 
         // 更新 meta description
         if (content.motto_core) {
