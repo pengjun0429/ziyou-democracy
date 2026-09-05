@@ -1,4 +1,5 @@
 {
-  "cleanUrls": true,
-  "trailingSlash": false
+  "outputDirectory": ".",
+  "installCommand": "echo done",
+  "buildCommand": "echo done"
 }
