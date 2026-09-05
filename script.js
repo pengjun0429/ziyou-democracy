@@ -435,6 +435,9 @@ document.addEventListener('DOMContentLoaded', function() {
         kpi_speed: "< 24",
         kpi_speed_label: "入籍審核透明時效",
         kpi_speed_sub: "身分證與國民護照即時發放",
+        chart_gauge_score: "98.6",
+        chart_gauge_summary: "<strong>98.6%</strong> 全國綜合滿意度<div>連續三個月獲評「極高認同度」</div>",
+        chart_breakdown: '[{"label":"《反惡性內卷管制》條款","score":99.5,"note":"防止無效刷題競爭，評價最高"},{"label":"《發呆與自主思辨》特權","score":99.1,"note":"保障自由發展神聖基本人權"},{"label":"《停戰協定和平履約》條款","score":99.0,"note":"解除戰亂警報，回歸常態學習"},{"label":"《免試及免作業互惠》條款","score":98.4,"note":"班級身分認同與榮譽免檢"},{"label":"《民主直選與公報開源》條款","score":97.8,"note":"正史透明、每票均等原則"}]',
         timeline_events: "<div class=\"timeline-item\"><div class=\"timeline-card\"><div class=\"timeline-header\"><div class=\"timeline-event\">奠基與建國日</div><span class=\"timeline-date\">民國115年5月28日</span></div><div class=\"timeline-details\"><ul><li><strong>宣告建國：</strong>全體人民正式奠定立國根基，拒絕填鴨式教育壓迫。</li><li><strong>實施內卷管制：</strong>發布《資優民主國內卷特殊條例》，保障國民適性發展。</li><li><strong>資優民主黨創立：</strong>國內核心政黨組建，引領國家反內卷事業。</li><li><strong>防諜措施：</strong>發布反滲透管制法規，抵禦卓越人民共和國干擾。</li><li><strong>首屆總統直選：</strong>蘇泳旭同志以8票絕對優勢當選首任國家元首。</li></ul></div></div></div><div class=\"timeline-item\"><div class=\"timeline-card\"><div class=\"timeline-header\"><div class=\"timeline-event\">制憲與宣戰日</div><span class=\"timeline-date\">民國115年5月29日</span></div><div class=\"timeline-details\"><ul><li><strong>大憲章制憲：</strong>國家正式步入民主法治憲政框架，保障國民言論與自主探索權。</li><li><strong>對外宣戰：</strong>因應境外威脅，正式對「卓越人民共和國」進入全面交戰狀態。</li><li><strong>根本大法確立：</strong>資優民主國憲法第一版經制憲大會一致決議通過。</li></ul></div></div></div><div class=\"timeline-item\"><div class=\"timeline-card\"><div class=\"timeline-header\"><div class=\"timeline-event\">戰亂動員日</div><span class=\"timeline-date\">民國115年5月30日</span></div><div class=\"timeline-details\"><ul><li><strong>戰亂臨時條款：</strong>全面進入戰備狀態，部分內卷特殊條例及法規暫時停止適用。</li><li><strong>領土保衛：</strong>實施嚴密走廊管制與座位防區巡防，驅逐不法刺探機密之越界者。</li></ul></div></div></div><div class=\"timeline-item\"><div class=\"timeline-card\"><div class=\"timeline-header\"><div class=\"timeline-event\">法治深化日</div><span class=\"timeline-date\">民國115年5月31日</span></div><div class=\"timeline-details\"><ul><li><strong>憲法修正案：</strong>制憲大會正式通過「法律不溯及既往原則」寫入根本大法第十條。</li><li><strong>制度健全：</strong>確立罪刑法定與人權保障，成為微國家法治之典範。</li></ul></div></div></div>",
         constitution_summary: "<div class=\"chapter\"><div class=\"chapter-title\"><span>第 I 章</span> 總綱</div><div class=\"articles-grid\"><div class=\"article\"><h4>第一條（國體與主權）</h4><p>資優民主國基於資優班全體人民之共同意志，為一民主與中央集權兼具之特殊憲政政體。其主權屬於資優班全體人民。</p></div><div class=\"article\"><h4>第二條（國土與治權）</h4><p>資優民主國之領土，暫以資優班教室及其延伸之學習活動空間為統治權實施範圍。</p></div><div class=\"article\"><h4>第三條（實政體制）</h4><p>本國於非常時期或建國初期，得實施一黨專政體制，由「資優民主黨」全面領導國家發展，以維護班級紀律與學習秩序。</p></div></div></div><div class=\"chapter\"><div class=\"chapter-title\"><span>第 II 章</span> 人民之權利與義務</div><div class=\"articles-grid\"><div class=\"article\"><h4>第四條（平等原則）</h4><p>資優民主國人民，無分性別、座位、智商或入學成績，在法律上一律平等。</p></div><div class=\"article\"><h4>第五條（自由權之保障與限制）</h4><p>人民之言論、講學、著作及出版自由應予保障。但其言論若涉及惡性內卷、破壞和諧或引發學業焦慮者，受特殊法律之限制。</p></div><div class=\"article\"><h4>第六條（應考試與受教育之權利義務）</h4><p>人民有依班規及教師指示接受測試與參與各項學術競賽之權利與義務。</p></div></div></div><div class=\"chapter\"><div class=\"chapter-title\"><span>第 III 章</span> 國家元首與政府組織</div><div class=\"articles-grid\"><div class=\"article\"><h4>第七條（總統之職權與產生）</h4><p>總統為國家元首，對外代表資優民主國，對內統率國家各項事務。</p><p>一、總統由人民直接選舉產生，候選人須獲得法定有效票數方得確認當選。</p><p>二、總統有明令公布法律、發布緊急命令以及對卓越人民共和國宣戰之權。</p></div></div></div><div class=\"chapter\"><div class=\"chapter-title\"><span>第 IV 章</span> 附則</div><div class=\"articles-grid\"><div class=\"article\"><h4>第八條（憲法之修改與最高性）</h4><p>本憲法為資優民主國之根本大法，任何班規或條例與本憲法牴觸者無效。憲法之修改，須經總統核准，並經資優班立法委員過半數之同意，始得變更。</p></div><div class=\"article\"><h4>第九條（施行日期）</h4><p>本憲法自公布之日起發生效力。</p></div><div class=\"article\"><h4>第十條（不溯及既往原則）</h4><p>本憲法及依本憲法所制定之各項法律條例，其適用以法律生效後之行為為限。除法律另有特別規定或有利於行為人者外，行為於法律實施前不予追究處罰。</p></div></div></div>"
     };
@@ -492,6 +495,16 @@ document.addEventListener('DOMContentLoaded', function() {
         if (content.site_title) {
             document.title = content.site_title + ' - 官方網站 | Democratic Meritocracy of Ziyu';
         }
+
+        // 重新渲染 D3 圖表（如果有新資料）
+        if (content.chart_breakdown || content.chart_gauge_score) {
+            setTimeout(() => {
+                if (typeof initNationalBriefingCharts === 'function') {
+                    initNationalBriefingCharts();
+                }
+            }, 100);
+        }
+    }
 
         // 更新 meta description
         if (content.motto_core) {
@@ -903,6 +916,8 @@ document.addEventListener('DOMContentLoaded', function() {
         setVal('cfg_kpi_opensource', 'kpi_opensource');
         setVal('cfg_kpi_speed', 'kpi_speed');
         setVal('cfg_timeline_events', 'timeline_events');
+        setVal('cfg_chart_gauge_score', 'chart_gauge_score');
+        setVal('cfg_chart_breakdown', 'chart_breakdown');
         
         siteModal.classList.add('active');
     }
@@ -968,6 +983,8 @@ document.addEventListener('DOMContentLoaded', function() {
                 kpi_opensource: getVal('cfg_kpi_opensource'),
                 kpi_speed: getVal('cfg_kpi_speed'),
                 timeline_events: getVal('cfg_timeline_events'),
+                chart_gauge_score: getVal('cfg_chart_gauge_score'),
+                chart_breakdown: getVal('cfg_chart_breakdown'),
             };
 
             saveSiteContent(newValues);
@@ -1021,14 +1038,22 @@ document.addEventListener('DOMContentLoaded', function() {
             return;
         }
 
-        // 憲法滿意度各條款細項評分
-        const constitutionBreakdown = [
-            { label: '《反惡性內卷管制》條款', score: 99.5, note: '防止無效刷題競爭，評價最高' },
-            { label: '《發呆與自主思辨》特權', score: 99.1, note: '保障自由發展神聖基本人權' },
-            { label: '《停戰協定和平履約》條款', score: 99.0, note: '解除戰亂警報，回歸常態學習' },
-            { label: '《免試及免作業互惠》條款', score: 98.4, note: '班級身分認同與榮譽免檢' },
-            { label: '《民主直選與公報開源》條款', score: 97.8, note: '正史透明、每票均等原則' }
-        ];
+        // 憲法滿意度各條款細項評分 (從 CMS 載入)
+        let constitutionBreakdown;
+        try {
+            constitutionBreakdown = JSON.parse(currentSiteContent.chart_breakdown || '[]');
+        } catch(e) {
+            constitutionBreakdown = [
+                { label: '《反惡性內卷管制》條款', score: 99.5, note: '防止無效刷題競爭，評價最高' },
+                { label: '《發呆與自主思辨》特權', score: 99.1, note: '保障自由發展神聖基本人權' },
+                { label: '《停戰協定和平履約》條款', score: 99.0, note: '解除戰亂警報，回歸常態學習' },
+                { label: '《免試及免作業互惠》條款', score: 98.4, note: '班級身分認同與榮譽免檢' },
+                { label: '《民主直選與公報開源》條款', score: 97.8, note: '正史透明、每票均等原則' }
+            ];
+        }
+
+        const gaugeScore = parseFloat(currentSiteContent.chart_gauge_score) || 98.6;
+        const gaugeSummaryText = currentSiteContent.chart_gauge_summary || '<strong>98.6%</strong> 全國綜合滿意度<p>連續三個月獲評「極高認同度」</p>';
 
         const gaugeContainer = document.getElementById('constitutionGaugeContainer');
         const barsContainer = document.getElementById('constitutionBarsContainer');
@@ -1084,7 +1109,7 @@ document.addEventListener('DOMContentLoaded', function() {
             gaugeGrad.append('stop').attr('offset', '100%').attr('stop-color', '#059669');
 
             // 前景滿意度圓弧
-            const targetScore = 0.986;
+            const targetScore = gaugeScore / 100;
             const foregroundArc = d3.arc()
                 .innerRadius(radius - strokeWidth)
                 .outerRadius(radius)
@@ -1115,7 +1140,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 .attr('font-size', '26px')
                 .attr('font-weight', '800')
                 .attr('fill', '#0f172a')
-                .text('98.6%');
+                .text(gaugeScore + '%');
 
             svg.append('text')
                 .attr('text-anchor', 'middle')

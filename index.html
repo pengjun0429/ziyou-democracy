@@ -297,7 +297,7 @@
                             <div id="constitutionGaugeContainer" class="d3-gauge-wrapper">
                                 <!-- D3 渲染儀表板 -->
                             </div>
-                            <div class="gauge-summary-text">
+                            <div class="gauge-summary-text" data-site-editable="chart_gauge_summary">
                                 <strong>98.6%</strong> 全國綜合滿意度
                                 <p>連續三個月獲評「極高認同度」</p>
                             </div>
@@ -1020,6 +1020,20 @@
                     <div class="site-form-group full-width">
                         <label for="cfg_timeline_events">歷史事件列表</label>
                         <textarea id="cfg_timeline_events" rows="6" style="font-family: monospace; font-size: 0.85rem;"></textarea>
+                    </div>
+
+                    <!-- D3 圖表設定 -->
+                    <div class="site-form-group full-width" style="margin-top: 1rem; border-top: 2px dashed var(--border-color); padding-top: 1rem;">
+                        <h4 style="margin: 0 0 0.5rem 0; color: var(--primary-900); font-size: 1.05rem;">📈 憲法滿意度圖表設定</h4>
+                    </div>
+                    <div class="site-form-group">
+                        <label for="cfg_chart_gauge_score">儀表板總分 (%)</label>
+                        <input type="text" id="cfg_chart_gauge_score">
+                    </div>
+                    <div class="site-form-group full-width">
+                        <label for="cfg_chart_breakdown">各條款評分 (JSON 陣列)</label>
+                        <textarea id="cfg_chart_breakdown" rows="4" style="font-family: monospace; font-size: 0.85rem;"></textarea>
+                        <p style="font-size: 0.75rem; color: var(--text-muted); margin-top: 0.25rem;">格式：[{"label":"條款名稱","score":99.5,"note":"說明"}]</p>
                     </div>
                 </div>
 
