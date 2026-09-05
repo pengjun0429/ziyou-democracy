@@ -4,334 +4,815 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="google-site-verification" content="Rau2K_qrDIQN7a38tlY9VLkJULZxwLdauo1zVGH4dIg" />
-    <title>資優民主國 - 官方網站</title>
+    <script>
+        // 修復環境中 window.fetch 僅有 getter 無 setter 導致的 TypeError: Cannot set property fetch of #<Window> which has only a getter
+        (function() {
+            try {
+                var nativeFetch = typeof window !== 'undefined' ? window.fetch : null;
+                var currentFetch = nativeFetch ? function() { return nativeFetch.apply(window, arguments); } : null;
+                var desc = Object.getOwnPropertyDescriptor(window, 'fetch');
+                if (!desc && typeof Window !== 'undefined' && Window.prototype) {
+                    desc = Object.getOwnPropertyDescriptor(Window.prototype, 'fetch');
+                }
+                if (!desc || (desc.get && !desc.set) || desc.writable === false) {
+                    Object.defineProperty(window, 'fetch', {
+                        get: function() { return currentFetch; },
+                        set: function(newFetch) { currentFetch = newFetch; },
+                        configurable: true,
+                        enumerable: true
+                    });
+                }
+            } catch (e) {}
+        })();
+    </script>
+    <title>資優民主國 - 官方網站 | Democratic Meritocracy of Ziyu</title>
+    <meta name="description" content="資優民主國官方網站與國民、文件管理系統。以「反對惡性內卷，捍衛自由學習」為立國終極核心。">
+    <meta property="og:title" content="資優民主國 - 官方網站">
+    <meta property="og:description" content="資優民主國官方網站與國民、文件管理系統。反對惡性內卷，捍衛自由學習。">
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
+    <!-- Sovereign State Header -->
     <header>
         <div class="header-content">
-            <h1>資優民主國</h1>
-            <p>基於資優班全體人民之共同意志</p>
+            <div class="state-emblem" title="資優民主國 國徽">
+                <svg viewBox="0 0 24 24">
+                    <path d="M12 2L4 5v6.09c0 5.05 3.41 9.76 8 10.91 4.59-1.15 8-5.86 8-10.91V5l-8-3zm0 4a3 3 0 1 1 0 6 3 3 0 0 1 0-6zm4 11.2c-1.15.65-2.52 1.05-4 1.14-1.48-.09-2.85-.49-4-1.14v-1.7c0-1.33 2.67-2 4-2s4 .67 4 2v1.7z"/>
+                </svg>
+            </div>
+            <h1 data-site-editable="site_title">資優民主國</h1>
+            <div class="header-sub-en" data-site-editable="site_sub_en">Democratic Meritocracy of Ziyu</div>
+            <div class="motto-banner">
+                <span>🛡️</span>
+                <strong data-site-editable="motto_core">反對惡性內卷，捍衛自由學習</strong>
+                <span>‧</span>
+                <span data-site-editable="motto_will">基於資優班全體人民之共同意志</span>
+            </div>
         </div>
     </header>
     
+    <!-- Modern Sticky Navigation -->
     <nav>
-        <ul>
-            <li><a href="#home">首頁</a></li>
-            <li><a href="#join">加入國民</a></li>
-            <li><a href="#diplomacy">外交</a></li>
-            <li><a href="#history">歷史</a></li>
-            <li><a href="#constitution">憲法</a></li>
-            <li><a href="#laws">法規</a></li>
-            <li><a href="#government">政府</a></li>
-            <li><a href="#diplomacy">外交</a></li>
-            <li><a href="#dashboard">國家儀表板</a></li>
-            <li><a href="document-manager.html">文件管理</a></li>
-            <li><a href="#join">加入國民</a></li>
-        </ul>
+        <div class="nav-container">
+            <a href="#home" class="nav-brand">
+                <span>⭐</span> <span data-site-editable="nav_brand">資優民主國</span>
+            </a>
+            <button class="mobile-toggle" id="mobileNavBtn" aria-label="切換選單">
+                ☰ 選單
+            </button>
+            <ul class="nav-links" id="navLinks">
+                <li><a href="#home">首頁</a></li>
+                <li><a href="#dashboard">儀表板</a></li>
+                <li><a href="#history">正史</a></li>
+                <li><a href="#constitution">憲法</a></li>
+                <li><a href="#laws">法規</a></li>
+                <li><a href="#government">組織</a></li>
+                <li><a href="#territory">領土</a></li>
+                <li><a href="#join" class="nav-cta-join">✨ 加入國民</a></li>
+                <li><a href="#diplomacy" class="nav-cta-diplomacy">🌐 締結外交</a></li>
+                <li><a href="citizen-manager.html" class="nav-special">🪪 國民管理</a></li>
+                <li><a href="document-manager.html" class="nav-special">📜 文件管理</a></li>
+            </ul>
+            <div class="nav-actions">
+                <div class="nav-divider"></div>
+                <button id="toggleEditBtn" class="nav-edit-btn" title="開啟或關閉網站即時編輯模式">✏️ 編輯網站</button>
+            </div>
+        </div>
     </nav>
     
     <main>
+        <!-- 歡迎與立國核心 -->
         <section id="home" class="section">
-            <h2>歡迎來到資優民主國</h2>
-            <div class="intro">
-                <p>資優民主國成立於中華民國115年5月28日，基於資優班全體人民之共同意志，以「反對惡性內卷，捍衛自由學習」為立國終極核心。</p>
-                <div class="national-info">
-                    <div class="info-item">
-                        <h3>國家元首</h3>
-                        <p>總統：蘇◯旭</p>
-                    </div>
-                    <div class="info-item">
-                        <h3>國家信仰</h3>
-                        <p>唯一真神：廖◯茹</p>
-                    </div>
-                    <div class="info-item">
-                        <h3>領土範圍</h3>
-                        <p>鳳甲基地及各直轄特區</p>
-                    </div>
+            <div class="section-header">
+                <div class="section-title">
+                    <span>🏛️</span> 國家概要
                 </div>
-                <div class="wiki-link">
-                    <a href="https://www.micropedia.site/wiki/%E8%B3%87%E5%84%AA%E6%B0%91%E4%B8%BB%E5%9C%8B" target="_blank">查看微國家百科條目 →</a>
-                </div>
+                <div class="section-badge" data-site-editable="founding_badge">立國紀念 2026.05.28</div>
             </div>
-        </section>
-        
-        <section id="join" class="section">
-            <h2>加入國民</h2>
-            <div class="join-container">
-                <div class="join-intro">
-                    <h3>成為資優民主國國民</h3>
-                    <p>歡迎加入資優民主國！請填寫表單申請入籍，審核通過後即成為本國正式國民。</p>
-                    <div class="join-benefits">
-                        <h4>國民權益</h4>
-                        <ul>
-                            <li>享有憲法保障之平等權與自由權</li>
-                            <li>參與國家總統直選</li>
-                            <li>享有「發呆課」與「白日夢時間」基本人權</li>
-                            <li>參與國家各項學習與活動</li>
-                        </ul>
-                    <div class="join-documents">
-                        <h4>審核通過後可獲得</h4>
-                        <p><strong>班級申請：</strong>資優民主國班級身分證 + 班級護照</p>
-                        <p><strong>個人申請：</strong>資優民主國國民身分證 + 國民護照</p>
-                    </div>
-                    </div>
-                </div>
-                <div class="join-form">
-                    <p>點擊下方按鈕前往入籍申請表單：</p>
-                    <a href="https://forms.gle/EYzDqYnR1bhVgxPz7" target="_blank" class="join-btn">前往填寫入籍申請</a>
-                    <p class="join-note">* 如代表整個資優班申請，請於表單中註明</p>
-                </div>
-            </div>
-        </section>
-        
-        <section id="diplomacy" class="section">
-            <h2>外交</h2>
-            <div class="diplomacy-container">
-                <div class="diplomacy-intro">
-                    <h3>國際外交</h3>
-                    <p>資優民主國歡迎各微國家與國際組織申請建交。我們致力於和平交流、互相尊重，共同促進微國家社群的發展。</p>
-                </div>
-                <div class="diplomacy-button">
-                    <a href="https://forms.gle/APfTxiSsejvtdkhQ8" target="_blank" class="join-btn">申請外交關係</a>
-                </div>
-            </div>
-        </section>
-        
-        <section id="history" class="section">
-            <h2>正史編年史</h2>
-            <div class="timeline">
-                <div class="timeline-item">
-                    <div class="date">115年5月28日</div>
-                    <div class="event">奠基與建國日</div>
-                    <div class="details">
-                        <ul>
-                            <li>宣告建國：全體人民正式奠定立國根基</li>
-                            <li>實施內卷管制：發布《資優民主國內卷特殊條例》</li>
-                            <li>資優民主黨創立：國內核心政黨正式組建</li>
-                            <li>實施防共特殊防禦條例</li>
-                            <li>首屆總統大選：蘇泳旭以8票當選首任國家元首</li>
-                        </ul>
-                    </div>
-                </div>
-                
-                <div class="timeline-item">
-                    <div class="date">115年5月29日</div>
-                    <div class="event">制憲與宣戰日</div>
-                    <div class="details">
-                        <ul>
-                            <li>大憲章制憲：國家正式步入制憲階段</li>
-                            <li>向卓越人民共和國宣戰</li>
-                            <li>憲法第一版通過</li>
-                        </ul>
-                    </div>
-                </div>
-                
-                <div class="timeline-item">
-                    <div class="date">115年5月30日</div>
-                    <div class="event">戰亂動員日</div>
-                    <div class="details">
-                        <ul>
-                            <li>執行戰亂臨時條款</li>
-                            <li>部分法令暫時停止適用</li>
-                        </ul>
-                    </div>
-                </div>
-                
-                <div class="timeline-item">
-                    <div class="date">115年5月31日</div>
-                    <div class="event">法治深化日</div>
-                    <div class="details">
-                        <ul>
-                            <li>憲法不溯及既往原則寫入根本大法</li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-        </section>
-        
-        <section id="constitution" class="section">
-            <h2>資優民主國憲法</h2>
-            <div class="constitution">
-                <div class="chapter">
-                    <h3>第一章 總綱</h3>
-                    <div class="article">
-                        <h4>第一條（國體與主權）</h4>
-                        <p>資優民主國基於資優班全體人民之共同意志，為一民主與中央集權兼具之特殊憲政政體。其主權屬於資優班全體人民。</p>
-                    </div>
-                    <div class="article">
-                        <h4>第二條（國土與治權）</h4>
-                        <p>資優民主國之領土，暫以資優班教室及其延伸之學習活動空間為統治權實施範圍。</p>
-                    </div>
-                    <div class="article">
-                        <h4>第三條（實政體制）</h4>
-                        <p>本國於非常時期或建國初期，得實施一黨專政體制，由「資優民主黨」全面領導國家發展，以維護班級紀律與學習秩序。</p>
-                    </div>
-                </div>
-                
-                <div class="chapter">
-                    <h3>第二章 人民之權利與義務</h3>
-                    <div class="article">
-                        <h4>第四條（平等原則）</h4>
-                        <p>資優民主國人民，無分性別、座位、智商或入學成績，在法律上一律平等。</p>
-                    </div>
-                    <div class="article">
-                        <h4>第五條（自由權之保障）</h4>
-                        <p>人民之言論、講學、著作及出版自由應予保障。但其言論若涉及惡性內卷、破壞和諧或引發學業焦慮者，受特殊法律之限制。</p>
-                    </div>
-                    <div class="article">
-                        <h4>第六條（應考試與受教育之權利義務）</h4>
-                        <p>人民有依班規及教師指示接受測試與參與各項學術競賽之權利與義務。</p>
-                    </div>
-                </div>
-                
-                <div class="chapter">
-                    <h3>第三章 國家元首與政府組織</h3>
-                    <div class="article">
-                        <h4>第七條（總統之職權與產生）</h4>
-                        <p>總統為國家元首，對外代表資優民主國，對內統率國家各項事務。</p>
-                        <p>一、總統由人民直接選舉產生，候選人須獲得法定有效票數方得確認當選。</p>
-                        <p>二、總統有明令公布法律、發布緊急命令以及對卓越人民共和國宣戰之權。</p>
-                    </div>
-                </div>
-                
-                <div class="chapter">
-                    <h3>第四章 附則</h3>
-                    <div class="article">
-                        <h4>第八條（憲法之修改與最高性）</h4>
-                        <p>本憲法為資優民主國之根本大法，任何班規或條例與本憲法牴觸者無效。憲法之修改，須經總統核准，並經資優班立法委員過半數之同意，始得變更。</p>
-                    </div>
-                    <div class="article">
-                        <h4>第九條（施行日期）</h4>
-                        <p>本憲法自公布之日起發生效力。</p>
-                    </div>
-                    <div class="article">
-                        <h4>第十條（不溯及既往原則）</h4>
-                        <p>本憲法及依本憲法所制定之各項法律條例，其適用以法律生效後之行為為限。除法律另有特別規定或有利於行為人者外，行為於法律實施前不予追究處罰。</p>
-                    </div>
-                </div>
-            </div>
-        </section>
-        
-        <section id="laws" class="section">
-            <h2>國家法規</h2>
-            <div class="laws-container">
-                <div class="law-card">
-                    <h3>反滲透管制條例</h3>
-                    <p>防範境外敵對勢力「卓越人民共和國」之滲透、分化與破壞行為</p>
-                    <button class="view-law" data-law="anti-infiltration">查看條文</button>
-                </div>
-                
-                <div class="law-card">
-                    <h3>內卷管制特殊條例</h3>
-                    <p>杜絕教育體制中「唯有讀書高」之畸形風氣</p>
-                    <button class="view-law" data-law="anti-involution">查看條文</button>
-                </div>
-                
-                <div class="law-card">
-                    <h3>妨害風化管理處罰條例</h3>
-                    <p>平衡「個人自由」與「公共秩序」</p>
-                    <button class="view-law" data-law="public-morality">查看條文</button>
-                </div>
-                
-                <div class="law-card">
-                    <h3>教育內卷管理處罰條例</h3>
-                    <p>導正惡性升學競爭，恢復快樂學習本質</p>
-                    <button class="view-law" data-law="education-management">查看條文</button>
-                </div>
-            </div>
-        </section>
-        
-        <section id="government" class="section">
-            <h2>政府組織</h2>
-            <div class="government-structure">
-                <div class="position-card">
+            
+            <p class="intro-lead" data-site-editable="intro_lead">
+                資優民主國成立於中華民國115年5月28日，由資優班全體人民基於共同意志，
+                以<strong>「反對惡性內卷，捍衛自由學習」</strong>為立國終極核心所建立。國家主權屬於資優班全體人民，
+                實施憲法保障發呆與自主思辨之神聖基本人權。
+            </p>
+            
+            <div class="national-info">
+                <div class="info-item gold">
+                    <div class="info-item-icon">👑</div>
                     <h3>國家元首</h3>
-                    <p><strong>總統</strong></p>
-                    <p><strong>副總統：</strong>（從缺）</p>
-                    <p><strong>唯一真神</strong></p>
+                    <p data-site-editable="president_name">總統：蘇◯旭</p>
+                    <div class="sub" data-site-editable="president_sub">首屆直選以8票絕對多數當選</div>
                 </div>
-                
-                <div class="position-card">
-                    <h3>五院院長</h3>
-                    <p><strong>立法院長</strong></p>
-                    <p><strong>行政院長</strong></p>
-                    <p><strong>司法院長</strong></p>
+                <div class="info-item">
+                    <div class="info-item-icon">✨</div>
+                    <h3>國家信仰</h3>
+                    <p data-site-editable="faith_name">唯一真神：廖◯茹</p>
+                    <div class="sub" data-site-editable="faith_sub">最高精神指導與心理淨化導師</div>
                 </div>
-                
-                <div class="position-card">
-                    <h3>行政院部會首長</h3>
-                    <p><strong>內政部長</strong></p>
-                    <p><strong>外交部長</strong></p>
+                <div class="info-item green">
+                    <div class="info-item-icon">📍</div>
+                    <h3>領土範圍</h3>
+                    <p data-site-editable="territory_name">鳳甲基地及各直轄特區</p>
+                    <div class="sub" data-site-editable="territory_sub">暫以資優班教室及延伸學習空間為統治權</div>
                 </div>
-                
-                <div class="position-card">
-                    <h3>立法委員</h3>
-                    <p><strong>立法委員</strong></p>
+                <div class="info-item green">
+                    <div class="info-item-icon">🕊️</div>
+                    <h3>和平狀態</h3>
+                    <p data-site-editable="peace_name">已停戰（和平協定生效）</p>
+                    <div class="sub" data-site-editable="peace_sub">戰亂狀態解除，全面專注自由學習與反內卷</div>
                 </div>
             </div>
+            
+            <div class="hero-join-cta-wrap">
+                <a href="#join" class="hero-join-btn btn-singleline">
+                    <span>✨</span> 申請加入國民 →
+                </a>
+                <a href="#diplomacy" class="hero-diplomacy-btn btn-singleline">
+                    <span>🌐</span> 申請締結外交 →
+                </a>
+                <a href="https://www.micropedia.site/wiki/%E8%B3%87%E5%84%AA%E6%B0%91%E4%B8%BB%E5%9C%8B" target="_blank" rel="noopener noreferrer" class="wiki-btn btn-singleline" id="wikiLinkBtn">
+                    <span>📖</span> 微國家百科條目 →
+                </a>
+            </div>
         </section>
-        
+
+        <!-- 國家儀表板 -->
         <section id="dashboard" class="section">
-            <h2>國家儀表板</h2>
+            <div class="section-header">
+                <div class="section-title">
+                    <span>📊</span> 國家儀表板 (National Dashboard)
+                </div>
+                <div class="status-badge status-peace" data-site-editable="dashboard_status_text">
+                    <span class="status-dot-green"></span>
+                    和平狀態 ‧ 已停止戰爭（停戰協議生效中）
+                </div>
+            </div>
+            
             <div class="dashboard-container">
+                <!-- 國家態勢卡 -->
                 <div class="dashboard-card">
-                    <h3>國家狀態</h3>
-                    <div class="status-indicator active">
-                        <span class="status-dot"></span>
-                        <span>運作中</span>
+                    <h3>運作指標 <span>⚡</span></h3>
+                    <div class="status-grid">
+                        <div class="status-box">
+                            <div class="status-box-val" id="days-since-founding">100</div>
+                            <div class="status-box-lbl">建國歷經日數</div>
+                        </div>
+                        <div class="status-box">
+                            <div class="status-box-val" style="color: var(--status-green);">DEFCON 5</div>
+                            <div class="status-box-lbl">國防警戒（和平）</div>
+                        </div>
                     </div>
-                    <p>當前狀態：戰時狀態</p>
-                    <p>建國天數：<span id="days-since-founding">0</span> 天</p>
+                    <div class="stats" style="margin-top: 1rem;">
+                        <div class="stat-item">
+                            <span class="stat-label">憲政體制</span>
+                            <span class="stat-value">民主與中央集權兼具</span>
+                        </div>
+                        <div class="stat-item">
+                            <span class="stat-label">執政黨</span>
+                            <span class="stat-value">資優民主黨 (ZDP)</span>
+                        </div>
+                    </div>
                 </div>
                 
+                <!-- 統計數據 -->
                 <div class="dashboard-card">
-                    <h3>國家統計</h3>
+                    <h3>國家關鍵統計 <span>📈</span></h3>
                     <div class="stats">
                         <div class="stat-item">
-                            <span class="stat-label">國民人數</span>
-                            <span class="stat-value">29 人</span>
+                            <span class="stat-label">登記國民人數</span>
+                            <span class="stat-value">29 位國民</span>
                         </div>
                         <div class="stat-item">
-                            <span class="stat-label">通過法規</span>
-                            <span class="stat-value">5 條</span>
+                            <span class="stat-label">公布實施法規</span>
+                            <span class="stat-value">5 部條例</span>
                         </div>
                         <div class="stat-item">
-                            <span class="stat-label">戰爭狀態</span>
-                            <span class="stat-value">對外作戰中</span>
+                            <span class="stat-label">內卷惡意刷題取締率</span>
+                            <span class="stat-value" style="color: var(--status-green);">100%</span>
+                        </div>
+                        <div class="stat-item">
+                            <span class="stat-label">白日夢與發呆人權指數</span>
+                            <span class="stat-value" style="color: var(--primary-500);">99.8%</span>
                         </div>
                     </div>
                 </div>
                 
+                <!-- 即時國家簡報 -->
                 <div class="dashboard-card">
-                    <h3>最近動態</h3>
+                    <h3>近期要聞公報 <span>📢</span></h3>
                     <div class="recent-events">
                         <div class="event-item">
-                            <span class="event-date">115/5/31</span>
-                            <span class="event-text">憲法修正案通過</span>
+                            <span class="event-date" style="background:#dcfce7; color:#166534;">和平公報</span>
+                            <span class="event-text"><strong>停戰協定生效：</strong>已全面停止戰爭，國防警戒回歸常態 DEFCON 5</span>
                         </div>
                         <div class="event-item">
-                            <span class="event-date">115/5/30</span>
-                            <span class="event-text">戰亂臨時條款實施</span>
+                            <span class="event-date">115/05/31</span>
+                            <span class="event-text">制憲大會通過：憲法不溯及既往原則入憲</span>
                         </div>
                         <div class="event-item">
-                            <span class="event-date">115/5/29</span>
-                            <span class="event-text">向卓越人民共和國宣戰</span>
+                            <span class="event-date">115/05/30</span>
+                            <span class="event-text">發布戰亂臨時條款，強化邊境走廊防線</span>
+                        </div>
+                        <div class="event-item">
+                            <span class="event-date">115/05/29</span>
+                            <span class="event-text">制憲大會召開，大憲章總綱確立</span>
+                        </div>
+                        <div class="event-item">
+                            <span class="event-date">115/05/28</span>
+                            <span class="event-text">宣告建國，公布《內卷管制特殊條例》</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <!-- 正史編年史 -->
+        <section id="history" class="section">
+            <div class="section-header">
+                <div class="section-title">
+                    <span>⏳</span> 正史編年史
+                </div>
+                <div class="section-badge">國家正史 ‧ 永久檔案</div>
+            </div>
+            
+            <div class="timeline">
+                <div class="timeline-item">
+                    <div class="timeline-card">
+                        <div class="timeline-header">
+                            <div class="timeline-event">奠基與建國日</div>
+                            <span class="timeline-date">民國115年5月28日</span>
+                        </div>
+                        <div class="timeline-details">
+                            <ul>
+                                <li><strong>宣告建國：</strong>全體人民正式奠定立國根基，拒絕填鴨式教育壓迫。</li>
+                                <li><strong>實施內卷管制：</strong>發布《資優民主國內卷特殊條例》，保障國民適性發展。</li>
+                                <li><strong>資優民主黨創立：</strong>國內核心政黨組建，引領國家反內卷事業。</li>
+                                <li><strong>防諜措施：</strong>發布反滲透管制法規，抵禦卓越人民共和國干擾。</li>
+                                <li><strong>首屆總統直選：</strong>蘇泳旭同志以8票絕對優勢當選首任國家元首。</li>
+                            </ul>
                         </div>
                     </div>
                 </div>
                 
+                <div class="timeline-item">
+                    <div class="timeline-card">
+                        <div class="timeline-header">
+                            <div class="timeline-event">制憲與宣戰日</div>
+                            <span class="timeline-date">民國115年5月29日</span>
+                        </div>
+                        <div class="timeline-details">
+                            <ul>
+                                <li><strong>大憲章制憲：</strong>國家正式步入民主法治憲政框架，保障國民言論與自主探索權。</li>
+                                <li><strong>對外宣戰：</strong>因應境外威脅，正式對「卓越人民共和國」進入全面交戰狀態。</li>
+                                <li><strong>根本大法確立：</strong>資優民主國憲法第一版經制憲大會一致決議通過。</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="timeline-item">
+                    <div class="timeline-card">
+                        <div class="timeline-header">
+                            <div class="timeline-event">戰亂動員日</div>
+                            <span class="timeline-date">民國115年5月30日</span>
+                        </div>
+                        <div class="timeline-details">
+                            <ul>
+                                <li><strong>戰亂臨時條款：</strong>全面進入戰備狀態，部分內卷特殊條例及法規暫時停止適用。</li>
+                                <li><strong>領土保衛：</strong>實施嚴密走廊管制與座位防區巡防，驅逐不法刺探機密之越界者。</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="timeline-item">
+                    <div class="timeline-card">
+                        <div class="timeline-header">
+                            <div class="timeline-event">法治深化日</div>
+                            <span class="timeline-date">民國115年5月31日</span>
+                        </div>
+                        <div class="timeline-details">
+                            <ul>
+                                <li><strong>憲法修正案：</strong>制憲大會正式通過「法律不溯及既往原則」寫入根本大法第十條。</li>
+                                <li><strong>制度健全：</strong>確立罪刑法定與人權保障，成為微國家法治之典範。</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <!-- 資優民主國憲法 -->
+        <section id="constitution" class="section">
+            <div class="section-header">
+                <div class="section-title">
+                    <span>⚖️</span> 資優民主國憲法
+                </div>
+                <div class="section-badge">根本大法 ‧ 四章十條</div>
+            </div>
+            
+            <div class="constitution">
+                <!-- 第一章 -->
+                <div class="chapter">
+                    <div class="chapter-title">
+                        <span>第 I 章</span> 總綱
+                    </div>
+                    <div class="articles-grid">
+                        <div class="article">
+                            <h4>第一條（國體與主權）</h4>
+                            <p>資優民主國基於資優班全體人民之共同意志，為一民主與中央集權兼具之特殊憲政政體。其主權屬於資優班全體人民。</p>
+                        </div>
+                        <div class="article">
+                            <h4>第二條（國土與治權）</h4>
+                            <p>資優民主國之領土，暫以資優班教室及其延伸之學習活動空間為統治權實施範圍。</p>
+                        </div>
+                        <div class="article">
+                            <h4>第三條（實政體制）</h4>
+                            <p>本國於非常時期或建國初期，得實施一黨專政體制，由「資優民主黨」全面領導國家發展，以維護班級紀律與學習秩序。</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- 第二章 -->
+                <div class="chapter">
+                    <div class="chapter-title">
+                        <span>第 II 章</span> 人民之權利與義務
+                    </div>
+                    <div class="articles-grid">
+                        <div class="article">
+                            <h4>第四條（平等原則）</h4>
+                            <p>資優民主國人民，無分性別、座位、智商或入學成績，在法律上一律平等。</p>
+                        </div>
+                        <div class="article">
+                            <h4>第五條（自由權之保障與限制）</h4>
+                            <p>人民之言論、講學、著作及出版自由應予保障。但其言論若涉及惡性內卷、破壞和諧或引發學業焦慮者，受特殊法律之限制。</p>
+                        </div>
+                        <div class="article">
+                            <h4>第六條（應考試與受教育之權利義務）</h4>
+                            <p>人民有依班規及教師指示接受測試與參與各項學術競賽之權利與義務。</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- 第三章 -->
+                <div class="chapter">
+                    <div class="chapter-title">
+                        <span>第 III 章</span> 國家元首與政府組織
+                    </div>
+                    <div class="articles-grid">
+                        <div class="article">
+                            <h4>第七條（總統之職權與產生）</h4>
+                            <p>總統為國家元首，對外代表資優民主國，對內統率國家各項事務。</p>
+                            <p>一、總統由人民直接選舉產生，候選人須獲得法定有效票數方得確認當選。</p>
+                            <p>二、總統有明令公布法律、發布緊急命令以及對卓越人民共和國宣戰之權。</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- 第四章 -->
+                <div class="chapter">
+                    <div class="chapter-title">
+                        <span>第 IV 章</span> 附則
+                    </div>
+                    <div class="articles-grid">
+                        <div class="article">
+                            <h4>第八條（憲法之修改與最高性）</h4>
+                            <p>本憲法為資優民主國之根本大法，任何班規或條例與本憲法牴觸者無效。憲法之修改，須經總統核准，並經資優班立法委員過半數之同意，始得變更。</p>
+                        </div>
+                        <div class="article">
+                            <h4>第九條（施行日期）</h4>
+                            <p>本憲法自公布之日起發生效力。</p>
+                        </div>
+                        <div class="article">
+                            <h4>第十條（不溯及既往原則）</h4>
+                            <p>本憲法及依本憲法所制定之各項法律條例，其適用以法律生效後之行為為限。除法律另有特別規定或有利於行為人者外，行為於法律實施前不予追究處罰。</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <!-- 國家法規與即時搜尋 -->
+        <section id="laws" class="section">
+            <div class="section-header">
+                <div class="section-title">
+                    <span>📑</span> 國家法規與特種條例
+                </div>
+                <div class="section-badge">法網威嚴 ‧ 禁止內卷</div>
+            </div>
+            
+            <div class="law-controls">
+                <input type="text" id="lawSearchInput" class="law-search" placeholder="🔍 搜尋法規名稱、條款或關鍵字 (例如: 刷題、間諜、內卷)...">
+                <div class="law-categories">
+                    <button class="cat-btn active" data-cat="all">全部條例</button>
+                    <button class="cat-btn" data-cat="defense">防諜國防</button>
+                    <button class="cat-btn" data-cat="involution">反內卷教育</button>
+                    <button class="cat-btn" data-cat="morality">公共道德</button>
+                </div>
+            </div>
+            
+            <div class="laws-container" id="lawsContainer">
+                <div class="law-card" data-category="defense">
+                    <span class="law-tag tag-defense">國防反滲透</span>
+                    <h3>反滲透管制條例</h3>
+                    <p>防範境外敵對勢力「卓越人民共和國」之滲透、分化與刺探機密行為，嚴禁非法越界與通敵交易。</p>
+                    <button class="view-law" data-law="anti-infiltration">檢視完整條文 →</button>
+                </div>
+                
+                <div class="law-card" data-category="involution">
+                    <span class="law-tag tag-involution">特種刑法</span>
+                    <h3>憲法內卷管制特殊條例</h3>
+                    <p>嚴懲一級至三級惡性內卷罪，禁止教唆販賣刷題資料與團體內卷，確立適性減壓輔導教育。</p>
+                    <button class="view-law" data-law="anti-involution">檢視完整條文 →</button>
+                </div>
+                
+                <div class="law-card" data-category="morality">
+                    <span class="law-tag tag-morality">社會秩序</span>
+                    <h3>妨害風化管理處罰條例</h3>
+                    <p>平衡個人自由與公共秩序，強化兒少絕對保護，兼顧學術與藝術創作正當免責事由。</p>
+                    <button class="view-law" data-law="public-morality">檢視完整條文 →</button>
+                </div>
+                
+                <div class="law-card" data-category="involution">
+                    <span class="law-tag tag-education">教育身心</span>
+                    <h3>學習與教育內卷處罰條例</h3>
+                    <p>全面杜絕畸形刷題與無效證照軍備競賽，嚴禁公佈英雄榜，法制化保障「發呆課」與「白日夢時間」。</p>
+                    <button class="view-law" data-law="education-management">檢視完整條文 →</button>
+                </div>
+            </div>
+        </section>
+        
+        <!-- 政府架構 -->
+        <section id="government" class="section">
+            <div class="section-header">
+                <div class="section-title">
+                    <span>🏛️</span> 中央政府組織體系
+                </div>
+                <div class="section-badge">權力分立 ‧ 民主共和</div>
+            </div>
+            
+            <div class="government-structure">
+                <div class="position-card executive">
+                    <h3>👑 國家元首及精神</h3>
+                    <ul class="position-list">
+                        <li><span>國家元首</span> <strong>總統：蘇◯旭</strong></li>
+                        <li><span>副元首</span> <strong>副總統：（從缺）</strong></li>
+                        <li><span>精神引領</span> <strong>唯一真神：廖◯茹</strong></li>
+                    </ul>
+                </div>
+                
+                <div class="position-card legislative">
+                    <h3>⚖️ 五院最高首長</h3>
+                    <ul class="position-list">
+                        <li><span>最高立法機關</span> <strong>立法院長</strong></li>
+                        <li><span>最高行政機關</span> <strong>行政院長</strong></li>
+                        <li><span>最高司法機關</span> <strong>司法院長</strong></li>
+                    </ul>
+                </div>
+                
+                <div class="position-card ministry">
+                    <h3>🏢 行政院核心部會</h3>
+                    <ul class="position-list">
+                        <li><span>國土與戶籍</span> <strong>內政部長</strong></li>
+                        <li><span>國際交流與建交</span> <strong>外交部長</strong></li>
+                        <li><span>學習自由保障</span> <strong>反內卷專責委員會</strong></li>
+                    </ul>
+                </div>
+                
+                <div class="position-card">
+                    <h3>👥 民意代表機關</h3>
+                    <ul class="position-list">
+                        <li><span>民意代表</span> <strong>全體立法委員</strong></li>
+                        <li><span>職責</span> <strong>審查法律、預算與宣戰動員案</strong></li>
+                        <li><span>組成</span> <strong>全體資優班推派民意代議士</strong></li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+        
+        <!-- 領土與地理 -->
+        <section id="territory" class="section">
+            <div class="section-header">
+                <div class="section-title">
+                    <span>🗺️</span> 領土版圖與戰略地理
+                </div>
+                <div class="section-badge">鳳甲基地 ‧ 神聖不可分割</div>
+            </div>
+            
+            <div class="territory-grid">
+                <div class="map-container">
+                    <img src="location-map.svg" alt="資優民主國領土地圖" style="width: 100%; height: auto;">
+                    <div style="font-size: 0.85rem; color: var(--text-muted); margin-top: 0.5rem;">
+                        資優民主國世界地理位置與鳳甲國中基地座向圖
+                    </div>
+                </div>
+                <div class="territory-content">
+                    <h3>國家主權領土實施範圍</h3>
+                    <p style="color: var(--text-secondary); line-height: 1.8;">
+                        依據憲法第二條規定，資優民主國之統治權目前包含教室核心領土、走廊邊防陣線，以及各直轄學習特區。
+                    </p>
+                    <ul class="territory-list">
+                        <li><strong>首都核心：</strong>鳳甲國中 8年級 資優班教室</li>
+                        <li><strong>邊防緩衝區：</strong>教室前後門走廊及公共穿堂防線</li>
+                        <li><strong>專屬研究特區：</strong>科學實驗室、電腦教室直轄領空</li>
+                        <li><strong>防空避難所：</strong>自主發呆專用多功能思考角</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+        
+        <!-- 加入國民 & 證件展示 -->
+        <section id="join" class="section section-featured-join">
+            <div class="section-header">
+                <div class="section-title">
+                    <span>🪪</span> 申請加入國民與證件領取
+                </div>
+                <div class="section-badge" style="background: #10b981; color: white;">🔥 現正開放各界入籍</div>
+            </div>
+            
+            <!-- 醒目入籍公告橫幅 -->
+            <div class="join-announcement-banner">
+                <span style="font-size: 2rem;">📢</span>
+                <div>
+                    <div style="font-size: 1.15rem; font-weight: 800; color: #065f46; margin-bottom: 2px;">
+                        【全面開放】歡迎個人、各校班級集體申請加入資優民主國！
+                    </div>
+                    <div style="font-weight: 500; font-size: 0.95rem; color: #047857;">
+                        免智力測驗、免排名競爭、免作業審查。認同「反對惡性內卷，捍衛自由學習」理念者即可入籍，審核通過即核發法定國民身分證與國民護照！
+                    </div>
+                </div>
+            </div>
+            
+            <div class="join-container">
+                <div class="join-intro">
+                    <h3 style="font-size: 1.4rem;">成為資優民主國正式國民</h3>
+                    <p style="color: var(--text-secondary); line-height: 1.8; font-size: 1rem;">
+                        歡迎加入資優民主國！無論是個人或整個班級，只要認同「反對惡性內卷，捍衛自由學習」之憲政理念，
+                        皆可申請入籍，審核通過後即獲發正式身分證與國民護照。
+                    </p>
+                    
+                    <div class="join-benefits">
+                        <h4>✨ 國民享有之神聖權益</h4>
+                        <ul>
+                            <li><strong>人權保障：</strong>享有憲法保障之平等權與自由權，免受同儕排名焦慮侵害</li>
+                            <li><strong>參政權利：</strong>直接參與國家總統大選與各項公民投票決議</li>
+                            <li><strong>法定特權：</strong>憲法保障「發呆課」與「白日夢時間」為不可剝奪之核心人權</li>
+                            <li><strong>法規庇護：</strong>受《反內卷條例》保護，免受惡性刷題作業侵擾</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="join-documents">
+                        <h4>📜 審核通過後核發之法定證件</h4>
+                        <p><strong>團體班級：</strong>資優民主國班級身分證 + 班級公務護照</p>
+                        <p><strong>一般國民：</strong>資優民主國國民身分證 + 國民護照</p>
+                    </div>
+                </div>
+                
+                <div class="join-form-card">
+                    <div class="join-featured-badge">🔥 推薦線上申請通道</div>
+                    <div style="font-size: 3rem; margin-bottom: 0.5rem; margin-top: 0.5rem;">📝</div>
+                    <h3 style="margin-top: 0; margin-bottom: 0.5rem; font-size: 1.4rem; color: var(--primary-900);">官方入籍線上申請通道</h3>
+                    <p style="color: var(--text-secondary); margin-bottom: 1.5rem; font-size: 0.95rem; line-height: 1.6;">
+                        點選下方按鈕填寫 Google 官方表單，由內政部審核通過後正式建檔。
+                    </p>
+                    
+                    <a href="https://forms.gle/EYzDqYnR1bhVgxPz7" target="_blank" rel="noopener noreferrer" class="join-btn btn-singleline">
+                        <span>✍️</span> 立即填寫入籍申請表 →
+                    </a>
+                    
+                    <a href="citizen-manager.html" class="join-secondary-btn btn-singleline" style="border: 2px solid var(--primary-600); color: var(--primary-800); font-weight: 700; margin-top: 0.75rem;">
+                        <span>🪪</span> 前往國民管理系統 →
+                    </a>
+                    
+                    <div class="join-note">* 代表班級集體入籍者，請於表單註明班級名稱與授權代表人</div>
+                </div>
+            </div>
+            
+            <!-- 證件樣式展示 -->
+            <div class="id-showcase">
+                <div class="id-preview-box">
+                    <h4>資優民主國 國民身分證 樣式</h4>
+                    <img src="id-card.svg" alt="身分證樣式">
+                </div>
+                <div class="id-preview-box">
+                    <h4>資優民主國 國民護照 封面樣式</h4>
+                    <img src="passport.svg" alt="護照樣式" style="max-height: 280px; width: auto;">
+                </div>
+            </div>
+        </section>
+        
+        <!-- 外交關係 -->
+        <section id="diplomacy" class="section section-featured-diplomacy">
+            <div class="section-header">
+                <div class="section-title">
+                    <span>🌐</span> 國際外交與全球友好建交
+                </div>
+                <div class="section-badge" style="background: #f59e0b; color: #071326; font-weight: 800;">🔥 全球開放建交</div>
+            </div>
 
+            <!-- 醒目外交倡議公告橫幅 -->
+            <div class="diplomacy-announcement-banner">
+                <span style="font-size: 2rem;">🕊️</span>
+                <div>
+                    <div style="font-size: 1.15rem; font-weight: 800; color: #92400e; margin-bottom: 2px;" data-site-editable="diplo_banner_title">
+                        【全球建交倡議】資優民主國戰後和平外交全面啟動！
+                    </div>
+                    <div style="font-weight: 500; font-size: 0.95rem; color: #b45309;" data-site-editable="diplo_banner_desc">
+                        停戰協定已生效！誠邀世界各國、微型國家（Micronation）、各級學校班級及學生自治社團締結平等和平夥伴關係，互派大使、相互承認法權與發呆特權！
+                    </div>
+                </div>
+            </div>
+
+            <div class="diplomacy-container">
+                <div class="diplomacy-intro">
+                    <div style="font-size: 2.8rem; margin-bottom: 0.5rem;">🤝</div>
+                    <h3 data-site-editable="diplo_title">資優民主國 國際建交大會</h3>
+                    <p data-site-editable="diplo_intro_p">
+                        資優民主國致力於在國際微國家社群與青年自治領域建立平等、和平、反內卷之夥伴關係。
+                        不論貴國領土位於何處，只要尊重多元、守護自由學習，我們誠摯歡迎遞交建交照會！
+                    </p>
+                </div>
+                
+                <div class="diplomacy-principles">
+                    <div class="prin-card">
+                        <h4 data-site-editable="diplo_p1_title">🕊️ 和平共處與領土尊重</h4>
+                        <p data-site-editable="diplo_p1_desc">互相尊重主權與教室領土完整，互不侵犯，互不干涉彼此課堂自治內政。</p>
+                    </div>
+                    <div class="prin-card">
+                        <h4 data-site-editable="diplo_p2_title">🛡️ 反內卷共同防禦協定</h4>
+                        <p data-site-editable="diplo_p2_desc">共同抵禦刷題作業主義滲透與排名焦慮，互相給予精神慰藉與安全避風港。</p>
+                    </div>
+                    <div class="prin-card">
+                        <h4 data-site-editable="diplo_p3_title">🔬 學術與創意互惠</h4>
+                        <p data-site-editable="diplo_p3_desc">促進自製微型專案、發呆哲學思考、藝術創作與課後非功利嗜好交流。</p>
+                    </div>
+                </div>
+                
+                <div class="diplomacy-cta-wrap">
+                    <a href="https://forms.gle/APfTxiSsejvtdkhQ8" target="_blank" rel="noopener noreferrer" class="diplomacy-btn btn-singleline" id="diploFormBtn">
+                        <span>🤝</span> 提交外交建交照會 →
+                    </a>
+                    <a href="https://www.micropedia.site/wiki/%E8%B3%87%E5%84%AA%E6%B0%91%E4%B8%BB%E5%9C%8B" target="_blank" rel="noopener noreferrer" class="diplomacy-guide-btn btn-singleline">
+                        <span>📖</span> 微國家百科外交地位
+                    </a>
+                </div>
             </div>
         </section>
     </main>
     
+    <!-- Official Sovereign Footer -->
     <footer>
         <div class="footer-content">
-            <p>資優民主國 &copy; 2026 - 基於資優班全體人民之共同意志</p>
-            <p>反對惡性內卷，捍衛自由學習</p>
+            <div class="footer-brand" data-site-editable="footer_brand">資優民主國 DEMOCRATIC MERITOCRACY OF ZIYU</div>
+            <div class="footer-motto" data-site-editable="footer_motto">「反對惡性內卷，捍衛自由學習」</div>
+            <ul class="footer-links">
+                <li><a href="#home">首頁</a></li>
+                <li><a href="#dashboard">國家儀表板</a></li>
+                <li><a href="#constitution">憲法條文</a></li>
+                <li><a href="#laws">法規典則</a></li>
+                <li><a href="#join">加入國民</a></li>
+                <li><a href="#diplomacy">締結外交</a></li>
+                <li><a href="citizen-manager.html">國民管理系統</a></li>
+                <li><a href="document-manager.html">文件管理系統</a></li>
+            </ul>
+            <div class="footer-copy" data-site-editable="footer_copy">
+                中華民國 115 年 (2026) ‧ 基於資優班全體人民之共同意志 ‧ 永久保存
+            </div>
         </div>
     </footer>
+
+    <!-- Floating Live Site Editor Toolbar -->
+    <div id="siteEditorBar" class="site-editor-bar">
+        <div class="editor-bar-badge">
+            <span class="editor-dot"></span>
+            <span>✏️ 網站編輯模式中（已獲 KEY 授權）</span>
+        </div>
+        <button id="saveSiteContentBtn" class="editor-btn editor-btn-save" title="儲存所有修改並同步至伺服器">💾 儲存網站變更</button>
+        <button id="openSiteSettingsBtn" class="editor-btn editor-btn-settings" title="開啟全站設定與公告管理">⚙️ 全站設定與公告管理</button>
+        <button id="resetSiteContentBtn" class="editor-btn editor-btn-reset" title="還原至系統原始預設">🔄 還原預設</button>
+        <button id="closeEditorBtn" class="editor-btn editor-btn-close" title="關閉編輯列">👁️ 預覽視圖</button>
+        <button id="lockEditorBtn" class="editor-btn" style="background: #e11d48; color: white;" title="清除密碼授權並退出編輯">🔒 鎖定登出</button>
+    </div>
+
+    <!-- Admin Auth Password Modal (KEY) -->
+    <div id="siteAuthModal" class="site-modal">
+        <div class="site-modal-card auth-modal-card">
+            <div class="site-modal-header">
+                <h3><span>🔐</span> 管理員身分安全驗證</h3>
+                <button type="button" class="site-modal-close" id="closeAuthModalBtn">&times;</button>
+            </div>
+            
+            <form id="siteAuthForm">
+                <div style="text-align: center; margin-bottom: 1.25rem;">
+                    <div style="font-size: 2.8rem; margin-bottom: 0.5rem;">🛡️</div>
+                    <h4 style="margin: 0 0 0.4rem; font-size: 1.2rem; color: var(--primary-900);">國家公報與全站內容編輯保護</h4>
+                    <p style="font-size: 0.9rem; color: var(--text-secondary); margin: 0; line-height: 1.5;">
+                        編輯網站內容需具備資優民主國管理權限，請輸入系統授權密碼（環境變數 <code>KEY</code>）：
+                    </p>
+                </div>
+
+                <div class="auth-input-wrap">
+                    <label for="siteAuthKeyInput" style="font-weight: 700; font-size: 0.9rem; display: block; margin-bottom: 0.4rem; color: var(--primary-900);">
+                        管理員授權密碼 (KEY)
+                    </label>
+                    <div class="password-field-wrap">
+                        <input type="password" id="siteAuthKeyInput" class="auth-key-input" placeholder="請輸入安全授權密碼..." required autocomplete="current-password">
+                        <button type="button" id="togglePasswordVisibilityBtn" class="pwd-toggle-btn" title="切換密碼顯示">👁️</button>
+                    </div>
+                    <div id="authErrorMsg" class="auth-error-text" style="display: none;"></div>
+                </div>
+
+                <div style="display: flex; justify-content: flex-end; gap: 0.75rem; margin-top: 1.5rem;">
+                    <button type="button" class="join-secondary-btn" id="cancelAuthModalBtn" style="margin: 0; width: auto; padding: 0.6rem 1.25rem;">取消</button>
+                    <button type="submit" class="join-btn" id="submitAuthBtn" style="width: auto; padding: 0.6rem 1.6rem; font-size: 0.95rem;">
+                        <span>🔓</span> 驗證身分並進入編輯
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Site Settings & Announcement Modal -->
+    <div id="siteEditorModal" class="site-modal">
+        <div class="site-modal-card">
+            <div class="site-modal-header">
+                <h3><span>⚙️</span> 網站全站內容與公報管理中心</h3>
+                <button type="button" class="site-modal-close" id="closeSiteModalBtn">&times;</button>
+            </div>
+            
+            <form id="siteSettingsForm">
+                <div class="site-form-grid">
+                    <div class="site-form-group">
+                        <label for="cfg_site_title">國家全稱（主標題）</label>
+                        <input type="text" id="cfg_site_title" required>
+                    </div>
+                    <div class="site-form-group">
+                        <label for="cfg_site_sub_en">官方英文全稱</label>
+                        <input type="text" id="cfg_site_sub_en" required>
+                    </div>
+                    <div class="site-form-group full-width">
+                        <label for="cfg_motto_core">立國核心格言</label>
+                        <input type="text" id="cfg_motto_core" required>
+                    </div>
+                    <div class="site-form-group">
+                        <label for="cfg_president_name">國家元首與職銜</label>
+                        <input type="text" id="cfg_president_name" required>
+                    </div>
+                    <div class="site-form-group">
+                        <label for="cfg_faith_name">國家信仰與主神</label>
+                        <input type="text" id="cfg_faith_name" required>
+                    </div>
+                    <div class="site-form-group">
+                        <label for="cfg_territory_name">領土範圍</label>
+                        <input type="text" id="cfg_territory_name" required>
+                    </div>
+                    <div class="site-form-group">
+                        <label for="cfg_peace_name">和平與防衛狀態說明</label>
+                        <input type="text" id="cfg_peace_name" required>
+                    </div>
+                    <div class="site-form-group full-width">
+                        <label for="cfg_intro_lead">首頁引言與立國精神論述</label>
+                        <textarea id="cfg_intro_lead" rows="3" required></textarea>
+                    </div>
+                    <div class="site-form-group">
+                        <label for="cfg_join_form_url">入籍申請表連結 (Google Form)</label>
+                        <input type="url" id="cfg_join_form_url" required>
+                    </div>
+                    <div class="site-form-group">
+                        <label for="cfg_diplo_form_url">外交建交照會連結 (Google Form)</label>
+                        <input type="url" id="cfg_diplo_form_url" required>
+                    </div>
+                    <div class="site-form-group full-width">
+                        <label for="cfg_diplo_banner_desc">外交倡議橫幅內容</label>
+                        <textarea id="cfg_diplo_banner_desc" rows="2" required></textarea>
+                    </div>
+                </div>
+
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 1.5rem; border-top: 1px solid var(--border-color); padding-top: 1.25rem; flex-wrap: wrap; gap: 0.75rem;">
+                    <div style="display: flex; gap: 0.5rem;">
+                        <button type="button" id="exportBackupBtn" class="editor-btn" style="background: #475569; color: white;">📥 匯出備份 (JSON)</button>
+                        <button type="button" id="importBackupBtn" class="editor-btn" style="background: #475569; color: white;">📤 匯入備份</button>
+                        <input type="file" id="importBackupInput" accept=".json" style="display: none;">
+                    </div>
+                    <div style="display: flex; gap: 0.75rem;">
+                        <button type="button" class="join-secondary-btn" id="cancelModalBtn" style="margin: 0; width: auto; padding: 0.6rem 1.2rem;">取消</button>
+                        <button type="submit" class="join-btn" style="width: auto; padding: 0.6rem 1.6rem; font-size: 1rem;">💾 儲存並套用所有設定</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Toast Notification -->
+    <div id="siteToast" class="site-toast">
+        <span>✅</span>
+        <span id="siteToastMsg">網站內容已成功儲存並同步至伺服器！</span>
+    </div>
+
+    <!-- Back to Top Button -->
+    <button class="back-to-top" id="backToTopBtn" title="返回頂部">
+        ▲
+    </button>
     
     <script src="script.js"></script>
 </body>

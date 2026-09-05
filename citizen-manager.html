@@ -3,236 +3,416 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>資優民主國 - 國民管理系統</title>
+    <script>
+        // 修復環境中 window.fetch 僅有 getter 無 setter 導致的 TypeError: Cannot set property fetch of #<Window> which has only a getter
+        (function() {
+            try {
+                var nativeFetch = typeof window !== 'undefined' ? window.fetch : null;
+                var currentFetch = nativeFetch ? function() { return nativeFetch.apply(window, arguments); } : null;
+                var desc = Object.getOwnPropertyDescriptor(window, 'fetch');
+                if (!desc && typeof Window !== 'undefined' && Window.prototype) {
+                    desc = Object.getOwnPropertyDescriptor(Window.prototype, 'fetch');
+                }
+                if (!desc || (desc.get && !desc.set) || desc.writable === false) {
+                    Object.defineProperty(window, 'fetch', {
+                        get: function() { return currentFetch; },
+                        set: function(newFetch) { currentFetch = newFetch; },
+                        configurable: true,
+                        enumerable: true
+                    });
+                }
+            } catch (e) {}
+        })();
+    </script>
+    <title>資優民主國 - 國民管理系統 | Democratic Meritocracy of Ziyu</title>
     <link rel="stylesheet" href="styles.css">
     <style>
-        .manager-container {
+        .manager-layout {
             display: grid;
-            grid-template-columns: 1fr 1fr;
+            grid-template-columns: 420px 1fr;
             gap: 2rem;
+            align-items: start;
         }
-        
-        .add-section, .list-section {
+
+        .manager-card {
             background: white;
             padding: 2rem;
-            border-radius: 8px;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            border-radius: var(--radius-lg);
+            border: 1px solid var(--border-color);
+            box-shadow: var(--shadow-sm);
         }
-        
-        .form-group {
+
+        .manager-card h2 {
+            font-size: 1.4rem;
             margin-bottom: 1.5rem;
+            padding-bottom: 0.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
         }
-        
+
+        .form-group {
+            margin-bottom: 1.25rem;
+        }
+
         .form-group label {
             display: block;
-            margin-bottom: 0.5rem;
-            color: #2c3e50;
-            font-weight: bold;
+            margin-bottom: 0.4rem;
+            color: var(--primary-900);
+            font-weight: 700;
+            font-size: 0.9rem;
         }
-        
-        .form-group input, .form-group select, .form-group textarea {
+
+        .form-control {
             width: 100%;
-            padding: 0.75rem;
-            border: 2px solid #ddd;
-            border-radius: 4px;
-            font-size: 1rem;
+            padding: 0.75rem 1rem;
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-sm);
+            font-size: 0.95rem;
+            background: white;
+            color: var(--text-primary);
+            transition: border-color 0.2s;
         }
-        
-        .form-group input:focus, .form-group select:focus {
-            border-color: #3498db;
+
+        .form-control:focus {
+            border-color: var(--primary-500);
             outline: none;
+            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
         }
-        
-        .id-preview {
-            background: #e8f8f5;
-            padding: 1rem;
-            border-radius: 4px;
-            margin-bottom: 1rem;
-            text-align: center;
-        }
-        
-        .id-preview .id-number {
-            font-size: 1.5rem;
-            font-weight: bold;
-            color: #1a5276;
-            letter-spacing: 2px;
-        }
-        
-        .btn {
-            padding: 0.75rem 1.5rem;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
-            font-size: 1rem;
-            font-weight: bold;
-        }
-        
-        .btn-primary {
-            background: #3498db;
-            color: white;
-            width: 100%;
-        }
-        
-        .btn-primary:hover {
-            background: #2980b9;
-        }
-        
-        .btn-danger {
-            background: #e74c3c;
-            color: white;
-            padding: 0.4rem 0.8rem;
-            font-size: 0.85rem;
-        }
-        
-.btn-danger:hover {
-    background: #c0392b;
-}
 
-.btn-success {
-    background: #27ae60;
-    color: white;
-    padding: 0.4rem 0.8rem;
-    font-size: 0.85rem;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-}
-
-.btn-success:hover {
-    background: #219a52;
-}
-
-.search-box {
-            margin-bottom: 1rem;
-        }
-        
-        .search-box input {
-            width: 100%;
-            padding: 0.5rem;
-            border: 1px solid #ddd;
-            border-radius: 4px;
-        }
-        
-        .citizen-table {
-            width: 100%;
-            border-collapse: collapse;
-        }
-        
-        .citizen-table th {
-            background: #2c3e50;
+        /* Live Preview Card */
+        .live-id-card {
+            background: linear-gradient(135deg, #0c1f38 0%, #173862 100%);
             color: white;
-            padding: 0.75rem;
-            text-align: left;
+            border-radius: var(--radius-md);
+            padding: 1.25rem;
+            margin-bottom: 1.5rem;
+            position: relative;
+            overflow: hidden;
+            border: 1px solid rgba(212, 175, 55, 0.4);
+            box-shadow: var(--shadow-md);
         }
-        
-        .citizen-table td {
-            padding: 0.75rem;
-            border-bottom: 1px solid #ecf0f1;
+
+        .live-id-card::before {
+            content: '資優民主國 ‧ 國民身分證';
+            position: absolute;
+            top: 0.5rem;
+            right: 0.75rem;
+            font-size: 0.75rem;
+            color: var(--accent-gold);
+            font-weight: 700;
+            letter-spacing: 1px;
         }
-        
-        .citizen-table tr:hover {
-            background: #f8f9fa;
-        }
-        
-        .stats-bar {
+
+        .live-card-body {
             display: flex;
+            gap: 1rem;
+            align-items: center;
+            margin-top: 0.75rem;
+        }
+
+        .live-card-avatar {
+            width: 60px;
+            height: 75px;
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px dashed rgba(255, 255, 255, 0.3);
+            border-radius: var(--radius-sm);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+        }
+
+        .live-card-info {
+            flex: 1;
+        }
+
+        .live-card-name {
+            font-size: 1.25rem;
+            font-weight: 800;
+            color: #ffffff;
+        }
+
+        .live-card-id {
+            font-family: var(--font-mono);
+            font-size: 0.95rem;
+            color: var(--accent-gold);
+            font-weight: 700;
+            letter-spacing: 1px;
+            margin: 0.2rem 0;
+        }
+
+        .live-card-meta {
+            font-size: 0.8rem;
+            color: #cbd5e1;
+        }
+
+        /* Citizen Table */
+        .table-controls {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
             gap: 1rem;
             margin-bottom: 1rem;
             flex-wrap: wrap;
         }
-        
-        .stat-box {
-            background: #f8f9fa;
-            padding: 0.8rem 1.2rem;
-            border-radius: 6px;
-            border-left: 3px solid #3498db;
+
+        .search-input-wrap {
+            flex: 1;
+            min-width: 240px;
         }
-        
-        .stat-box .num {
-            font-size: 1.3rem;
-            font-weight: bold;
-            color: #2c3e50;
+
+        .filter-tags {
+            display: flex;
+            gap: 0.4rem;
         }
-        
-        .stat-box .label {
+
+        .filter-tag-btn {
+            background: var(--bg-card-subtle);
+            border: 1px solid var(--border-color);
+            padding: 0.4rem 0.85rem;
+            border-radius: var(--radius-full);
             font-size: 0.85rem;
-            color: #7f8c8d;
+            font-weight: 600;
+            cursor: pointer;
+            color: var(--text-secondary);
+            transition: all 0.2s;
         }
-        
+
+        .filter-tag-btn.active, .filter-tag-btn:hover {
+            background: var(--primary-700);
+            color: white;
+            border-color: var(--primary-700);
+        }
+
+        .table-responsive {
+            overflow-x: auto;
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-md);
+        }
+
+        .citizen-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.9rem;
+            text-align: left;
+        }
+
+        .citizen-table th {
+            background: var(--primary-900);
+            color: white;
+            padding: 0.85rem 1rem;
+            font-weight: 700;
+            white-space: nowrap;
+        }
+
+        .citizen-table td {
+            padding: 0.85rem 1rem;
+            border-bottom: 1px solid var(--border-color);
+            color: var(--text-primary);
+        }
+
+        .citizen-table tr:hover td {
+            background-color: #f8fafc;
+        }
+
+        .id-badge {
+            font-family: var(--font-mono);
+            font-weight: 700;
+            background: #e0f2fe;
+            color: var(--primary-700);
+            padding: 0.2rem 0.5rem;
+            border-radius: var(--radius-sm);
+            display: inline-block;
+            white-space: nowrap;
+        }
+
+        .passport-badge {
+            font-family: var(--font-mono);
+            font-weight: 700;
+            background: #fef3c7;
+            color: #92400e;
+            padding: 0.2rem 0.5rem;
+            border-radius: var(--radius-sm);
+            display: inline-block;
+            white-space: nowrap;
+        }
+
         .type-badge {
             display: inline-block;
-            padding: 0.2rem 0.5rem;
-            border-radius: 4px;
-            font-size: 0.8rem;
-            color: white;
+            padding: 0.25rem 0.6rem;
+            border-radius: var(--radius-full);
+            font-size: 0.75rem;
+            font-weight: 700;
         }
-        
+
         .type-class {
-            background: #27ae60;
+            background: #d1fae5;
+            color: #065f46;
         }
-        
+
         .type-personal {
-            background: #3498db;
+            background: #e0e7ff;
+            color: #3730a3;
         }
-        
-        .actions {
+
+        .table-actions {
             display: flex;
-            gap: 0.5rem;
-            margin-top: 1rem;
+            gap: 0.4rem;
+            white-space: nowrap;
         }
-        
-        .btn-export {
-            background: #27ae60;
+
+        .btn-action {
+            padding: 0.35rem 0.65rem;
+            border-radius: var(--radius-sm);
+            font-size: 0.8rem;
+            font-weight: 600;
+            border: none;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .btn-issue {
+            background: var(--primary-700);
             color: white;
         }
-        
-        .btn-export:hover {
-            background: #219a52;
+
+        .btn-issue:hover {
+            background: var(--primary-600);
         }
-        
-        .btn-reset {
-            background: #e67e22;
-            color: white;
+
+        .btn-del {
+            background: var(--status-red-light);
+            color: #991b1b;
         }
-        
-        .btn-reset:hover {
-            background: #d35400;
+
+        .btn-del:hover {
+            background: #fecaca;
         }
-        
-        .modal {
-            position: fixed;
-            top: 0; left: 0;
-            width: 100%; height: 100%;
-            background: rgba(0,0,0,0.5);
+
+        .bottom-actions {
             display: flex;
-            justify-content: center;
+            justify-content: space-between;
             align-items: center;
-            z-index: 1000;
+            margin-top: 1.25rem;
+            flex-wrap: wrap;
+            gap: 0.75rem;
         }
-        
-        .modal-content {
+
+        .btn-tool {
+            padding: 0.6rem 1.25rem;
+            border-radius: var(--radius-sm);
+            font-weight: 600;
+            font-size: 0.9rem;
+            cursor: pointer;
+            border: 1px solid var(--border-color);
             background: white;
-            padding: 2rem;
-            border-radius: 8px;
-            max-width: 500px;
-            width: 90%;
+            color: var(--text-secondary);
+            display: inline-flex;
+            align-items: center;
+            gap: 0.4rem;
+            transition: all 0.2s;
         }
-        
-        .modal-content h3 {
-            margin-bottom: 1rem;
+
+        .btn-tool:hover {
+            background: var(--bg-card-subtle);
+            color: var(--text-primary);
         }
-        
-        .modal-content .btn {
-            margin-right: 0.5rem;
+
+        /* Certificate Modal for Printing & Viewing */
+        .cert-card {
+            background: white;
+            border: 2px solid var(--primary-700);
+            border-radius: var(--radius-md);
+            padding: 1.75rem;
+            margin-bottom: 1.5rem;
+            position: relative;
         }
-        
-        .id-column {
-            font-family: monospace;
-            letter-spacing: 1px;
+
+        .cert-card.passport-style {
+            border-color: var(--accent-gold);
+            background: #fffdf5;
         }
-        
-        @media (max-width: 768px) {
-            .manager-container {
+
+        .cert-header {
+            text-align: center;
+            margin-bottom: 1.25rem;
+            padding-bottom: 0.75rem;
+            border-bottom: 2px dashed var(--border-color);
+        }
+
+        .cert-title {
+            font-size: 1.3rem;
+            font-weight: 800;
+            color: var(--primary-900);
+            letter-spacing: 2px;
+        }
+
+        .cert-sub {
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+        }
+
+        .cert-grid {
+            display: grid;
+            grid-template-columns: 100px 1fr;
+            gap: 1.25rem;
+            align-items: center;
+        }
+
+        .cert-avatar {
+            width: 100px;
+            height: 120px;
+            background: var(--bg-card-subtle);
+            border: 1px solid var(--border-color);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            border-radius: 4px;
+        }
+
+        .cert-rows {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .cert-row {
+            display: flex;
+            gap: 1rem;
+            font-size: 0.95rem;
+        }
+
+        .cert-label {
+            width: 80px;
+            color: var(--text-secondary);
+            font-weight: 600;
+        }
+
+        .cert-val {
+            font-weight: 700;
+            color: var(--primary-900);
+        }
+
+        .cert-stamp {
+            position: absolute;
+            right: 20px;
+            bottom: 20px;
+            border: 2px solid #b91c1c;
+            color: #b91c1c;
+            padding: 0.3rem 0.8rem;
+            border-radius: var(--radius-sm);
+            font-weight: 800;
+            font-size: 0.95rem;
+            transform: rotate(-8deg);
+            opacity: 0.85;
+            pointer-events: none;
+        }
+
+        @media (max-width: 960px) {
+            .manager-layout {
                 grid-template-columns: 1fr;
             }
         }
@@ -241,281 +421,484 @@
 <body>
     <header>
         <div class="header-content">
+            <div class="state-emblem">
+                <svg viewBox="0 0 24 24">
+                    <path d="M12 2L4 5v6.09c0 5.05 3.41 9.76 8 10.91 4.59-1.15 8-5.86 8-10.91V5l-8-3zm0 4a3 3 0 1 1 0 6 3 3 0 0 1 0-6zm4 11.2c-1.15.65-2.52 1.05-4 1.14-1.48-.09-2.85-.49-4-1.14v-1.7c0-1.33 2.67-2 4-2s4 .67 4 2v1.7z"/>
+                </svg>
+            </div>
             <h1>資優民主國 國民管理系統</h1>
-            <p>管理國民資料與身分字號</p>
+            <div class="header-sub-en">Citizen Registry & Identity Certification Bureau</div>
+            <div class="motto-banner">
+                <span>🪪</span>
+                <strong>內政部戶籍管理司 ‧ 身分字號與護照核發平台</strong>
+            </div>
         </div>
     </header>
     
     <nav>
-        <ul>
-            <li><a href="index.html">返回主頁</a></li>
-            <li><a href="#manager">國民管理</a></li>
-            <li><a href="#list">國民列表</a></li>
-        </ul>
+        <div class="nav-container">
+            <a href="index.html" class="nav-brand">
+                <span>⭐</span> 資優民主國
+            </a>
+            <ul class="nav-links">
+                <li><a href="index.html">返回首頁</a></li>
+                <li><a href="index.html#join" class="nav-cta-join">✨ 加入國民</a></li>
+                <li><a href="index.html#diplomacy" class="nav-cta-diplomacy">🌐 締結外交</a></li>
+                <li><a href="document-manager.html" class="nav-special">📜 文件管理</a></li>
+                <li><a href="#manager">登記入籍</a></li>
+                <li><a href="#list">國民名冊</a></li>
+            </ul>
+        </div>
     </nav>
     
     <main>
-        <div class="stats-bar">
-            <div class="stat-box">
-                <div class="num" id="totalCount">0</div>
-                <div class="label">國民總數</div>
+        <!-- 統計數據條 -->
+        <div class="dashboard-container" style="margin-bottom: 2rem;">
+            <div class="dashboard-card">
+                <h3>已登記國民總數 <span>👥</span></h3>
+                <div class="status-box-val" id="totalCount">0</div>
+                <div class="status-box-lbl">包含個人入籍與班級集體國民</div>
             </div>
-            <div class="stat-box">
-                <div class="num" id="classCount">0</div>
-                <div class="label">班級申請</div>
+            <div class="dashboard-card">
+                <h3>個人申請 <span>👤</span></h3>
+                <div class="status-box-val" id="personalCount" style="color: var(--primary-500);">0</div>
+                <div class="status-box-lbl">獲發國民身分證與護照</div>
             </div>
-            <div class="stat-box">
-                <div class="num" id="personalCount">0</div>
-                <div class="label">個人申請</div>
+            <div class="dashboard-card">
+                <h3>班級團體申請 <span>🏫</span></h3>
+                <div class="status-box-val" id="classCount" style="color: var(--status-green);">0</div>
+                <div class="status-box-lbl">獲發班級代表身分證與公務護照</div>
             </div>
         </div>
-        
-        <div class="manager-container">
-            <div class="add-section">
-                <h2>新增國民</h2>
-                <div class="form-group">
-                    <label>姓名</label>
-                    <input type="text" id="nameInput" placeholder="請輸入姓名">
+
+        <div class="manager-layout">
+            <!-- 左側：登記新國民表單 -->
+            <div class="manager-card" id="manager">
+                <h2><span>✍️</span> 登記新國民</h2>
+                
+                <!-- 即時卡片預覽 -->
+                <div class="live-id-card">
+                    <div class="live-card-body">
+                        <div class="live-card-avatar">👤</div>
+                        <div class="live-card-info">
+                            <div class="live-card-name" id="cardPreviewName">國民姓名</div>
+                            <div class="live-card-id" id="idPreview">ZY-00001</div>
+                            <div class="live-card-meta">
+                                護照: <span id="passportPreview" style="font-family:var(--font-mono); color:#fef3c7;">ZP-00001</span>
+                            </div>
+                            <div class="live-card-meta" id="cardPreviewSchool" style="margin-top:2px;">鳳甲國中 資優班</div>
+                        </div>
+                    </div>
                 </div>
-                <div class="form-group">
-                    <label>申請類型</label>
-                    <select id="typeSelect">
-                        <option value="personal">個人申請</option>
-                        <option value="class">班級申請</option>
-                    </select>
-                </div>
-                <div class="form-group">
-                    <label>學校/班級</label>
-                    <input type="text" id="schoolInput" placeholder="例如：鳳甲國中 8年級 資優班">
-                </div>
-                <div class="id-preview">
-                    <div style="font-size:0.85rem;color:#7f8c8d;margin-bottom:0.3rem;">產生的身分字號</div>
-                    <div class="id-number" id="idPreview">ZY-00001</div>
-                </div>
-                <div class="id-preview">
-                    <div style="font-size:0.85rem;color:#7f8c8d;margin-bottom:0.3rem;">產生的護照號碼</div>
-                    <div class="id-number" id="passportPreview">ZP-00001</div>
-                </div>
-                <button class="btn btn-primary" onclick="addCitizen()">加入國民</button>
+
+                <form id="addCitizenForm" onsubmit="event.preventDefault(); addCitizen();">
+                    <div class="form-group">
+                        <label for="nameInput">國民姓名 *</label>
+                        <input type="text" id="nameInput" class="form-control" placeholder="請輸入姓名 (例如: 王大明)" required oninput="updateLiveCard()">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="typeSelect">申請性質</label>
+                        <select id="typeSelect" class="form-control" onchange="updateLiveCard()">
+                            <option value="personal">個人入籍 (核發個人證照)</option>
+                            <option value="class">班級團體入籍 (核發班級公務證照)</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="schoolInput">所屬學校與班級</label>
+                        <input type="text" id="schoolInput" class="form-control" placeholder="例如：鳳甲國中 8年級 資優班" oninput="updateLiveCard()">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="remarksInput">備註 / 專長愛好</label>
+                        <input type="text" id="remarksInput" class="form-control" placeholder="例如：國際象棋、自主發呆、天文思辨">
+                    </div>
+                    
+                    <button type="submit" class="join-btn" style="width: 100%; max-width: none; margin-top: 0.5rem;">
+                        <span>🪪</span> 正式登記並核發號碼
+                    </button>
+                </form>
             </div>
             
-            <div class="list-section">
-                <h2>國民列表</h2>
-                <div class="search-box">
-                    <input type="text" id="searchInput" placeholder="搜尋姓名、身分字號或護照號碼..." oninput="renderTable()">
+            <!-- 右側：國民名冊與檢索 -->
+            <div class="manager-card" id="list">
+                <h2><span>📋</span> 國民名冊與證件發行</h2>
+                
+                <div class="table-controls">
+                    <div class="search-input-wrap">
+                        <input type="text" id="searchInput" class="form-control" placeholder="🔍 搜尋姓名、身分字號 (ZY-...)、護照號碼或學校..." oninput="renderTable()">
+                    </div>
+                    <div class="filter-tags">
+                        <button class="filter-tag-btn active" data-filter="all" onclick="setFilter('all', this)">全部</button>
+                        <button class="filter-tag-btn" data-filter="personal" onclick="setFilter('personal', this)">個人</button>
+                        <button class="filter-tag-btn" data-filter="class" onclick="setFilter('class', this)">班級</button>
+                    </div>
                 </div>
-                <div style="overflow-x:auto;">
+                
+                <div class="table-responsive">
                     <table class="citizen-table">
                         <thead>
                             <tr>
                                 <th>身分字號</th>
                                 <th>護照號碼</th>
-                                <th>姓名</th>
-                                <th>類型</th>
-                                <th>學校/班級</th>
+                                <th>國民姓名</th>
+                                <th>性質</th>
+                                <th>所屬學校/單位</th>
                                 <th>操作</th>
                             </tr>
                         </thead>
                         <tbody id="tableBody"></tbody>
                     </table>
                 </div>
-                <div class="actions">
-                    <button class="btn btn-export" onclick="exportData()">匯出 CSV</button>
-                    <button class="btn btn-reset" onclick="resetData()">清除全部</button>
+                
+                <div class="bottom-actions">
+                    <div style="display:flex; gap:0.5rem; flex-wrap:wrap;">
+                        <button class="btn-tool" onclick="exportDataCSV()">
+                            <span>📊</span> 匯出名冊 CSV
+                        </button>
+                        <button class="btn-tool" onclick="exportDataJSON()">
+                            <span>💾</span> 匯出 JSON 備份
+                        </button>
+                        <button class="btn-tool" onclick="loadSampleData()">
+                            <span>✨</span> 載入預設示範名冊
+                        </button>
+                    </div>
+                    <button class="btn-tool" style="color: var(--status-red); border-color:#fca5a5;" onclick="clearAllData()">
+                        <span>🗑️</span> 清空名冊
+                    </button>
                 </div>
             </div>
         </div>
     </main>
+
+    <!-- 證件檢視與列印 Modal -->
+    <div id="certModal" class="modal" style="display: none;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <div style="font-weight:700; color:var(--primary-800); font-size:1.1rem; display:flex; align-items:center; gap:0.5rem;">
+                    <span>🪪</span> 資優民主國法定證件核發證明
+                </div>
+                <div class="modal-header-actions">
+                    <button class="modal-tool-btn" onclick="printCertificate()">
+                        🖨️ 列印 / 儲存 PDF
+                    </button>
+                    <button class="close-modal" onclick="closeCertModal()">&times;</button>
+                </div>
+            </div>
+            <div class="modal-body" id="printableCertArea">
+                <!-- 身分證 -->
+                <div class="cert-card">
+                    <div class="cert-header">
+                        <div class="cert-title">資優民主國 國民身分證</div>
+                        <div class="cert-sub">DEMOCRATIC MERITOCRACY OF ZIYU NATIONAL IDENTITY CARD</div>
+                    </div>
+                    <div class="cert-grid">
+                        <div class="cert-avatar">
+                            👤
+                            <span style="font-size:0.65rem; color:var(--text-muted); margin-top:4px;">官方相片</span>
+                        </div>
+                        <div class="cert-rows">
+                            <div class="cert-row">
+                                <span class="cert-label">姓　　名</span>
+                                <span class="cert-val" id="certName">-</span>
+                            </div>
+                            <div class="cert-row">
+                                <span class="cert-label">身分字號</span>
+                                <span class="cert-val" id="certId" style="font-family:var(--font-mono); color:var(--primary-700);">-</span>
+                            </div>
+                            <div class="cert-row">
+                                <span class="cert-label">申請性質</span>
+                                <span class="cert-val" id="certType">-</span>
+                            </div>
+                            <div class="cert-row">
+                                <span class="cert-label">所屬單位</span>
+                                <span class="cert-val" id="certSchool">-</span>
+                            </div>
+                            <div class="cert-row">
+                                <span class="cert-label">發證日期</span>
+                                <span class="cert-val" id="certDate">-</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="cert-stamp">資優民主國內政部 印</div>
+                </div>
+
+                <!-- 護照 -->
+                <div class="cert-card passport-style">
+                    <div class="cert-header">
+                        <div class="cert-title" style="color:#92400e;">資優民主國 國民護照</div>
+                        <div class="cert-sub">PASSPORT OF DEMOCRATIC MERITOCRACY OF ZIYU</div>
+                    </div>
+                    <div class="cert-grid">
+                        <div class="cert-avatar" style="background:#fef3c7; border-color:#fde68a;">
+                            🌐
+                            <span style="font-size:0.65rem; color:#92400e; margin-top:4px;">護照備案</span>
+                        </div>
+                        <div class="cert-rows">
+                            <div class="cert-row">
+                                <span class="cert-label">持照人姓名</span>
+                                <span class="cert-val" id="certPassName">-</span>
+                            </div>
+                            <div class="cert-row">
+                                <span class="cert-label">護照號碼</span>
+                                <span class="cert-val" id="certPassNum" style="font-family:var(--font-mono); color:#92400e;">-</span>
+                            </div>
+                            <div class="cert-row">
+                                <span class="cert-label">國　　籍</span>
+                                <span class="cert-val">資優民主國 (Ziyu)</span>
+                            </div>
+                            <div class="cert-row">
+                                <span class="cert-label">法定效期</span>
+                                <span class="cert-val">自發證日起十年（享發呆免簽人權）</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="cert-stamp" style="border-color:#1e3e62; color:#1e3e62;">資優民主國外交部 簽發</div>
+                </div>
+            </div>
+        </div>
+    </div>
     
     <footer>
         <div class="footer-content">
-            <p>資優民主國 國民管理系統 &copy; 2026</p>
+            <div class="footer-brand">資優民主國 國民管理系統</div>
+            <div class="footer-copy">中華民國 115 年 (2026) ‧ 內政部戶籍管理司版權所有</div>
         </div>
     </footer>
     
     <script>
-        let citizens = JSON.parse(localStorage.getItem('citizens')) || [];
-        let idCounter = citizens.length > 0 ? Math.max(...citizens.map(c => parseInt(c.id.replace('ZY-','')))) : 0;
-        let passportCounter = citizens.length > 0 ? Math.max(...citizens.map(c => parseInt((c.passport || 'ZP-00000').replace('ZP-','')))) : 0;
-        
-        function generateId() {
-            idCounter++;
-            return 'ZY-' + String(idCounter).padStart(5, '0');
+        // 國民初始資料 (若無資料則自動預填國家主要領導及創始國民)
+        const defaultCitizens = [
+            { id: "ZY-00001", passport: "ZP-00001", name: "蘇◯旭", type: "personal", school: "鳳甲國中 8資班", date: "2026/05/28", remarks: "國家元首兼首任直選總統" },
+            { id: "ZY-00002", passport: "ZP-00002", name: "廖◯茹", type: "personal", school: "鳳甲基地", date: "2026/05/28", remarks: "國家信仰 唯一真神" },
+            { id: "ZY-00003", passport: "ZP-00003", name: "鳳甲8資全體國民", type: "class", school: "鳳甲國中 8年級 資優班", date: "2026/05/28", remarks: "主權所有之創國班級" }
+        ];
+
+        let citizens = JSON.parse(localStorage.getItem('citizens'));
+        if (!citizens || citizens.length === 0) {
+            citizens = defaultCitizens;
+            localStorage.setItem('citizens', JSON.stringify(citizens));
         }
-        
-        function generatePassport() {
-            passportCounter++;
-            return 'ZP-' + String(passportCounter).padStart(5, '0');
+
+        let currentFilter = 'all';
+
+        function getMaxNumber(prefix, prop) {
+            if (!citizens || citizens.length === 0) return 0;
+            const nums = citizens.map(c => {
+                const val = c[prop] || '';
+                const clean = val.replace(prefix, '');
+                return parseInt(clean, 10) || 0;
+            });
+            return Math.max(...nums, 0);
         }
-        
-        function updateIdPreview() {
-            document.getElementById('idPreview').textContent = generateId();
-            idCounter--;
-            document.getElementById('passportPreview').textContent = generatePassport();
-            passportCounter--;
+
+        function getNextId() {
+            const next = getMaxNumber('ZY-', 'id') + 1;
+            return 'ZY-' + String(next).padStart(5, '0');
         }
-        
+
+        function getNextPassport() {
+            const next = getMaxNumber('ZP-', 'passport') + 1;
+            return 'ZP-' + String(next).padStart(5, '0');
+        }
+
+        function updateLiveCard() {
+            const nameInput = document.getElementById('nameInput').value.trim();
+            const schoolInput = document.getElementById('schoolInput').value.trim();
+            const type = document.getElementById('typeSelect').value;
+
+            document.getElementById('cardPreviewName').textContent = nameInput || '國民姓名';
+            document.getElementById('cardPreviewSchool').textContent = schoolInput || (type === 'class' ? '班級集體入籍' : '個人適性學習');
+            document.getElementById('idPreview').textContent = getNextId();
+            document.getElementById('passportPreview').textContent = getNextPassport();
+        }
+
         function addCitizen() {
-            var name = document.getElementById('nameInput').value.trim();
-            var type = document.getElementById('typeSelect').value;
-            var school = document.getElementById('schoolInput').value.trim();
-            
+            const name = document.getElementById('nameInput').value.trim();
+            const type = document.getElementById('typeSelect').value;
+            const school = document.getElementById('schoolInput').value.trim();
+            const remarks = document.getElementById('remarksInput').value.trim();
+
             if (!name) {
-                alert('請輸入姓名');
+                showToast('請輸入國民姓名！');
                 return;
             }
-            
-            var id = generateId();
-            var passport = generatePassport();
-            var now = new Date();
-            var dateStr = now.getFullYear() + '/' + (now.getMonth()+1) + '/' + now.getDate();
-            
-            citizens.push({
+
+            const id = getNextId();
+            const passport = getNextPassport();
+            const now = new Date();
+            const dateStr = now.getFullYear() + '/' + String(now.getMonth() + 1).padStart(2, '0') + '/' + String(now.getDate()).padStart(2, '0');
+
+            citizens.unshift({
                 id: id,
                 passport: passport,
                 name: name,
                 type: type,
-                school: school,
-                date: dateStr
+                school: school || '鳳甲國中 資優班',
+                date: dateStr,
+                remarks: remarks
             });
-            
+
             localStorage.setItem('citizens', JSON.stringify(citizens));
-            
+
             document.getElementById('nameInput').value = '';
             document.getElementById('schoolInput').value = '';
-            updateIdPreview();
+            document.getElementById('remarksInput').value = '';
+
+            updateLiveCard();
             updateStats();
             renderTable();
+            showToast('🎉 已成功完成入籍登記！身分證號：' + id);
         }
-        
-        function issueDocuments(index) {
-            var c = citizens[index];
-            if (!c) return;
-            
-            var win = window.open('', '_blank');
-            var doc = '<!DOCTYPE html><html><head><meta charset="UTF-8"><title>資優民主國 - 證件發行</title>';
-            doc += '<style>';
-            doc += 'body{font-family:Microsoft JhengHei,sans-serif;padding:20px;background:#f5f5f5;}';
-            doc +='.page{max-width:900px;margin:0 auto;background:white;padding:30px;border-radius:8px;box-shadow:0 2px 10px rgba(0,0,0,0.1);}';
-            doc +='h1{text-align:center;color:#1a5276;margin-bottom:5px;}';
-            doc +='.sub{text-align:center;color:#7f8c8d;margin-bottom:20px;}';
-            doc +='.doc-card{background:#f8f9fa;border:2px solid #3498db;border-radius:8px;padding:20px;margin-bottom:20px;}';
-            doc +='.doc-card h2{color:#2c3e50;margin-bottom:10px;border-bottom:2px solid #3498db;padding-bottom:5px;}';
-            doc +='.info-row{display:flex;margin:8px 0;}';
-            doc +='.info-label{width:100px;color:#7f8c8d;font-weight:bold;}';
-            doc +='.info-value{color:#2c3e50;font-size:1.1rem;}';
-            doc +='.stamp{text-align:right;margin-top:20px;color:#c0392b;font-size:1.2rem;font-weight:bold;transform:rotate(-10deg);opacity:0.7;}';
-            doc +='.print-btn{display:block;width:200px;margin:20px auto;padding:12px;background:#3498db;color:white;border:none;border-radius:6px;font-size:1rem;cursor:pointer;}';
-            doc +='.print-btn:hover{background:#2980b9;}';
-            doc +='@media print{body{background:white;}.print-btn{display:none;}}';
-            doc += '</style></head><body>';
-            doc += '<div class="page">';
-            doc += '<h1>資優民主國</h1>';
-            doc += '<div class="sub">Democratic Meritocracy of Ziyu</div>';
-            
-            doc += '<div class="doc-card">';
-            doc += '<h2>國民身分證</h2>';
-            doc += '<div class="info-row"><span class="info-label">姓名</span><span class="info-value">' + c.name + '</span></div>';
-            doc += '<div class="info-row"><span class="info-label">身分字號</span><span class="info-value">' + c.id + '</span></div>';
-            doc += '<div class="info-row"><span class="info-label">類型</span><span class="info-value">' + (c.type === 'class' ? '班級' : '個人') + '</span></div>';
-            doc += '<div class="info-row"><span class="info-label">學校</span><span class="info-value">' + (c.school || '-') + '</span></div>';
-            doc += '<div class="info-row"><span class="info-label">發證日期</span><span class="info-value">' + new Date().toLocaleDateString() + '</span></div>';
-            doc += '<div class="stamp">資優民主國內政部</div>';
-            doc += '</div>';
-            
-            doc += '<div class="doc-card">';
-            doc += '<h2>國民護照</h2>';
-            doc += '<div class="info-row"><span class="info-label">姓名</span><span class="info-value">' + c.name + '</span></div>';
-            doc += '<div class="info-row"><span class="info-label">護照號碼</span><span class="info-value">' + (c.passport || 'ZP-00000') + '</span></div>';
-            doc += '<div class="info-row"><span class="info-label">國籍</span><span class="info-value">資優民主國</span></div>';
-            doc += '<div class="info-row"><span class="info-label">發證日期</span><span class="info-value">' + new Date().toLocaleDateString() + '</span></div>';
-            doc += '<div class="info-row"><span class="info-label">有效期</span><span class="info-value">發證日起10年</span></div>';
-            doc += '<div class="stamp">資優民主國外交部</div>';
-            doc += '</div>';
-            
-            doc += '<button class="print-btn" onclick="window.print()">列印 / 儲存為 PDF</button>';
-            doc += '</div></body></html>';
-            
-            win.document.write(doc);
-            win.document.close();
-        }
-        
-        function deleteCitizen(index) {
-            citizens.splice(index, 1);
-            localStorage.setItem('citizens', JSON.stringify(citizens));
-            updateStats();
+
+        function setFilter(type, el) {
+            currentFilter = type;
+            document.querySelectorAll('.filter-tag-btn').forEach(b => b.classList.remove('active'));
+            el.classList.add('active');
             renderTable();
         }
-        
+
         function renderTable() {
-            var query = document.getElementById('searchInput').value.toLowerCase();
-            var filtered = citizens.filter(function(c) {
-                return c.name.includes(query) || c.id.toLowerCase().includes(query) || (c.passport || '').toLowerCase().includes(query);
+            const query = (document.getElementById('searchInput').value || '').toLowerCase().trim();
+            const tbody = document.getElementById('tableBody');
+
+            const filtered = citizens.filter(c => {
+                const matchType = (currentFilter === 'all' || c.type === currentFilter);
+                const matchQuery = !query || 
+                    c.name.toLowerCase().includes(query) ||
+                    c.id.toLowerCase().includes(query) ||
+                    (c.passport || '').toLowerCase().includes(query) ||
+                    (c.school || '').toLowerCase().includes(query);
+                return matchType && matchQuery;
             });
-            
-            var html = '';
-            for (var i = 0; i < filtered.length; i++) {
-                var c = filtered[i];
-                var realIndex = citizens.indexOf(c);
-                var typeText = c.type === 'class' ? '班級' : '個人';
-                var typeClass = c.type === 'class' ? 'type-class' : 'type-personal';
-                
-                html += '<tr>' +
-                    '<td class="id-column">' + c.id + '</td>' +
-                    '<td class="id-column">' + (c.passport || 'ZP-00000') + '</td>' +
-                    '<td>' + c.name + '</td>' +
-                    '<td><span class="type-badge ' + typeClass + '">' + typeText + '</span></td>' +
-                    '<td>' + (c.school || '-') + '</td>' +
-                    '<td><button class="btn btn-success" onclick="issueDocuments(' + realIndex + ')">發證</button> <button class="btn btn-danger" onclick="deleteCitizen(' + realIndex + ')">刪除</button></td>' +
-                '</tr>';
-            }
-            
-            document.getElementById('tableBody').innerHTML = html || '<tr><td colspan="6" style="text-align:center;color:#95a5a6;">尚無國民資料</td></tr>';
-        }
-        
-        function updateStats() {
-            document.getElementById('totalCount').textContent = citizens.length;
-            document.getElementById('classCount').textContent = citizens.filter(function(c) { return c.type === 'class'; }).length;
-            document.getElementById('personalCount').textContent = citizens.filter(function(c) { return c.type === 'personal'; }).length;
-        }
-        
-        function exportData() {
-            if (citizens.length === 0) {
-                alert('尚無國民資料');
+
+            if (filtered.length === 0) {
+                tbody.innerHTML = `<tr><td colspan="6" style="text-align:center; padding:2rem; color:var(--text-muted);">無相符之國民記錄</td></tr>`;
                 return;
             }
-            
-            var csv = '身分字號,護照號碼,姓名,類型,學校/班級,加入日期\n';
-            for (var i = 0; i < citizens.length; i++) {
-                var c = citizens[i];
-                csv += c.id + ',' + (c.passport || 'ZP-00000') + ',' + c.name + ',' + (c.type === 'class' ? '班級' : '個人') + ',' + (c.school || '') + ',' + c.date + '\n';
-            }
-            
-            var blob = new Blob(['\uFEFF' + csv], { type: 'text/csv;charset=utf-8;' });
-            var link = document.createElement('a');
-            link.href = URL.createObjectURL(blob);
-            link.download = '資優民主國國民資料.csv';
-            document.body.appendChild(link);
-            link.click();
-            document.body.removeChild(link);
+
+            tbody.innerHTML = filtered.map(c => {
+                const realIndex = citizens.indexOf(c);
+                const isClass = c.type === 'class';
+                return `
+                    <tr>
+                        <td><span class="id-badge">${c.id}</span></td>
+                        <td><span class="passport-badge">${c.passport || 'ZP-00000'}</span></td>
+                        <td style="font-weight:700;">${c.name}</td>
+                        <td><span class="type-badge ${isClass ? 'type-class' : 'type-personal'}">${isClass ? '班級' : '個人'}</span></td>
+                        <td>${c.school || '-'}</td>
+                        <td>
+                            <div class="table-actions">
+                                <button class="btn-action btn-issue" onclick="issueDocuments(${realIndex})">🪪 檢視證件</button>
+                                <button class="btn-action btn-del" onclick="deleteCitizen(${realIndex})">刪除</button>
+                            </div>
+                        </td>
+                    </tr>
+                `;
+            }).join('');
         }
-        
-        function resetData() {
-            if (citizens.length === 0) return;
-            if (confirm('確定要清除所有國民資料嗎？')) {
-                citizens = [];
-                idCounter = 0;
+
+        function updateStats() {
+            document.getElementById('totalCount').textContent = citizens.length;
+            document.getElementById('personalCount').textContent = citizens.filter(c => c.type === 'personal').length;
+            document.getElementById('classCount').textContent = citizens.filter(c => c.type === 'class').length;
+        }
+
+        function issueDocuments(index) {
+            const c = citizens[index];
+            if (!c) return;
+
+            document.getElementById('certName').textContent = c.name;
+            document.getElementById('certId').textContent = c.id;
+            document.getElementById('certType').textContent = c.type === 'class' ? '班級代表身分證' : '普通國民身分證';
+            document.getElementById('certSchool').textContent = c.school || '鳳甲基地直轄特區';
+            document.getElementById('certDate').textContent = c.date || new Date().toLocaleDateString();
+
+            document.getElementById('certPassName').textContent = c.name;
+            document.getElementById('certPassNum').textContent = c.passport || 'ZP-00000';
+
+            const modal = document.getElementById('certModal');
+            modal.style.display = 'flex';
+        }
+
+        function closeCertModal() {
+            document.getElementById('certModal').style.display = 'none';
+        }
+
+        function printCertificate() {
+            window.print();
+        }
+
+        function deleteCitizen(index) {
+            const c = citizens[index];
+            if (!c) return;
+            if (confirm(`確認自資優民主國國民名冊中移除「${c.name}」(${c.id}) 嗎？`)) {
+                citizens.splice(index, 1);
                 localStorage.setItem('citizens', JSON.stringify(citizens));
                 updateStats();
                 renderTable();
+                updateLiveCard();
+                showToast('已移除國民記錄。');
             }
         }
-        
-        document.getElementById('nameInput').addEventListener('keypress', function(e) {
-            if (e.key === 'Enter') addCitizen();
-        });
-        
-        updateIdPreview();
+
+        function clearAllData() {
+            if (confirm('⚠️ 警告：確定要清空所有國民登記資料嗎？此操作不可逆！')) {
+                citizens = [];
+                localStorage.setItem('citizens', JSON.stringify(citizens));
+                updateStats();
+                renderTable();
+                updateLiveCard();
+                showToast('已清空所有資料。');
+            }
+        }
+
+        function loadSampleData() {
+            citizens = JSON.parse(JSON.stringify(defaultCitizens));
+            localStorage.setItem('citizens', JSON.stringify(citizens));
+            updateStats();
+            renderTable();
+            updateLiveCard();
+            showToast('已成功重載創始示範名冊！');
+        }
+
+        function exportDataCSV() {
+            if (citizens.length === 0) {
+                showToast('目前尚無資料可匯出');
+                return;
+            }
+            let csv = '\uFEFF身分字號,護照號碼,姓名,類型,學校單位,登記日期,備註\n';
+            citizens.forEach(c => {
+                csv += `"${c.id}","${c.passport || ''}","${c.name}","${c.type}","${c.school || ''}","${c.date || ''}","${c.remarks || ''}"\n`;
+            });
+            const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+            const link = document.createElement('a');
+            link.href = URL.createObjectURL(blob);
+            link.download = `資優民主國_國民名冊_${new Date().toISOString().slice(0,10)}.csv`;
+            link.click();
+            showToast('名冊 CSV 已下載！');
+        }
+
+        function exportDataJSON() {
+            const blob = new Blob([JSON.stringify(citizens, null, 2)], { type: 'application/json' });
+            const link = document.createElement('a');
+            link.href = URL.createObjectURL(blob);
+            link.download = `ziyou_citizens_${new Date().toISOString().slice(0,10)}.json`;
+            link.click();
+            showToast('JSON 備份已下載！');
+        }
+
+        function showToast(msg) {
+            const toast = document.createElement('div');
+            toast.className = 'notification';
+            toast.innerHTML = `<div class="notification-content"><span class="notification-message">${msg}</span></div>`;
+            document.body.appendChild(toast);
+            setTimeout(() => toast.remove(), 3000);
+        }
+
+        // 初始化
+        updateLiveCard();
         updateStats();
         renderTable();
     </script>

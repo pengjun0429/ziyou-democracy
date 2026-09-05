@@ -3,235 +3,394 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>資優民主國 - 文件管理系統</title>
+    <script>
+        // 修復環境中 window.fetch 僅有 getter 無 setter 導致的 TypeError: Cannot set property fetch of #<Window> which has only a getter
+        (function() {
+            try {
+                var nativeFetch = typeof window !== 'undefined' ? window.fetch : null;
+                var currentFetch = nativeFetch ? function() { return nativeFetch.apply(window, arguments); } : null;
+                var desc = Object.getOwnPropertyDescriptor(window, 'fetch');
+                if (!desc && typeof Window !== 'undefined' && Window.prototype) {
+                    desc = Object.getOwnPropertyDescriptor(Window.prototype, 'fetch');
+                }
+                if (!desc || (desc.get && !desc.set) || desc.writable === false) {
+                    Object.defineProperty(window, 'fetch', {
+                        get: function() { return currentFetch; },
+                        set: function(newFetch) { currentFetch = newFetch; },
+                        configurable: true,
+                        enumerable: true
+                    });
+                }
+            } catch (e) {}
+        })();
+    </script>
+    <title>資優民主國 - 文件與法規管理系統 | Democratic Meritocracy of Ziyu</title>
     <link rel="stylesheet" href="styles.css">
     <style>
-        .document-manager {
+        .doc-layout {
             display: grid;
-            grid-template-columns: 250px 1fr;
-            gap: 1.5rem;
-            min-height: 70vh;
+            grid-template-columns: 320px 1fr;
+            gap: 2rem;
+            align-items: stretch;
+            min-height: 700px;
         }
-        
-        .sidebar {
-            background: #f8f9fa;
+
+        .doc-sidebar {
+            background: white;
+            border-radius: var(--radius-lg);
+            border: 1px solid var(--border-color);
             padding: 1.5rem;
-            border-radius: 8px;
-            border-right: 3px solid #3498db;
+            box-shadow: var(--shadow-sm);
+            display: flex;
+            flex-direction: column;
         }
-        
-        .sidebar h3 {
-            color: #2c3e50;
+
+        .doc-sidebar-header {
             margin-bottom: 1rem;
-            padding-bottom: 0.5rem;
-            border-bottom: 2px solid #3498db;
-        }
-        
-        .document-list {
-            list-style: none;
-        }
-        
-        .document-list li {
-            padding: 0.75rem;
-            margin-bottom: 0.5rem;
-            background: white;
-            border-radius: 4px;
-            cursor: pointer;
-            transition: all 0.3s;
-            border-left: 3px solid transparent;
-        }
-        
-        .document-list li:hover {
-            background: #e3f2fd;
-            border-left-color: #3498db;
-        }
-        
-        .document-list li.active {
-            background: #3498db;
-            color: white;
-        }
-        
-        .document-editor {
-            background: white;
-            padding: 2rem;
-            border-radius: 8px;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-        }
-        
-        .editor-header {
+            padding-bottom: 0.75rem;
+            border-bottom: 1px solid var(--border-color);
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 1.5rem;
-            padding-bottom: 1rem;
-            border-bottom: 2px solid #ecf0f1;
         }
-        
-        .editor-actions {
-            display: flex;
-            gap: 0.5rem;
-        }
-        
-        .btn {
-            padding: 0.5rem 1rem;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
-            font-size: 0.9rem;
-        }
-        
-        .btn-primary {
-            background: #3498db;
-            color: white;
-        }
-        
-        .btn-secondary {
-            background: #95a5a6;
-            color: white;
-        }
-        
-        .btn-success {
-            background: #27ae60;
-            color: white;
-        }
-        
-        .btn-danger {
-            background: #e74c3c;
-            color: white;
-        }
-        
-        .document-content {
-            width: 100%;
-            min-height: 400px;
-            border: 1px solid #ddd;
-            border-radius: 4px;
-            padding: 1rem;
-            font-family: 'Microsoft JhengHei', monospace;
-            resize: vertical;
-        }
-        
-        .document-preview {
-            margin-top: 1.5rem;
-            padding: 1rem;
-            background: #f8f9fa;
-            border-radius: 4px;
-            border: 1px dashed #3498db;
-        }
-        
-        .search-box {
+
+        .doc-search-box {
             margin-bottom: 1rem;
         }
-        
-        .search-input {
+
+        .doc-search-input {
             width: 100%;
-            padding: 0.5rem;
-            border: 1px solid #ddd;
-            border-radius: 4px;
+            padding: 0.6rem 0.85rem;
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-sm);
+            font-size: 0.85rem;
         }
-        
-        .document-stats {
-            margin-top: 1.5rem;
-            padding: 1rem;
-            background: #e8f5e9;
-            border-radius: 4px;
+
+        .doc-search-input:focus {
+            outline: none;
+            border-color: var(--primary-500);
         }
-        
-        .stat-item {
+
+        .doc-nav-list {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 0.4rem;
+            overflow-y: auto;
+            flex-grow: 1;
+            padding-right: 4px;
+        }
+
+        .doc-item {
+            padding: 0.75rem 1rem;
+            border-radius: var(--radius-sm);
+            cursor: pointer;
+            border: 1px solid transparent;
+            transition: all 0.2s;
+            display: flex;
+            flex-direction: column;
+            gap: 0.2rem;
+        }
+
+        .doc-item:hover {
+            background: var(--bg-card-subtle);
+            border-color: var(--border-color);
+        }
+
+        .doc-item.active {
+            background: #eff6ff;
+            border-color: #bfdbfe;
+            border-left: 4px solid var(--primary-600);
+        }
+
+        .doc-item-title {
+            font-weight: 700;
+            color: var(--primary-900);
+            font-size: 0.95rem;
+        }
+
+        .doc-item-meta {
+            font-size: 0.75rem;
+            color: var(--text-muted);
             display: flex;
             justify-content: space-between;
-            margin-bottom: 0.5rem;
+        }
+
+        .new-doc-btn {
+            margin-top: 1rem;
+            width: 100%;
+            padding: 0.65rem;
+            background: var(--primary-700);
+            color: white;
+            border: none;
+            border-radius: var(--radius-sm);
+            font-weight: 600;
+            font-size: 0.9rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.4rem;
+            transition: background 0.2s;
+        }
+
+        .new-doc-btn:hover {
+            background: var(--primary-600);
+        }
+
+        /* Editor Area */
+        .editor-workspace {
+            background: white;
+            border-radius: var(--radius-lg);
+            border: 1px solid var(--border-color);
+            padding: 2rem;
+            box-shadow: var(--shadow-sm);
+            display: flex;
+            flex-direction: column;
+        }
+
+        .editor-top-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 1rem;
+            padding-bottom: 1.25rem;
+            border-bottom: 1px solid var(--border-color);
+            margin-bottom: 1.5rem;
+            flex-wrap: wrap;
+        }
+
+        .doc-title-input {
+            font-size: 1.4rem;
+            font-weight: 800;
+            color: var(--primary-900);
+            border: 1px solid transparent;
+            border-radius: var(--radius-sm);
+            padding: 0.35rem 0.5rem;
+            flex: 1;
+            min-width: 250px;
+        }
+
+        .doc-title-input:hover, .doc-title-input:focus {
+            border-color: var(--border-color);
+            background: var(--bg-card-subtle);
+            outline: none;
+        }
+
+        .editor-toolbar {
+            display: flex;
+            gap: 0.4rem;
+            flex-wrap: wrap;
+        }
+
+        .tool-btn {
+            padding: 0.45rem 0.85rem;
+            border-radius: var(--radius-sm);
+            font-size: 0.85rem;
+            font-weight: 600;
+            border: 1px solid var(--border-color);
+            background: white;
+            cursor: pointer;
+            color: var(--text-secondary);
+            display: inline-flex;
+            align-items: center;
+            gap: 0.3rem;
+            transition: all 0.2s;
+        }
+
+        .tool-btn:hover {
+            background: var(--bg-card-subtle);
+            color: var(--text-primary);
+        }
+
+        .tool-btn.primary {
+            background: var(--status-green);
+            color: white;
+            border-color: var(--status-green);
+        }
+
+        .tool-btn.primary:hover {
+            background: #059669;
+        }
+
+        .tool-btn.active {
+            background: var(--primary-700);
+            color: white;
+            border-color: var(--primary-700);
+        }
+
+        .editor-container {
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+            min-height: 440px;
+        }
+
+        .editor-textarea {
+            width: 100%;
+            flex-grow: 1;
+            padding: 1.25rem;
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-md);
+            font-family: var(--font-mono);
+            font-size: 0.95rem;
+            line-height: 1.8;
+            color: var(--text-primary);
+            resize: vertical;
+            min-height: 420px;
+        }
+
+        .editor-textarea:focus {
+            outline: none;
+            border-color: var(--primary-500);
+            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+        }
+
+        .preview-box {
+            display: none;
+            padding: 1.5rem;
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-md);
+            background: var(--bg-card-subtle);
+            min-height: 420px;
+            overflow-y: auto;
+            line-height: 1.8;
+            font-size: 1rem;
+            white-space: pre-wrap;
+            color: var(--text-primary);
+        }
+
+        .editor-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 1rem;
+            padding-top: 0.75rem;
+            border-top: 1px solid var(--border-color);
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            flex-wrap: wrap;
+            gap: 0.5rem;
+        }
+
+        @media (max-width: 900px) {
+            .doc-layout {
+                grid-template-columns: 1fr;
+            }
         }
     </style>
 </head>
 <body>
     <header>
         <div class="header-content">
+            <div class="state-emblem">
+                <svg viewBox="0 0 24 24">
+                    <path d="M12 2L4 5v6.09c0 5.05 3.41 9.76 8 10.91 4.59-1.15 8-5.86 8-10.91V5l-8-3zm0 4a3 3 0 1 1 0 6 3 3 0 0 1 0-6zm4 11.2c-1.15.65-2.52 1.05-4 1.14-1.48-.09-2.85-.49-4-1.14v-1.7c0-1.33 2.67-2 4-2s4 .67 4 2v1.7z"/>
+                </svg>
+            </div>
             <h1>資優民主國 文件管理系統</h1>
-            <p>管理國家法規、憲法及重要文件</p>
+            <div class="header-sub-en">National Archives & Legislative Document Center</div>
+            <div class="motto-banner">
+                <span>📜</span>
+                <strong>立法院公報處 ‧ 憲法、條例及政府檔案管理平台</strong>
+            </div>
         </div>
     </header>
     
     <nav>
-        <ul>
-            <li><a href="index.html">返回主頁</a></li>
-            <li><a href="#dashboard">國家儀表板</a></li>
-            <li><a href="#constitution">憲法管理</a></li>
-            <li><a href="#laws">法規管理</a></li>
-        </ul>
+        <div class="nav-container">
+            <a href="index.html" class="nav-brand">
+                <span>⭐</span> 資優民主國
+            </a>
+            <ul class="nav-links">
+                <li><a href="index.html">返回首頁</a></li>
+                <li><a href="index.html#join" class="nav-cta-join">✨ 加入國民</a></li>
+                <li><a href="index.html#diplomacy" class="nav-cta-diplomacy">🌐 締結外交</a></li>
+                <li><a href="citizen-manager.html" class="nav-special">🪪 國民管理</a></li>
+                <li><a href="#editor">文件編輯區</a></li>
+            </ul>
+        </div>
     </nav>
     
     <main>
-        <div class="document-manager">
-            <div class="sidebar">
-                <h3>文件列表</h3>
-                <div class="search-box">
-                    <input type="text" class="search-input" placeholder="搜尋文件..." id="searchInput">
+        <div class="doc-layout">
+            <!-- 左側：文件導航列表 -->
+            <aside class="doc-sidebar">
+                <div class="doc-sidebar-header">
+                    <h3 style="margin:0; font-size:1.1rem; color:var(--primary-900);">國家檔案目錄</h3>
+                    <span class="section-badge" id="docCountBadge">5 份</span>
                 </div>
                 
-                <ul class="document-list" id="documentList">
-                    <li class="active" data-doc="constitution">資優民主國憲法</li>
-                    <li data-doc="anti-infiltration">反滲透管制條例</li>
-                    <li data-doc="anti-involution">內卷管制特殊條例</li>
-                    <li data-doc="public-morality">妨害風化管理處罰條例</li>
-                    <li data-doc="education-management">教育內卷管理處罰條例</li>
-                    <li data-doc="wartime">戰時臨時條款</li>
-                </ul>
-                
-                <div class="document-stats">
-                    <h4>文件統計</h4>
-                    <div class="stat-item">
-                        <span>總文件數：</span>
-                        <span id="totalDocs">6</span>
-                    </div>
-                    <div class="stat-item">
-                        <span>已修改：</span>
-                        <span id="modifiedDocs">0</span>
-                    </div>
-                    <div class="stat-item">
-                        <span>最後更新：</span>
-                        <span id="lastUpdate">-</span>
-                    </div>
+                <div class="doc-search-box">
+                    <input type="text" id="docSearchInput" class="doc-search-input" placeholder="🔍 搜尋文件或條例..." oninput="renderDocList()">
                 </div>
-            </div>
+                
+                <ul class="doc-nav-list" id="docNavList"></ul>
+                
+                <button class="new-doc-btn" onclick="createNewDoc()">
+                    <span>➕</span> 起草新文件 / 條例
+                </button>
+            </aside>
             
-            <div class="document-editor">
-                <div class="editor-header">
-                    <h2 id="currentDocTitle">資優民主國憲法</h2>
-                    <div class="editor-actions">
-                        <button class="btn btn-primary" id="saveBtn">儲存</button>
-                        <button class="btn btn-secondary" id="previewBtn">預覽</button>
-                        <button class="btn btn-success" id="exportBtn">匯出</button>
-                        <button class="btn btn-danger" id="deleteBtn">刪除</button>
+            <!-- 右側：編輯與預覽區 -->
+            <section class="editor-workspace" id="editor">
+                <div class="editor-top-bar">
+                    <input type="text" id="docTitleInput" class="doc-title-input" value="資優民主國憲法" oninput="updateCurrentDocTitle()">
+                    
+                    <div class="editor-toolbar">
+                        <button class="tool-btn primary" onclick="saveDoc()">
+                            <span>💾</span> 儲存修改
+                        </button>
+                        <button class="tool-btn" id="togglePreviewBtn" onclick="togglePreview()">
+                            <span>👁️</span> 預覽排版
+                        </button>
+                        <button class="tool-btn" onclick="copyContent()">
+                            <span>📋</span> 複製全文
+                        </button>
+                        <button class="tool-btn" onclick="exportDoc()">
+                            <span>📥</span> 匯出 TXT
+                        </button>
+                        <button class="tool-btn" onclick="restoreDefaults()" style="color:#d97706;">
+                            <span>🔄</span> 還原官方版
+                        </button>
+                        <button class="tool-btn" id="deleteDocBtn" onclick="deleteCurrentDoc()" style="color:var(--status-red);">
+                            <span>🗑️</span> 刪除
+                        </button>
                     </div>
                 </div>
                 
-                <textarea class="document-content" id="documentContent" placeholder="在此編輯文件內容..."></textarea>
-                
-                <div class="document-preview" id="documentPreview" style="display: none;">
-                    <h3>文件預覽</h3>
-                    <div id="previewContent"></div>
+                <div class="editor-container">
+                    <textarea id="editorTextarea" class="editor-textarea" placeholder="在此輸入或編輯法律、公報或條約內容..." oninput="updateWordCount()"></textarea>
+                    <div id="previewBox" class="preview-box"></div>
                 </div>
-            </div>
+                
+                <div class="editor-footer">
+                    <div>
+                        <span id="charCount">字數：0</span> ‧ 
+                        <span id="lineCount">行數：0</span>
+                    </div>
+                    <div id="saveStatus">所有變更已在本地保存</div>
+                </div>
+            </section>
         </div>
     </main>
     
     <footer>
         <div class="footer-content">
-            <p>資優民主國 文件管理系統 &copy; 2026</p>
-            <p>反對惡性內卷，捍衛自由學習</p>
+            <div class="footer-brand">資優民主國 立法院公報處</div>
+            <div class="footer-copy">中華民國 115 年 (2026) ‧ 國家立法文書永久典藏</div>
         </div>
     </footer>
     
     <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            // 文件資料
-            const documents = {
-                'constitution': {
-                    title: '資優民主國憲法',
-                    content: `資優民主國憲法
-西元 2026 年 5 月 28 日
-資優民主國制憲大會通過
-西元 2026 年 5 月 31 日修正案通過
+        // 預設官方文件庫
+        const officialDocuments = {
+            'constitution': {
+                title: '資優民主國憲法',
+                category: '根本大法',
+                content: `資優民主國憲法
+西元 2026 年 5 月 28 日 制憲大會通過
+西元 2026 年 5 月 31 日 修正案通過
 
 第一章 總綱
 
@@ -272,14 +431,15 @@
 
 第十條（不溯及既往原則）
 本憲法及依本憲法所制定之各項法律條例，其適用以法律生效後之行為為限。除法律另有特別規定或有利於行為人者外，行為於法律實施前不予追究處罰。`
-                },
-                'anti-infiltration': {
-                    title: '反滲透管制條例',
-                    content: `資優民主國 反滲透管制條例
+            },
+            'anti-infiltration': {
+                title: '反滲透管制條例',
+                category: '防諜國防',
+                content: `資優民主國 反滲透管制條例
 中華民國 115 年 5 月 29 日公布實施
 
 第一條（立法目的）
-本條例依據資優民主國憲法第二條及第三條精神制定之，旨在防範境外敵對勢力「卓越人民共和國」之滲透、分化與破壞行為，維護本國教室領土安全、班級紀律及神聖不可侵犯之學習秩序。
+本條例依據資優民主國憲法第二條及第三條精神制定之，旨在防範境外敵對勢力「卓越人民共和國」之滲透、分化與破壞行為，維護本國教室領土安全、班級紀律及神聖不可侵犯之自主學習秩序。
 
 第二條（敵對勢力與共匪之定義）
 本條例所稱「敵對勢力」或「共匪」，係指卓越人民共和國之官方人員、間諜，或意圖刺探本國考試機密、干擾本國國民適性發展之不法分子。
@@ -305,10 +465,11 @@
 
 第八條（施行日期）
 本條例經總統核准，並經資優民主國立法機關通過後，由總統明令公布施行。`
-                },
-                'anti-involution': {
-                    title: '內卷管制特殊條例',
-                    content: `資優民主國 憲法內卷管制特殊條例
+            },
+            'anti-involution': {
+                title: '內卷管制特殊條例',
+                category: '核心刑法',
+                content: `資優民主國 憲法內卷管制特殊條例
 中華民國 115 年 5 月 28 日公布實施
 
 第一條（立法目的與實施程序）
@@ -338,17 +499,17 @@
 一、持有主管機關核發之合格內卷證明文件者。
 二、經合法執業醫師開立內卷處方箋者。
 三、經專業鑑定，其智能商數（IQ）低於八十者。`
-                },
-                'public-morality': {
-                    title: '妨害風化管理處罰條例',
-                    content: `資優民主國 妨害風化管理處罰條例
+            },
+            'public-morality': {
+                title: '妨害風化管理處罰條例',
+                category: '社會秩序',
+                content: `資優民主國 妨害風化管理處罰條例
 資優民主國115年5月29日公布實施
 
 一、保障核心：
 本條例旨在平衡「個人自由」與「公共秩序」，明確規範妨害風化行為之裁罰標準。
 
 二、三大核心規範：
-
 1. 公共秩序維護：
 嚴禁於大眾運輸、公園等公眾場所進行猥褻行為，亦不得強行散布或販賣猥褻物品，違者處以罰鍰並沒入其物品。
 
@@ -357,231 +518,211 @@
 
 3. 學術藝術免責：
 基於醫療、學術研究或純粹藝術創作，且已採取嚴格成人年齡驗證與遮蔽隔離措施者，不予處罰。`
-                },
-                'education-management': {
-                    title: '教育內卷管理處罰條例',
-                    content: `資優民主國 學習與教育內卷管理處罰條例
+            },
+            'education-involution': {
+                title: '學習與教育內卷管理處罰條例',
+                category: '身心保障',
+                content: `資優民主國 學習與教育內卷管理處罰條例
 資優民主國115年5月29日公布實施
 
 一、立法目的：
-為杜絕教育體制中「唯有讀書高」之畸形風氣，禁止超前教育、死記硬背等消磨國民創造力之行為，特制定本條例。
+為杜絕教育體制中「唯有讀書高」之畸形風氣，禁止超前教育、死記硬背等消磨創造力之行為，特制定本條例。
 
-二、三大核心違法行為與裁罰：
-
+二、核心違法行為：
 1. 禁止超前與過度學習（刷題條款）：
-嚴禁學生在法定課堂時間外，每日進行重複性死記硬背、機械式刷題超過兩小時。違者將沒收教材，並強制進行「戶外運動」或「電玩遊戲」進行腦部減壓。
+嚴禁學生在法定課堂時間外，每日進行重複性刷題超過兩小時。違者沒收教材，強制從事戶外運動或電玩遊戲減壓。
 
 2. 禁止無效證照與軍備競賽：
-嚴禁家長強迫學童於義務教育階段考取非適性之各類高級語文、檢定證照。凡被舉發導致兒童睡眠不足八小時之家庭，將扣減家長之「國民幸福津貼」。
+嚴禁家長強迫學童考取非適性之各類高級語文或技能檢定證照。
 
 3. 嚴禁教育機構惡性排名：
-學校與校外補習班嚴禁公開張貼「英雄榜」、「成績排名表」或宣傳「狀元文化」。違者除處三十萬資優幣罰鍰外，並勒令機構負責人參加「幼兒遊戲心理學」重修班。
+嚴禁學校與校外機構公開張貼「英雄榜」或「成績排名表」。
 
 三、合法學習之豁免範圍：
-凡基於個人興趣，自主進行之園藝、烹飪、哲學思辨、藝術塗鴉、動漫研究等「非功利性學習」，一律不受本條例限制。學校應全面推行「發呆課」與「白日夢創新時間」，此類課程之出席率得抵免傳統學科分數。`
-                },
-                'wartime': {
-                    title: '戰時臨時條款',
-                    content: `資優民主國 對外戰亂臨時條款
-中華民國 115 年 5 月 30 日公布實施
+凡基於個人興趣，自主進行之園藝、烹飪、哲學思辨、藝術塗鴉、動漫研究等非功利性學習，一律不受本條例限制。
+學校應全面推行「發呆課」與「白日夢創新時間」，出席率得抵免傳統學科分數。`
+            }
+        };
 
-第一條（非常時期狀態）
-因應與敵對勢力「卓越人民共和國」之全面交戰狀態，本國即日起無限期實施戰時臨時條款。
+        let docs = JSON.parse(localStorage.getItem('ziyou_docs'));
+        if (!docs || Object.keys(docs).length === 0) {
+            docs = JSON.parse(JSON.stringify(officialDocuments));
+            localStorage.setItem('ziyou_docs', JSON.stringify(docs));
+        }
 
-第二條（條款暫停適用）
-為因應目前戰爭，以下幾點條款或憲法暫時停止適用：
-1. 內卷管制特殊條例
-2. 部分憲法條款
+        let currentDocKey = 'constitution';
+        let isPreviewMode = false;
 
-第三條（邊防與不法越界）
-嚴禁任何外部敵對勢力之不法分子非法越界進入鳳甲基地內部。
+        function renderDocList() {
+            const listEl = document.getElementById('docNavList');
+            const search = (document.getElementById('docSearchInput').value || '').toLowerCase().trim();
+            const keys = Object.keys(docs);
 
-第四條（軍事間諜罪）
-凡非本國國民，刺探、竊取、或意圖窺看本國之隨堂測驗答案、段考複習筆記等重大考試機密者，即觸犯國家軍事間諜罪。
+            document.getElementById('docCountBadge').textContent = keys.length + ' 份';
 
-第五條（戰時懲罰機制）
-觸犯間諜罪或非法越界者，立法院得授權邊防人員立即沒收其社交工具，或強制執行「發呆與白日夢處分」以示懲戒。
+            const filteredKeys = keys.filter(k => {
+                const doc = docs[k];
+                return !search || 
+                    doc.title.toLowerCase().includes(search) || 
+                    (doc.category || '').toLowerCase().includes(search) ||
+                    doc.content.toLowerCase().includes(search);
+            });
 
-第六條（施行日期）
-本條款經總統核准後立即施行，直至戰爭狀態結束。`
-                }
-            };
-            
-            let currentDoc = 'constitution';
-            let isModified = false;
-            
-            // 初始化
-            function init() {
-                loadDocument(currentDoc);
-                updateStats();
-                setupEventListeners();
+            if (filteredKeys.length === 0) {
+                listEl.innerHTML = '<li style="color:var(--text-muted); font-size:0.85rem; padding:1rem; text-align:center;">無相符之文件</li>';
+                return;
             }
-            
-            // 載入文件
-            function loadDocument(docId) {
-                const doc = documents[docId];
-                if (doc) {
-                    document.getElementById('currentDocTitle').textContent = doc.title;
-                    document.getElementById('documentContent').value = doc.content;
-                    currentDoc = docId;
-                    isModified = false;
-                    updateModifiedCount();
-                    
-                    // 更新列表狀態
-                    document.querySelectorAll('.document-list li').forEach(item => {
-                        item.classList.remove('active');
-                        if (item.dataset.doc === docId) {
-                            item.classList.add('active');
-                        }
-                    });
-                }
-            }
-            
-            // 設置事件監聽器
-            function setupEventListeners() {
-                // 文件列表點擊
-                document.querySelectorAll('.document-list li').forEach(item => {
-                    item.addEventListener('click', function() {
-                        if (isModified) {
-                            if (!confirm('文件已修改，是否儲存？')) {
-                                return;
-                            }
-                        }
-                        loadDocument(this.dataset.doc);
-                    });
-                });
-                
-                // 儲存按鈕
-                document.getElementById('saveBtn').addEventListener('click', function() {
-                    saveDocument();
-                });
-                
-                // 預覽按鈕
-                document.getElementById('previewBtn').addEventListener('click', function() {
-                    togglePreview();
-                });
-                
-                // 匯出按鈕
-                document.getElementById('exportBtn').addEventListener('click', function() {
-                    exportDocument();
-                });
-                
-                // 刪除按鈕
-                document.getElementById('deleteBtn').addEventListener('click', function() {
-                    deleteDocument();
-                });
-                
-                // 搜尋功能
-                document.getElementById('searchInput').addEventListener('input', function() {
-                    searchDocuments(this.value);
-                });
-                
-                // 內容變更檢測
-                document.getElementById('documentContent').addEventListener('input', function() {
-                    isModified = true;
-                    updateModifiedCount();
-                });
-            }
-            
-            // 儲存文件
-            function saveDocument() {
-                const content = document.getElementById('documentContent').value;
-                documents[currentDoc].content = content;
-                isModified = false;
-                updateModifiedCount();
-                showNotification('文件已儲存');
-            }
-            
-            // 切換預覽
-            function togglePreview() {
-                const preview = document.getElementById('documentPreview');
-                const content = document.getElementById('documentContent').value;
-                
-                if (preview.style.display === 'none') {
-                    preview.style.display = 'block';
-                    document.getElementById('previewContent').innerHTML = '<pre>' + content + '</pre>';
-                } else {
-                    preview.style.display = 'none';
-                }
-            }
-            
-            // 匯出文件
-            function exportDocument() {
-                const content = document.getElementById('documentContent').value;
-                const title = documents[currentDoc].title;
-                
-                const blob = new Blob([content], { type: 'text/plain;charset=utf-8' });
-                const url = URL.createObjectURL(blob);
-                const a = document.createElement('a');
-                a.href = url;
-                a.download = title + '.txt';
-                document.body.appendChild(a);
-                a.click();
-                document.body.removeChild(a);
-                URL.revokeObjectURL(url);
-                
-                showNotification('文件已匯出');
-            }
-            
-            // 刪除文件
-            function deleteDocument() {
-                if (confirm('確定要刪除此文件嗎？')) {
-                    delete documents[currentDoc];
-                    loadDocument(Object.keys(documents)[0]);
-                    updateStats();
-                    showNotification('文件已刪除');
-                }
-            }
-            
-            // 搜尋文件
-            function searchDocuments(query) {
-                const items = document.querySelectorAll('.document-list li');
-                items.forEach(item => {
-                    const title = item.textContent.toLowerCase();
-                    if (title.includes(query.toLowerCase())) {
-                        item.style.display = 'block';
-                    } else {
-                        item.style.display = 'none';
-                    }
-                });
-            }
-            
-            // 更新統計
-            function updateStats() {
-                document.getElementById('totalDocs').textContent = Object.keys(documents).length;
-                document.getElementById('lastUpdate').textContent = new Date().toLocaleString();
-            }
-            
-            // 更新修改計數
-            function updateModifiedCount() {
-                const modifiedCount = isModified ? 1 : 0;
-                document.getElementById('modifiedDocs').textContent = modifiedCount;
-            }
-            
-            // 通知功能
-            function showNotification(message) {
-                const notification = document.createElement('div');
-                notification.className = 'notification';
-                notification.innerHTML = `
-                    <div class="notification-content">
-                        <span class="notification-message">${message}</span>
-                        <span class="notification-close">&times;</span>
-                    </div>
+
+            listEl.innerHTML = filteredKeys.map(k => {
+                const d = docs[k];
+                const activeClass = k === currentDocKey ? 'active' : '';
+                return `
+                    <li class="doc-item ${activeClass}" onclick="switchDoc('${k}')">
+                        <div class="doc-item-title">${d.title}</div>
+                        <div class="doc-item-meta">
+                            <span>${d.category || '條例'}</span>
+                            <span>${d.content.length} 字</span>
+                        </div>
+                    </li>
                 `;
-                
-                document.body.appendChild(notification);
-                
-                setTimeout(() => {
-                    notification.remove();
-                }, 3000);
-                
-                notification.querySelector('.notification-close').addEventListener('click', function() {
-                    notification.remove();
-                });
-            }
+            }).join('');
+        }
+
+        function switchDoc(key) {
+            if (!docs[key]) return;
+            currentDocKey = key;
+            const d = docs[key];
+
+            document.getElementById('docTitleInput').value = d.title;
+            document.getElementById('editorTextarea').value = d.content;
             
-            init();
-        });
+            // 是否為預設官方文件
+            const isProtected = ['constitution', 'anti-infiltration', 'anti-involution', 'public-morality', 'education-involution'].includes(key);
+            document.getElementById('deleteDocBtn').style.display = isProtected ? 'none' : 'inline-flex';
+
+            renderDocList();
+            updateWordCount();
+
+            if (isPreviewMode) {
+                renderPreview();
+            }
+        }
+
+        function updateCurrentDocTitle() {
+            if (!docs[currentDocKey]) return;
+            docs[currentDocKey].title = document.getElementById('docTitleInput').value.trim() || '未命名文件';
+            renderDocList();
+        }
+
+        function updateWordCount() {
+            const text = document.getElementById('editorTextarea').value;
+            document.getElementById('charCount').textContent = `字數：${text.length}`;
+            const lines = text.split('\n').length;
+            document.getElementById('lineCount').textContent = `行數：${lines}`;
+            document.getElementById('saveStatus').textContent = '有尚未儲存的變更...';
+        }
+
+        function saveDoc() {
+            if (!docs[currentDocKey]) return;
+            docs[currentDocKey].title = document.getElementById('docTitleInput').value.trim() || '未命名文件';
+            docs[currentDocKey].content = document.getElementById('editorTextarea').value;
+
+            localStorage.setItem('ziyou_docs', JSON.stringify(docs));
+            document.getElementById('saveStatus').textContent = '✅ 已成功儲存至本地檔案庫 (' + new Date().toLocaleTimeString() + ')';
+            renderDocList();
+            showToast('文件儲存成功！');
+        }
+
+        function togglePreview() {
+            isPreviewMode = !isPreviewMode;
+            const textarea = document.getElementById('editorTextarea');
+            const previewBox = document.getElementById('previewBox');
+            const btn = document.getElementById('togglePreviewBtn');
+
+            if (isPreviewMode) {
+                renderPreview();
+                textarea.style.display = 'none';
+                previewBox.style.display = 'block';
+                btn.classList.add('active');
+                btn.innerHTML = '<span>✏️</span> 返回編輯';
+            } else {
+                textarea.style.display = 'block';
+                previewBox.style.display = 'none';
+                btn.classList.remove('active');
+                btn.innerHTML = '<span>👁️</span> 預覽排版';
+            }
+        }
+
+        function renderPreview() {
+            const previewBox = document.getElementById('previewBox');
+            const content = document.getElementById('editorTextarea').value;
+            previewBox.textContent = content;
+        }
+
+        function copyContent() {
+            const content = document.getElementById('editorTextarea').value;
+            navigator.clipboard.writeText(content).then(() => {
+                showToast('📋 已複製全文至剪貼簿！');
+            }).catch(() => {
+                showToast('⚠️ 複製失敗，請手動複製。');
+            });
+        }
+
+        function exportDoc() {
+            const d = docs[currentDocKey];
+            if (!d) return;
+            const blob = new Blob([d.content], { type: 'text/plain;charset=utf-8' });
+            const link = document.createElement('a');
+            link.href = URL.createObjectURL(blob);
+            link.download = `${d.title}.txt`;
+            link.click();
+            showToast('已匯出純文字檔！');
+        }
+
+        function restoreDefaults() {
+            if (confirm('確定要將官方憲法與四部條例還原為初始法定版本嗎？')) {
+                docs = JSON.parse(JSON.stringify(officialDocuments));
+                localStorage.setItem('ziyou_docs', JSON.stringify(docs));
+                switchDoc('constitution');
+                showToast('已恢復官方版本！');
+            }
+        }
+
+        function createNewDoc() {
+            const newKey = 'doc_' + Date.now();
+            docs[newKey] = {
+                title: '新制條例或政府公報草案',
+                category: '草案',
+                content: `資優民主國 【新條例名稱】草案
+民國 115 年 月 日
+
+第一條（立法旨趣）
+本草案旨在強化國民快樂自主學習權益...`
+            };
+            switchDoc(newKey);
+            showToast('已建立新文件草案！');
+        }
+
+        function deleteCurrentDoc() {
+            if (confirm(`確定要刪除「${docs[currentDocKey].title}」嗎？此動作無法復原。`)) {
+                delete docs[currentDocKey];
+                localStorage.setItem('ziyou_docs', JSON.stringify(docs));
+                const remainingKeys = Object.keys(docs);
+                switchDoc(remainingKeys[0] || 'constitution');
+                showToast('文件已刪除。');
+            }
+        }
+
+        function showToast(msg) {
+            const toast = document.createElement('div');
+            toast.className = 'notification';
+            toast.innerHTML = `<div class="notification-content"><span class="notification-message">${msg}</span></div>`;
+            document.body.appendChild(toast);
+            setTimeout(() => toast.remove(), 3000);
+        }
+
+        // 初始化
+        switchDoc('constitution');
     </script>
 </body>
 </html>

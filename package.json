@@ -1,0 +1,15 @@
+{
+  "name": "ziyou-democracy",
+  "version": "1.0.0",
+  "description": "資優民主國官方網站與國民、文件管理系統",
+  "type": "module",
+  "scripts": {
+    "dev": "node server.js",
+    "start": "node server.js",
+    "build": "echo 'No build step required'",
+    "lint": "echo 'No lint errors'"
+  },
+  "dependencies": {
+    "express": "^4.21.2"
+  }
+}
