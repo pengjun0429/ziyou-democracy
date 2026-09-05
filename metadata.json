@@ -1,8 +1,0 @@
-{
-  "name": "資優民主國",
-  "description": "資優民主國官方網站與國民、文件管理系統",
-  "requestFramePermissions": [],
-  "majorCapabilities": [
-    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
-  ]
-}
