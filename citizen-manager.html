@@ -444,7 +444,7 @@
                 <li><a href="index.html">返回首頁</a></li>
                 <li><a href="index.html#join" class="nav-cta-join">✨ 加入國民</a></li>
                 <li><a href="index.html#diplomacy" class="nav-cta-diplomacy">🌐 締結外交</a></li>
-                <li><a href="document-manager.html" class="nav-special">📜 文件管理</a></li>
+                <li><a href="document-manager.html" class="nav-special" title="受密碼保護之文件管理系統">🔒 文件管理</a></li>
                 <li><a href="#manager">登記入籍</a></li>
                 <li><a href="#list">國民名冊</a></li>
             </ul>
@@ -663,7 +663,7 @@
     <footer>
         <div class="footer-content">
             <div class="footer-brand">資優民主國 國民管理系統</div>
-            <div class="footer-copy">中華民國 115 年 (2026) ‧ 內政部戶籍管理司版權所有</div>
+            <div class="footer-copy">Copyright &copy; 2026 資優民主國 內政部戶籍管理司 All Rights Reserved.</div>
         </div>
     </footer>
     
@@ -897,10 +897,30 @@
             setTimeout(() => toast.remove(), 3000);
         }
 
-        // 初始化
-        updateLiveCard();
-        updateStats();
-        renderTable();
+        // 初始化資料介面
+        function initApp() {
+            updateLiveCard();
+            updateStats();
+            renderTable();
+        }
+    </script>
+    <!-- 引入國家安全認證模組 (要求密碼才能訪問與操作國民管理系統) -->
+    <script src="auth-gate.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            if (window.ZiyuAuthGate) {
+                window.ZiyuAuthGate.init({
+                    systemName: '國民管理與身分證核發系統',
+                    systemIcon: '🪪',
+                    contentSelector: 'main',
+                    onUnlockSuccess: function() {
+                        initApp();
+                    }
+                });
+            } else {
+                initApp();
+            }
+        });
     </script>
 </body>
 </html>

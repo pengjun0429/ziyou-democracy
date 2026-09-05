@@ -2148,3 +2148,600 @@ footer {
         left: -1.95rem;
     }
 }
+
+/* ==========================================================================
+   國家簡報與政府透明度專區 (National Briefing & D3.js Visualization)
+   ========================================================================== */
+.briefing-kpi-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 1.25rem;
+    margin-bottom: 2rem;
+}
+
+.briefing-kpi-card {
+    background: white;
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-md);
+    padding: 1.25rem 1.5rem;
+    display: flex;
+    align-items: center;
+    gap: 1.25rem;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.04);
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.briefing-kpi-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 16px rgba(0,0,0,0.08);
+}
+
+.briefing-kpi-card.highlight {
+    background: linear-gradient(135deg, #f8fafc 0%, #f0fdf4 100%);
+    border-color: #86efac;
+}
+
+.briefing-kpi-card .kpi-icon {
+    font-size: 2.2rem;
+    line-height: 1;
+    background: var(--bg-card-subtle);
+    width: 54px;
+    height: 54px;
+    border-radius: 14px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
+.briefing-kpi-card.highlight .kpi-icon {
+    background: #dcfce7;
+}
+
+.briefing-kpi-card .kpi-value {
+    font-size: 1.85rem;
+    font-weight: 800;
+    color: var(--primary-900);
+    line-height: 1.1;
+}
+
+.briefing-kpi-card.highlight .kpi-value {
+    color: #166534;
+}
+
+.briefing-kpi-card .kpi-unit {
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--text-secondary);
+}
+
+.briefing-kpi-card .kpi-label {
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: var(--text-primary);
+    margin-top: 0.25rem;
+}
+
+.briefing-kpi-card .kpi-sub {
+    font-size: 0.8rem;
+    color: var(--text-secondary);
+    margin-top: 0.2rem;
+}
+
+/* 憲法滿意度儀表板容器 */
+.briefing-charts-layout {
+    display: block;
+    margin-bottom: 2rem;
+}
+
+.briefing-chart-card {
+    background: white;
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-lg);
+    padding: 1.75rem 2rem;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+    display: flex;
+    flex-direction: column;
+}
+
+.chart-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    flex-wrap: wrap;
+    gap: 1rem;
+    margin-bottom: 1.25rem;
+    border-bottom: 1px solid var(--border-color);
+    padding-bottom: 1rem;
+}
+
+.chart-title-wrap h3 {
+    margin: 0;
+    font-size: 1.25rem;
+    color: var(--primary-900);
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.chart-desc {
+    margin: 0.35rem 0 0;
+    font-size: 0.85rem;
+    color: var(--text-secondary);
+}
+
+.chart-controls {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.chart-pill-btn {
+    background: var(--bg-card-subtle);
+    border: 1px solid var(--border-color);
+    color: var(--text-secondary);
+    padding: 0.35rem 0.85rem;
+    font-size: 0.82rem;
+    font-weight: 600;
+    border-radius: 20px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    white-space: nowrap;
+}
+
+.chart-pill-btn:hover {
+    background: var(--border-color);
+    color: var(--text-primary);
+}
+
+.chart-pill-btn.active {
+    background: var(--primary-900);
+    color: white;
+    border-color: var(--primary-900);
+}
+
+.badge-verified {
+    background: #ecfdf5;
+    color: #047857;
+    border: 1px solid #a7f3d0;
+    padding: 0.3rem 0.75rem;
+    border-radius: 20px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    white-space: nowrap;
+}
+
+/* D3 容器高寬限制 */
+.d3-chart-wrapper {
+    position: relative;
+    width: 100%;
+    min-height: 280px;
+    flex-grow: 1;
+}
+
+.d3-chart-wrapper svg {
+    width: 100%;
+    height: 100%;
+    display: block;
+    overflow: visible;
+}
+
+/* 滿意度儀表板內部切分 */
+.gauge-dashboard-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+    align-items: center;
+    flex-grow: 1;
+}
+
+@media (min-width: 640px) {
+    .gauge-dashboard-grid {
+        grid-template-columns: 200px 1fr;
+    }
+}
+
+.gauge-col {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+}
+
+.d3-gauge-wrapper {
+    width: 180px;
+    height: 140px;
+}
+
+.d3-gauge-wrapper svg {
+    width: 100%;
+    height: 100%;
+}
+
+.gauge-summary-text {
+    margin-top: 0.5rem;
+    font-size: 0.9rem;
+    color: var(--text-primary);
+}
+
+.gauge-summary-text strong {
+    font-size: 1.15rem;
+    color: #166534;
+}
+
+.gauge-summary-text p {
+    margin: 0.2rem 0 0;
+    font-size: 0.78rem;
+    color: var(--text-secondary);
+}
+
+.breakdown-col {
+    width: 100%;
+}
+
+.breakdown-title {
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--text-secondary);
+    margin-bottom: 0.75rem;
+}
+
+.d3-bars-wrapper {
+    width: 100%;
+    min-height: 210px;
+}
+
+.chart-footer-note {
+    margin-top: 1rem;
+    padding-top: 0.85rem;
+    border-top: 1px dashed var(--border-color);
+    font-size: 0.8rem;
+    color: var(--text-secondary);
+}
+
+/* D3 Tooltip 懸浮框 */
+.d3-tooltip {
+    position: absolute;
+    padding: 0.65rem 0.9rem;
+    background: rgba(15, 23, 42, 0.92);
+    color: #fff;
+    border-radius: var(--radius-sm);
+    font-size: 0.82rem;
+    line-height: 1.4;
+    pointer-events: none;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.25);
+    z-index: 50;
+    transition: opacity 0.15s ease, transform 0.15s ease;
+    backdrop-filter: blur(4px);
+    border: 1px solid rgba(255,255,255,0.15);
+}
+
+.d3-tooltip strong {
+    color: #fde047;
+    font-size: 0.9rem;
+    display: block;
+    margin-bottom: 0.2rem;
+}
+
+/* 開放政府透明行動卡 */
+.transparency-statement-box {
+    background: linear-gradient(135deg, #f8fafc 0%, #eff6ff 100%);
+    border: 1px solid #bfdbfe;
+    border-radius: var(--radius-md);
+    padding: 1.5rem 1.75rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+    align-items: flex-start;
+}
+
+@media (min-width: 768px) {
+    .transparency-statement-box {
+        flex-direction: row;
+        align-items: center;
+        justify-content: space-between;
+    }
+}
+
+.transparency-statement-box .statement-icon {
+    font-size: 2.2rem;
+    background: white;
+    width: 50px;
+    height: 50px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid #dbeafe;
+    flex-shrink: 0;
+}
+
+.transparency-statement-box .statement-content {
+    flex-grow: 1;
+}
+
+.transparency-statement-box h4 {
+    margin: 0 0 0.4rem;
+    font-size: 1.1rem;
+    color: #1e3a8a;
+}
+
+.transparency-statement-box p {
+    margin: 0;
+    font-size: 0.88rem;
+    color: #334155;
+    line-height: 1.5;
+}
+
+.transparency-statement-box .statement-actions {
+    display: flex;
+    gap: 0.75rem;
+    flex-wrap: wrap;
+    flex-shrink: 0;
+}
+
+.statement-btn {
+    background: white;
+    border: 1px solid #93c5fd;
+    color: #1d4ed8;
+    padding: 0.55rem 1.1rem;
+    border-radius: var(--radius-sm);
+    font-size: 0.85rem;
+    font-weight: 600;
+    text-decoration: none;
+    transition: all 0.2s ease;
+    white-space: nowrap;
+}
+
+.statement-btn:hover {
+    background: #1d4ed8;
+    color: white;
+    border-color: #1d4ed8;
+}
+
+/* ==========================================================================
+   管理系統安全密碼鎖 (Manager Security Auth Gate)
+   ========================================================================== */
+.auth-locked-content {
+    filter: blur(10px) grayscale(40%);
+    pointer-events: none !important;
+    user-select: none !important;
+    transition: filter 0.35s ease;
+}
+
+.auth-gate-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(15, 23, 42, 0.82);
+    backdrop-filter: blur(6px);
+    -webkit-backdrop-filter: blur(6px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 9999;
+    padding: 1.25rem;
+    transition: opacity 0.3s ease, visibility 0.3s ease;
+}
+
+.auth-gate-overlay.hidden {
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+}
+
+.auth-gate-card {
+    background: #ffffff;
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-lg);
+    width: 100%;
+    max-width: 440px;
+    box-shadow: 0 20px 45px -10px rgba(0, 0, 0, 0.3);
+    padding: 2.25rem 2rem;
+    text-align: center;
+    position: relative;
+    animation: authPopIn 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@keyframes authPopIn {
+    0% { transform: scale(0.92); opacity: 0; }
+    100% { transform: scale(1); opacity: 1; }
+}
+
+.auth-gate-icon {
+    width: 64px;
+    height: 64px;
+    border-radius: 18px;
+    background: #eff6ff;
+    color: #1d4ed8;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 2rem;
+    margin: 0 auto 1.25rem;
+    border: 1px solid #bfdbfe;
+}
+
+.auth-gate-card h2 {
+    font-size: 1.35rem;
+    color: var(--primary-900);
+    margin: 0 0 0.5rem;
+    font-weight: 800;
+}
+
+.auth-gate-desc {
+    font-size: 0.9rem;
+    color: var(--text-secondary);
+    line-height: 1.55;
+    margin: 0 0 1.5rem;
+}
+
+.auth-gate-form {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    text-align: left;
+}
+
+.auth-input-group {
+    position: relative;
+}
+
+.auth-input-group label {
+    display: block;
+    font-size: 0.85rem;
+    font-weight: 700;
+    color: var(--primary-900);
+    margin-bottom: 0.4rem;
+}
+
+.auth-input-wrapper {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.auth-input {
+    width: 100%;
+    padding: 0.75rem 2.75rem 0.75rem 1rem;
+    border: 1.5px solid var(--border-color);
+    border-radius: var(--radius-sm);
+    font-size: 1rem;
+    background: #f8fafc;
+    color: var(--text-primary);
+    transition: all 0.2s ease;
+    letter-spacing: 1px;
+}
+
+.auth-input:focus {
+    outline: none;
+    border-color: #2563eb;
+    background: #ffffff;
+    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15);
+}
+
+.auth-toggle-pwd {
+    position: absolute;
+    right: 0.75rem;
+    background: none;
+    border: none;
+    font-size: 1.15rem;
+    cursor: pointer;
+    padding: 0.25rem;
+    color: var(--text-secondary);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.auth-toggle-pwd:hover {
+    color: var(--text-primary);
+}
+
+.auth-error-msg {
+    min-height: 20px;
+    font-size: 0.85rem;
+    color: #dc2626;
+    font-weight: 600;
+    margin-top: 0.25rem;
+    display: none;
+}
+
+.auth-error-msg.visible {
+    display: block;
+}
+
+.auth-submit-btn {
+    background: #1e3a8a;
+    color: white;
+    border: none;
+    padding: 0.8rem 1.5rem;
+    border-radius: var(--radius-sm);
+    font-size: 0.95rem;
+    font-weight: 700;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    transition: background-color 0.2s ease, transform 0.1s;
+    width: 100%;
+}
+
+.auth-submit-btn:hover {
+    background: #1d4ed8;
+}
+
+.auth-submit-btn:active {
+    transform: scale(0.99);
+}
+
+.auth-gate-actions {
+    margin-top: 1.25rem;
+    padding-top: 1rem;
+    border-top: 1px solid var(--border-color);
+    display: flex;
+    justify-content: center;
+}
+
+.auth-back-link {
+    font-size: 0.85rem;
+    color: var(--text-secondary);
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    transition: color 0.2s;
+}
+
+.auth-back-link:hover {
+    color: var(--primary-900);
+}
+
+/* 頂部導航列的安全認證狀態徽章 */
+.nav-auth-status {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    background: #ecfdf5;
+    color: #065f46;
+    border: 1px solid #a7f3d0;
+    padding: 0.3rem 0.75rem;
+    border-radius: 20px;
+    font-size: 0.8rem;
+    font-weight: 600;
+}
+
+.nav-lock-btn {
+    background: #fee2e2;
+    color: #991b1b;
+    border: 1px solid #fecaca;
+    padding: 0.3rem 0.65rem;
+    border-radius: var(--radius-sm);
+    font-size: 0.8rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.3rem;
+}
+
+.nav-lock-btn:hover {
+    background: #ef4444;
+    color: white;
+    border-color: #dc2626;
+}
+
+.auth-shake {
+    animation: authShakeAnim 0.4s ease-in-out;
+}
+
+@keyframes authShakeAnim {
+    0%, 100% { transform: translateX(0); }
+    20%, 60% { transform: translateX(-8px); }
+    40%, 80% { transform: translateX(8px); }
+}
+

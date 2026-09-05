@@ -384,9 +384,20 @@ document.addEventListener('DOMContentLoaded', function() {
         diplo_p2_desc: "共同抵禦刷題作業主義滲透與排名焦慮，互相給予精神慰藉與安全避風港。",
         diplo_p3_title: "🔬 學術與創意互惠",
         diplo_p3_desc: "促進自製微型專案、發呆哲學思考、藝術創作與課後非功利嗜好交流。",
+        title_operation_metrics: "運作指標",
+        title_key_stats: "國家關鍵統計",
+        title_recent_news: "近期要聞公報",
+        sec_title_briefing: "國家簡報 ‧ 政府透明度報告",
+        title_constitution_gauge: "憲法滿意度與施政認同儀表板",
+        sec_title_history: "正史編年史",
+        sec_title_laws: "國家法規與特種條例",
+        sec_title_government: "中央政府組織體系",
+        sec_title_territory: "領土版圖與戰略地理",
+        sec_title_join: "申請加入國民與證件領取",
+        sec_title_diplomacy: "國際外交與全球友好建交",
         footer_brand: "資優民主國 DEMOCRATIC MERITOCRACY OF ZIYU",
         footer_motto: "「反對惡性內卷，捍衛自由學習」",
-        footer_copy: "中華民國 115 年 (2026) ‧ 基於資優班全體人民之共同意志 ‧ 永久保存"
+        footer_copy: "Copyright © 2026 資優民主國 All Rights Reserved."
     };
 
     let currentSiteContent = Object.assign({}, DEFAULT_SITE_CONTENT);
@@ -783,18 +794,34 @@ document.addEventListener('DOMContentLoaded', function() {
 
     function openSiteModal() {
         if (!siteModal) return;
+        const setVal = (id, key) => {
+            const el = document.getElementById(id);
+            if (el) el.value = currentSiteContent[key] || '';
+        };
         // 帶入當前數值
-        document.getElementById('cfg_site_title').value = currentSiteContent.site_title || '';
-        document.getElementById('cfg_site_sub_en').value = currentSiteContent.site_sub_en || '';
-        document.getElementById('cfg_motto_core').value = currentSiteContent.motto_core || '';
-        document.getElementById('cfg_president_name').value = currentSiteContent.president_name || '';
-        document.getElementById('cfg_faith_name').value = currentSiteContent.faith_name || '';
-        document.getElementById('cfg_territory_name').value = currentSiteContent.territory_name || '';
-        document.getElementById('cfg_peace_name').value = currentSiteContent.peace_name || '';
-        document.getElementById('cfg_intro_lead').value = currentSiteContent.intro_lead || '';
-        document.getElementById('cfg_join_form_url').value = currentSiteContent.join_form_url || '';
-        document.getElementById('cfg_diplo_form_url').value = currentSiteContent.diplo_form_url || '';
-        document.getElementById('cfg_diplo_banner_desc').value = currentSiteContent.diplo_banner_desc || '';
+        setVal('cfg_site_title', 'site_title');
+        setVal('cfg_site_sub_en', 'site_sub_en');
+        setVal('cfg_motto_core', 'motto_core');
+        setVal('cfg_president_name', 'president_name');
+        setVal('cfg_faith_name', 'faith_name');
+        setVal('cfg_territory_name', 'territory_name');
+        setVal('cfg_peace_name', 'peace_name');
+        setVal('cfg_intro_lead', 'intro_lead');
+        setVal('cfg_join_form_url', 'join_form_url');
+        setVal('cfg_diplo_form_url', 'diplo_form_url');
+        setVal('cfg_diplo_banner_desc', 'diplo_banner_desc');
+        setVal('cfg_title_operation_metrics', 'title_operation_metrics');
+        setVal('cfg_title_key_stats', 'title_key_stats');
+        setVal('cfg_title_recent_news', 'title_recent_news');
+        setVal('cfg_sec_title_briefing', 'sec_title_briefing');
+        setVal('cfg_title_constitution_gauge', 'title_constitution_gauge');
+        setVal('cfg_sec_title_history', 'sec_title_history');
+        setVal('cfg_sec_title_laws', 'sec_title_laws');
+        setVal('cfg_sec_title_government', 'sec_title_government');
+        setVal('cfg_sec_title_territory', 'sec_title_territory');
+        setVal('cfg_sec_title_join', 'sec_title_join');
+        setVal('cfg_sec_title_diplomacy', 'sec_title_diplomacy');
+        setVal('cfg_footer_copy', 'footer_copy');
         
         siteModal.classList.add('active');
     }
@@ -810,18 +837,35 @@ document.addEventListener('DOMContentLoaded', function() {
     if (siteSettingsForm) {
         siteSettingsForm.addEventListener('submit', function(e) {
             e.preventDefault();
+            const getVal = (id) => {
+                const el = document.getElementById(id);
+                return el ? el.value.trim() : '';
+            };
+
             const newValues = {
-                site_title: document.getElementById('cfg_site_title').value.trim(),
-                site_sub_en: document.getElementById('cfg_site_sub_en').value.trim(),
-                motto_core: document.getElementById('cfg_motto_core').value.trim(),
-                president_name: document.getElementById('cfg_president_name').value.trim(),
-                faith_name: document.getElementById('cfg_faith_name').value.trim(),
-                territory_name: document.getElementById('cfg_territory_name').value.trim(),
-                peace_name: document.getElementById('cfg_peace_name').value.trim(),
-                intro_lead: document.getElementById('cfg_intro_lead').value.trim(),
-                join_form_url: document.getElementById('cfg_join_form_url').value.trim(),
-                diplo_form_url: document.getElementById('cfg_diplo_form_url').value.trim(),
-                diplo_banner_desc: document.getElementById('cfg_diplo_banner_desc').value.trim(),
+                site_title: getVal('cfg_site_title'),
+                site_sub_en: getVal('cfg_site_sub_en'),
+                motto_core: getVal('cfg_motto_core'),
+                president_name: getVal('cfg_president_name'),
+                faith_name: getVal('cfg_faith_name'),
+                territory_name: getVal('cfg_territory_name'),
+                peace_name: getVal('cfg_peace_name'),
+                intro_lead: getVal('cfg_intro_lead'),
+                join_form_url: getVal('cfg_join_form_url'),
+                diplo_form_url: getVal('cfg_diplo_form_url'),
+                diplo_banner_desc: getVal('cfg_diplo_banner_desc'),
+                title_operation_metrics: getVal('cfg_title_operation_metrics'),
+                title_key_stats: getVal('cfg_title_key_stats'),
+                title_recent_news: getVal('cfg_title_recent_news'),
+                sec_title_briefing: getVal('cfg_sec_title_briefing'),
+                title_constitution_gauge: getVal('cfg_title_constitution_gauge'),
+                sec_title_history: getVal('cfg_sec_title_history'),
+                sec_title_laws: getVal('cfg_sec_title_laws'),
+                sec_title_government: getVal('cfg_sec_title_government'),
+                sec_title_territory: getVal('cfg_sec_title_territory'),
+                sec_title_join: getVal('cfg_sec_title_join'),
+                sec_title_diplomacy: getVal('cfg_sec_title_diplomacy'),
+                footer_copy: getVal('cfg_footer_copy'),
             };
 
             saveSiteContent(newValues);
@@ -865,6 +909,238 @@ document.addEventListener('DOMContentLoaded', function() {
             reader.readAsText(file);
         });
     }
+
+    // ==========================================================================
+    // 6. 國家簡報與政府透明度 D3.js 視覺化引擎 (National Briefing D3 Visualizations)
+    // ==========================================================================
+    function initNationalBriefingCharts() {
+        if (typeof d3 === 'undefined') {
+            setTimeout(initNationalBriefingCharts, 250);
+            return;
+        }
+
+        // 憲法滿意度各條款細項評分
+        const constitutionBreakdown = [
+            { label: '《反惡性內卷管制》條款', score: 99.5, note: '防止無效刷題競爭，評價最高' },
+            { label: '《發呆與自主思辨》特權', score: 99.1, note: '保障自由發展神聖基本人權' },
+            { label: '《停戰協定和平履約》條款', score: 99.0, note: '解除戰亂警報，回歸常態學習' },
+            { label: '《免試及免作業互惠》條款', score: 98.4, note: '班級身分認同與榮譽免檢' },
+            { label: '《民主直選與公報開源》條款', score: 97.8, note: '正史透明、每票均等原則' }
+        ];
+
+        const gaugeContainer = document.getElementById('constitutionGaugeContainer');
+        const barsContainer = document.getElementById('constitutionBarsContainer');
+
+        if (!gaugeContainer || !barsContainer) return;
+
+        // 全域共用 Tooltip
+        let tooltip = document.getElementById('briefingD3Tooltip');
+        if (!tooltip) {
+            tooltip = document.createElement('div');
+            tooltip.id = 'briefingD3Tooltip';
+            tooltip.className = 'd3-tooltip';
+            tooltip.style.opacity = '0';
+            document.body.appendChild(tooltip);
+        }
+
+        // ----------------------------------------------------
+        // A. 繪製憲法滿意度半圓儀表 (Radial Arc Gauge)
+        // ----------------------------------------------------
+        function renderConstitutionGauge() {
+            gaugeContainer.innerHTML = '';
+            const width = 180;
+            const height = 135;
+            const radius = 78;
+            const strokeWidth = 14;
+
+            const svg = d3.select(gaugeContainer)
+                .append('svg')
+                .attr('viewBox', `0 0 ${width} ${height}`)
+                .attr('preserveAspectRatio', 'xMidYMid meet')
+                .append('g')
+                .attr('transform', `translate(${width / 2}, ${height - 15})`);
+
+            // 背景灰底圓弧
+            const backgroundArc = d3.arc()
+                .innerRadius(radius - strokeWidth)
+                .outerRadius(radius)
+                .startAngle(-Math.PI / 2)
+                .endAngle(Math.PI / 2)
+                .cornerRadius(strokeWidth / 2);
+
+            svg.append('path')
+                .attr('d', backgroundArc)
+                .attr('fill', '#e2e8f0');
+
+            // 漸層色定義
+            const defs = d3.select(gaugeContainer).select('svg').append('defs');
+            const gaugeGrad = defs.append('linearGradient')
+                .attr('id', 'gaugeGradient')
+                .attr('x1', '0%').attr('y1', '0%')
+                .attr('x2', '100%').attr('y2', '0%');
+            gaugeGrad.append('stop').attr('offset', '0%').attr('stop-color', '#34d399');
+            gaugeGrad.append('stop').attr('offset', '100%').attr('stop-color', '#059669');
+
+            // 前景滿意度圓弧
+            const targetScore = 0.986;
+            const foregroundArc = d3.arc()
+                .innerRadius(radius - strokeWidth)
+                .outerRadius(radius)
+                .startAngle(-Math.PI / 2)
+                .cornerRadius(strokeWidth / 2);
+
+            const foregroundPath = svg.append('path')
+                .datum({ endAngle: -Math.PI / 2 })
+                .attr('fill', 'url(#gaugeGradient)')
+                .attr('d', foregroundArc);
+
+            const targetAngle = -Math.PI / 2 + targetScore * Math.PI;
+            foregroundPath.transition()
+                .duration(1100)
+                .ease(d3.easeCubicOut)
+                .attrTween('d', function(d) {
+                    const interpolate = d3.interpolate(d.endAngle, targetAngle);
+                    return function(t) {
+                        d.endAngle = interpolate(t);
+                        return foregroundArc(d);
+                    };
+                });
+
+            // 中央數值
+            svg.append('text')
+                .attr('text-anchor', 'middle')
+                .attr('y', -18)
+                .attr('font-size', '26px')
+                .attr('font-weight', '800')
+                .attr('fill', '#0f172a')
+                .text('98.6%');
+
+            svg.append('text')
+                .attr('text-anchor', 'middle')
+                .attr('y', 2)
+                .attr('font-size', '11px')
+                .attr('font-weight', '600')
+                .attr('fill', '#059669')
+                .text('★ 滿意度特優評級');
+        }
+
+        // ----------------------------------------------------
+        // B. 繪製各條款分項滿意度長條圖 (Horizontal Breakdown Bars)
+        // ----------------------------------------------------
+        function renderConstitutionBars() {
+            barsContainer.innerHTML = '';
+            const rect = barsContainer.getBoundingClientRect();
+            const width = rect.width || 360;
+            const barHeight = 22;
+            const gap = 16;
+            const height = constitutionBreakdown.length * (barHeight + gap) + 10;
+
+            const svg = d3.select(barsContainer)
+                .append('svg')
+                .attr('viewBox', `0 0 ${width} ${height}`)
+                .attr('preserveAspectRatio', 'xMidYMid meet');
+
+            const scoreScale = d3.scaleLinear()
+                .domain([90, 100])
+                .range([0, width - 95]);
+
+            constitutionBreakdown.forEach((item, index) => {
+                const y = index * (barHeight + gap);
+                const g = svg.append('g').attr('transform', `translate(0, ${y})`);
+
+                // 標題
+                g.append('text')
+                    .attr('x', 0)
+                    .attr('y', 0)
+                    .attr('font-size', '12px')
+                    .attr('font-weight', '600')
+                    .attr('fill', '#1e293b')
+                    .text(item.label);
+
+                // 背景條
+                g.append('rect')
+                    .attr('x', 0)
+                    .attr('y', 6)
+                    .attr('width', width - 65)
+                    .attr('height', 8)
+                    .attr('rx', 4)
+                    .attr('fill', '#f1f5f9');
+
+                // 進度滿度條
+                const fillWidth = Math.max(10, scoreScale(item.score));
+                g.append('rect')
+                    .attr('x', 0)
+                    .attr('y', 6)
+                    .attr('width', 0)
+                    .attr('height', 8)
+                    .attr('rx', 4)
+                    .attr('fill', index === 0 ? '#10b981' : '#3b82f6')
+                    .transition()
+                    .duration(800)
+                    .delay(index * 90)
+                    .ease(d3.easeCubicOut)
+                    .attr('width', fillWidth);
+
+                // 數值
+                g.append('text')
+                    .attr('x', width - 55)
+                    .attr('y', 14)
+                    .attr('font-size', '12px')
+                    .attr('font-weight', '700')
+                    .attr('fill', '#0f172a')
+                    .text(item.score + '%');
+
+                // 懸浮互動
+                g.style('cursor', 'pointer')
+                    .on('mouseenter', function(event) {
+                        tooltip.innerHTML = `
+                            <strong>${item.label}</strong>
+                            <div>公民滿意度認同率：<strong>${item.score}%</strong></div>
+                            <div style="margin-top:4px; font-size:0.75rem; color:#94a3b8;">📝 ${item.note}</div>
+                        `;
+                        tooltip.style.opacity = '1';
+                        tooltip.style.left = (event.pageX + 12) + 'px';
+                        tooltip.style.top = (event.pageY - 28) + 'px';
+                    })
+                    .on('mousemove', function(event) {
+                        tooltip.style.left = (event.pageX + 12) + 'px';
+                        tooltip.style.top = (event.pageY - 28) + 'px';
+                    })
+                    .on('mouseleave', function() {
+                        tooltip.style.opacity = '0';
+                    });
+            });
+        }
+
+        // 初次渲染
+        renderConstitutionGauge();
+        renderConstitutionBars();
+
+        // 綁定重播按鈕
+        const btnReplay = document.getElementById('btnReplayGrowth');
+        if (btnReplay) {
+            btnReplay.addEventListener('click', function() {
+                renderConstitutionGauge();
+                renderConstitutionBars();
+                showSiteToast('↻ 已重播憲法滿意度儀表板動畫');
+            });
+        }
+
+        // 監聽容器寬度動態變更
+        let resizeTimer = null;
+        if (window.ResizeObserver && barsContainer) {
+            const ro = new ResizeObserver(() => {
+                clearTimeout(resizeTimer);
+                resizeTimer = setTimeout(() => {
+                    renderConstitutionBars();
+                }, 150);
+            });
+            ro.observe(barsContainer);
+        }
+    }
+
+    // 啟動 D3 國家簡報圖表
+    initNationalBriefingCharts();
 
     // 首次載入網站內容
     loadSiteContent();

@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="google-site-verification" content="Rau2K_qrDIQN7a38tlY9VLkJULZxwLdauo1zVGH4dIg" />
+    <meta name="google-site-verification" content="B8gLJSxUKeENSFSj0rlI_69WVHWL9rzqKZe7BvSFq9g" />
     <script>
         // 修復環境中 window.fetch 僅有 getter 無 setter 導致的 TypeError: Cannot set property fetch of #<Window> which has only a getter
         (function() {
@@ -25,6 +26,7 @@
             } catch (e) {}
         })();
     </script>
+    <script src="https://cdn.jsdelivr.net/npm/d3@7/dist/d3.min.js"></script>
     <title>資優民主國 - 官方網站 | Democratic Meritocracy of Ziyu</title>
     <meta name="description" content="資優民主國官方網站與國民、文件管理系統。以「反對惡性內卷，捍衛自由學習」為立國終極核心。">
     <meta property="og:title" content="資優民主國 - 官方網站">
@@ -35,11 +37,6 @@
     <!-- Sovereign State Header -->
     <header>
         <div class="header-content">
-            <div class="state-emblem" title="資優民主國 國徽">
-                <svg viewBox="0 0 24 24">
-                    <path d="M12 2L4 5v6.09c0 5.05 3.41 9.76 8 10.91 4.59-1.15 8-5.86 8-10.91V5l-8-3zm0 4a3 3 0 1 1 0 6 3 3 0 0 1 0-6zm4 11.2c-1.15.65-2.52 1.05-4 1.14-1.48-.09-2.85-.49-4-1.14v-1.7c0-1.33 2.67-2 4-2s4 .67 4 2v1.7z"/>
-                </svg>
-            </div>
             <h1 data-site-editable="site_title">資優民主國</h1>
             <div class="header-sub-en" data-site-editable="site_sub_en">Democratic Meritocracy of Ziyu</div>
             <div class="motto-banner">
@@ -63,6 +60,7 @@
             <ul class="nav-links" id="navLinks">
                 <li><a href="#home">首頁</a></li>
                 <li><a href="#dashboard">儀表板</a></li>
+                <li><a href="#briefing">國家簡報</a></li>
                 <li><a href="#history">正史</a></li>
                 <li><a href="#constitution">憲法</a></li>
                 <li><a href="#laws">法規</a></li>
@@ -70,8 +68,8 @@
                 <li><a href="#territory">領土</a></li>
                 <li><a href="#join" class="nav-cta-join">✨ 加入國民</a></li>
                 <li><a href="#diplomacy" class="nav-cta-diplomacy">🌐 締結外交</a></li>
-                <li><a href="citizen-manager.html" class="nav-special">🪪 國民管理</a></li>
-                <li><a href="document-manager.html" class="nav-special">📜 文件管理</a></li>
+                <li><a href="citizen-manager.html" class="nav-special" title="受密碼保護之國民管理系統">🔒 國民管理</a></li>
+                <li><a href="document-manager.html" class="nav-special" title="受密碼保護之文件法規系統">🔒 文件管理</a></li>
             </ul>
             <div class="nav-actions">
                 <div class="nav-divider"></div>
@@ -151,7 +149,7 @@
             <div class="dashboard-container">
                 <!-- 國家態勢卡 -->
                 <div class="dashboard-card">
-                    <h3>運作指標 <span>⚡</span></h3>
+                    <h3><span data-site-editable="title_operation_metrics">運作指標</span> <span>⚡</span></h3>
                     <div class="status-grid">
                         <div class="status-box">
                             <div class="status-box-val" id="days-since-founding">100</div>
@@ -176,7 +174,7 @@
                 
                 <!-- 統計數據 -->
                 <div class="dashboard-card">
-                    <h3>國家關鍵統計 <span>📈</span></h3>
+                    <h3><span data-site-editable="title_key_stats">國家關鍵統計</span> <span>📈</span></h3>
                     <div class="stats">
                         <div class="stat-item">
                             <span class="stat-label">登記國民人數</span>
@@ -199,7 +197,7 @@
                 
                 <!-- 即時國家簡報 -->
                 <div class="dashboard-card">
-                    <h3>近期要聞公報 <span>📢</span></h3>
+                    <h3><span data-site-editable="title_recent_news">近期要聞公報</span> <span>📢</span></h3>
                     <div class="recent-events">
                         <div class="event-item">
                             <span class="event-date" style="background:#dcfce7; color:#166534;">和平公報</span>
@@ -226,13 +224,120 @@
             </div>
         </section>
         
+        <!-- 國家簡報與政府透明度專區 (利用 D3.js 繪製人口成長趨勢圖與憲法滿意度儀表板) -->
+        <section id="briefing" class="section">
+            <div class="section-header">
+                <div class="section-title">
+                    <span>📈</span> <span data-site-editable="sec_title_briefing">國家簡報 ‧ 政府透明度報告</span>
+                </div>
+                <div class="section-badge" data-site-editable="sec_badge_briefing" style="background:#e0f2fe; color:#0369a1; border-color:#bae6fd;">
+                    <span>🛡️</span> 開放政府與公民透明指標
+                </div>
+            </div>
+
+            <p class="intro-lead" style="margin-bottom: 2rem;">
+                資優民主國落實「主權在民、透明施政」之立國精神，全面公開國家關鍵發展指標。
+                以下儀表板由國家數據庫結合 <strong>D3.js 資料視覺化引擎</strong> 即時繪製，提供全國國民公開查驗憲法條款與施政方針之認同滿意度。
+            </p>
+
+            <!-- 關鍵透明度指標 (KPI Cards) -->
+            <div class="briefing-kpi-grid">
+                <div class="briefing-kpi-card">
+                    <div class="kpi-icon">👥</div>
+                    <div class="kpi-content">
+                        <div class="kpi-value" id="kpiTotalPopulation">48 <span class="kpi-unit">人</span></div>
+                        <div class="kpi-label">登記國民人口總量</div>
+                        <div class="kpi-sub">創國至今成長率 <strong>+500%</strong></div>
+                    </div>
+                </div>
+                <div class="briefing-kpi-card highlight">
+                    <div class="kpi-icon">📜</div>
+                    <div class="kpi-content">
+                        <div class="kpi-value" id="kpiConstitutionScore">98.6 <span class="kpi-unit">%</span></div>
+                        <div class="kpi-label">大憲章總體滿意度</div>
+                        <div class="kpi-sub">反內卷與自主思辨核心條款認同</div>
+                    </div>
+                </div>
+                <div class="briefing-kpi-card">
+                    <div class="kpi-icon">🔍</div>
+                    <div class="kpi-content">
+                        <div class="kpi-value">100 <span class="kpi-unit">%</span></div>
+                        <div class="kpi-label">法規與公報開源率</div>
+                        <div class="kpi-sub">所有法案條文全部公開透明審閱</div>
+                    </div>
+                </div>
+                <div class="briefing-kpi-card">
+                    <div class="kpi-icon">⚡</div>
+                    <div class="kpi-content">
+                        <div class="kpi-value">&lt; 24 <span class="kpi-unit">hr</span></div>
+                        <div class="kpi-label">入籍審核透明時效</div>
+                        <div class="kpi-sub">身分證與國民護照即時發放</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 憲法滿意度儀表板容器 -->
+            <div class="briefing-charts-layout">
+                <div class="briefing-chart-card">
+                    <div class="chart-header">
+                        <div class="chart-title-wrap">
+                            <h3><span data-site-editable="title_constitution_gauge">憲法滿意度與施政認同儀表板</span> <span>🗳️</span></h3>
+                            <p class="chart-desc" data-site-editable="desc_constitution_gauge">基於全國國民匿名民調與常態意見回饋之大憲章各條款支持度</p>
+                        </div>
+                        <div class="chart-controls">
+                            <span class="badge-verified">✓ 官方透明審計</span>
+                            <button id="btnReplayGrowth" class="chart-pill-btn" title="重新播放 D3 動畫">↻ 重播動畫</button>
+                        </div>
+                    </div>
+                    
+                    <div class="gauge-dashboard-grid">
+                        <!-- D3 滿意度半圓儀表 (Radial Gauge) -->
+                        <div class="gauge-col">
+                            <div id="constitutionGaugeContainer" class="d3-gauge-wrapper">
+                                <!-- D3 渲染儀表板 -->
+                            </div>
+                            <div class="gauge-summary-text">
+                                <strong>98.6%</strong> 全國綜合滿意度
+                                <p>連續三個月獲評「極高認同度」</p>
+                            </div>
+                        </div>
+
+                        <!-- D3 各條款滿意度長條圖 (Breakdown Bars) -->
+                        <div class="breakdown-col">
+                            <div class="breakdown-title">各憲政與民權條款分項評分：</div>
+                            <div id="constitutionBarsContainer" class="d3-bars-wrapper">
+                                <!-- D3 渲染分項長條圖 -->
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="chart-footer-note">
+                        <span>📊 資料來源：資優民主國公民公聽會民意普查，最新審計更新於 2026 年 9 月。</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 開放政府行動宣言與資料校驗 -->
+            <div class="transparency-statement-box">
+                <div class="statement-icon">🕊️</div>
+                <div class="statement-content">
+                    <h4>落實政府透明化與自主思辨監督</h4>
+                    <p>資優民主國拒絕密室政治與黑箱作業，所有官方公報、法律修正案、國民名冊均依《憲法第一條》接受全體國民即時監督。若有任何施政建議或疑義，歡迎隨時向國務院或制憲委員會遞交請願書。</p>
+                </div>
+                <div class="statement-actions">
+                    <a href="citizen-manager.html" class="statement-btn" title="受密碼保護之國民名冊管理">🔒 查驗國民名冊</a>
+                    <a href="document-manager.html" class="statement-btn" title="受密碼保護之文件法規管理">🔒 檢索官方公報</a>
+                </div>
+            </div>
+        </section>
+        
         <!-- 正史編年史 -->
         <section id="history" class="section">
             <div class="section-header">
                 <div class="section-title">
-                    <span>⏳</span> 正史編年史
+                    <span>⏳</span> <span data-site-editable="sec_title_history">正史編年史</span>
                 </div>
-                <div class="section-badge">國家正史 ‧ 永久檔案</div>
+                <div class="section-badge" data-site-editable="sec_badge_history">國家正史 ‧ 永久檔案</div>
             </div>
             
             <div class="timeline">
@@ -396,9 +501,9 @@
         <section id="laws" class="section">
             <div class="section-header">
                 <div class="section-title">
-                    <span>📑</span> 國家法規與特種條例
+                    <span>📑</span> <span data-site-editable="sec_title_laws">國家法規與特種條例</span>
                 </div>
-                <div class="section-badge">法網威嚴 ‧ 禁止內卷</div>
+                <div class="section-badge" data-site-editable="sec_badge_laws">法網威嚴 ‧ 禁止內卷</div>
             </div>
             
             <div class="law-controls">
@@ -446,9 +551,9 @@
         <section id="government" class="section">
             <div class="section-header">
                 <div class="section-title">
-                    <span>🏛️</span> 中央政府組織體系
+                    <span>🏛️</span> <span data-site-editable="sec_title_government">中央政府組織體系</span>
                 </div>
-                <div class="section-badge">權力分立 ‧ 民主共和</div>
+                <div class="section-badge" data-site-editable="sec_badge_government">權力分立 ‧ 民主共和</div>
             </div>
             
             <div class="government-structure">
@@ -494,9 +599,9 @@
         <section id="territory" class="section">
             <div class="section-header">
                 <div class="section-title">
-                    <span>🗺️</span> 領土版圖與戰略地理
+                    <span>🗺️</span> <span data-site-editable="sec_title_territory">領土版圖與戰略地理</span>
                 </div>
-                <div class="section-badge">鳳甲基地 ‧ 神聖不可分割</div>
+                <div class="section-badge" data-site-editable="sec_badge_territory">鳳甲基地 ‧ 神聖不可分割</div>
             </div>
             
             <div class="territory-grid">
@@ -525,19 +630,19 @@
         <section id="join" class="section section-featured-join">
             <div class="section-header">
                 <div class="section-title">
-                    <span>🪪</span> 申請加入國民與證件領取
+                    <span>🪪</span> <span data-site-editable="sec_title_join">申請加入國民與證件領取</span>
                 </div>
-                <div class="section-badge" style="background: #10b981; color: white;">🔥 現正開放各界入籍</div>
+                <div class="section-badge" data-site-editable="sec_badge_join" style="background: #10b981; color: white;">🔥 現正開放各界入籍</div>
             </div>
             
             <!-- 醒目入籍公告橫幅 -->
             <div class="join-announcement-banner">
                 <span style="font-size: 2rem;">📢</span>
                 <div>
-                    <div style="font-size: 1.15rem; font-weight: 800; color: #065f46; margin-bottom: 2px;">
+                    <div style="font-size: 1.15rem; font-weight: 800; color: #065f46; margin-bottom: 2px;" data-site-editable="join_banner_title">
                         【全面開放】歡迎個人、各校班級集體申請加入資優民主國！
                     </div>
-                    <div style="font-weight: 500; font-size: 0.95rem; color: #047857;">
+                    <div style="font-weight: 500; font-size: 0.95rem; color: #047857;" data-site-editable="join_banner_desc">
                         免智力測驗、免排名競爭、免作業審查。認同「反對惡性內卷，捍衛自由學習」理念者即可入籍，審核通過即核發法定國民身分證與國民護照！
                     </div>
                 </div>
@@ -581,7 +686,7 @@
                     </a>
                     
                     <a href="citizen-manager.html" class="join-secondary-btn btn-singleline" style="border: 2px solid var(--primary-600); color: var(--primary-800); font-weight: 700; margin-top: 0.75rem;">
-                        <span>🪪</span> 前往國民管理系統 →
+                        <span>🔒 🪪</span> 前往國民管理系統 (需管理密碼) →
                     </a>
                     
                     <div class="join-note">* 代表班級集體入籍者，請於表單註明班級名稱與授權代表人</div>
@@ -605,9 +710,9 @@
         <section id="diplomacy" class="section section-featured-diplomacy">
             <div class="section-header">
                 <div class="section-title">
-                    <span>🌐</span> 國際外交與全球友好建交
+                    <span>🌐</span> <span data-site-editable="sec_title_diplomacy">國際外交與全球友好建交</span>
                 </div>
-                <div class="section-badge" style="background: #f59e0b; color: #071326; font-weight: 800;">🔥 全球開放建交</div>
+                <div class="section-badge" data-site-editable="sec_badge_diplomacy" style="background: #f59e0b; color: #071326; font-weight: 800;">🔥 全球開放建交</div>
             </div>
 
             <!-- 醒目外交倡議公告橫幅 -->
@@ -672,11 +777,11 @@
                 <li><a href="#laws">法規典則</a></li>
                 <li><a href="#join">加入國民</a></li>
                 <li><a href="#diplomacy">締結外交</a></li>
-                <li><a href="citizen-manager.html">國民管理系統</a></li>
-                <li><a href="document-manager.html">文件管理系統</a></li>
+                <li><a href="citizen-manager.html">國民管理系統 (🔒 需密碼)</a></li>
+                <li><a href="document-manager.html">文件管理系統 (🔒 需密碼)</a></li>
             </ul>
             <div class="footer-copy" data-site-editable="footer_copy">
-                中華民國 115 年 (2026) ‧ 基於資優班全體人民之共同意志 ‧ 永久保存
+                Copyright &copy; 2026 資優民主國 (Democratic Meritocracy of Ziyu). All Rights Reserved.
             </div>
         </div>
     </footer>
@@ -785,6 +890,60 @@
                     <div class="site-form-group full-width">
                         <label for="cfg_diplo_banner_desc">外交倡議橫幅內容</label>
                         <textarea id="cfg_diplo_banner_desc" rows="2" required></textarea>
+                    </div>
+
+                    <!-- 各專區與儀表板標題設定 -->
+                    <div class="site-form-group full-width" style="margin-top: 1rem; border-top: 2px dashed var(--border-color); padding-top: 1rem;">
+                        <h4 style="margin: 0 0 0.5rem 0; color: var(--primary-900); font-size: 1.05rem;">📑 各大專區與模組自訂標題</h4>
+                        <p style="font-size: 0.85rem; color: var(--text-secondary); margin: 0 0 0.75rem 0;">可在此批次修改各區塊名稱，亦可於瀏覽網頁時點選文字直接修改。</p>
+                    </div>
+                    <div class="site-form-group">
+                        <label for="cfg_title_operation_metrics">運作指標標題</label>
+                        <input type="text" id="cfg_title_operation_metrics">
+                    </div>
+                    <div class="site-form-group">
+                        <label for="cfg_title_key_stats">國家關鍵統計標題</label>
+                        <input type="text" id="cfg_title_key_stats">
+                    </div>
+                    <div class="site-form-group">
+                        <label for="cfg_title_recent_news">近期要聞公報標題</label>
+                        <input type="text" id="cfg_title_recent_news">
+                    </div>
+                    <div class="site-form-group">
+                        <label for="cfg_sec_title_briefing">國家簡報‧政府透明度報告標題</label>
+                        <input type="text" id="cfg_sec_title_briefing">
+                    </div>
+                    <div class="site-form-group">
+                        <label for="cfg_title_constitution_gauge">憲法滿意度與施政認同儀表板標題</label>
+                        <input type="text" id="cfg_title_constitution_gauge">
+                    </div>
+                    <div class="site-form-group">
+                        <label for="cfg_sec_title_history">正史編年史標題</label>
+                        <input type="text" id="cfg_sec_title_history">
+                    </div>
+                    <div class="site-form-group">
+                        <label for="cfg_sec_title_laws">國家法規與特種條例標題</label>
+                        <input type="text" id="cfg_sec_title_laws">
+                    </div>
+                    <div class="site-form-group">
+                        <label for="cfg_sec_title_government">中央政府組織體系標題</label>
+                        <input type="text" id="cfg_sec_title_government">
+                    </div>
+                    <div class="site-form-group">
+                        <label for="cfg_sec_title_territory">領土版圖與戰略地理標題</label>
+                        <input type="text" id="cfg_sec_title_territory">
+                    </div>
+                    <div class="site-form-group">
+                        <label for="cfg_sec_title_join">申請加入國民與證件領取標題</label>
+                        <input type="text" id="cfg_sec_title_join">
+                    </div>
+                    <div class="site-form-group">
+                        <label for="cfg_sec_title_diplomacy">國際外交與全球友好建交標題</label>
+                        <input type="text" id="cfg_sec_title_diplomacy">
+                    </div>
+                    <div class="site-form-group">
+                        <label for="cfg_footer_copy">頁尾版權宣告 (Copyright)</label>
+                        <input type="text" id="cfg_footer_copy">
                     </div>
                 </div>
 

@@ -306,7 +306,7 @@
                 <li><a href="index.html">返回首頁</a></li>
                 <li><a href="index.html#join" class="nav-cta-join">✨ 加入國民</a></li>
                 <li><a href="index.html#diplomacy" class="nav-cta-diplomacy">🌐 締結外交</a></li>
-                <li><a href="citizen-manager.html" class="nav-special">🪪 國民管理</a></li>
+                <li><a href="citizen-manager.html" class="nav-special" title="受密碼保護之國民管理系統">🔒 國民管理</a></li>
                 <li><a href="#editor">文件編輯區</a></li>
             </ul>
         </div>
@@ -378,7 +378,7 @@
     <footer>
         <div class="footer-content">
             <div class="footer-brand">資優民主國 立法院公報處</div>
-            <div class="footer-copy">中華民國 115 年 (2026) ‧ 國家立法文書永久典藏</div>
+            <div class="footer-copy">Copyright &copy; 2026 資優民主國 立法院公報處 All Rights Reserved.</div>
         </div>
     </footer>
     
@@ -722,7 +722,27 @@
         }
 
         // 初始化
-        switchDoc('constitution');
+        function initApp() {
+            switchDoc('constitution');
+        }
+    </script>
+    <!-- 引入國家安全認證模組 (要求密碼才能訪問與操作文件管理系統) -->
+    <script src="auth-gate.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            if (window.ZiyuAuthGate) {
+                window.ZiyuAuthGate.init({
+                    systemName: '文件與法規公報管理系統',
+                    systemIcon: '📜',
+                    contentSelector: 'main',
+                    onUnlockSuccess: function() {
+                        initApp();
+                    }
+                });
+            } else {
+                initApp();
+            }
+        });
     </script>
 </body>
 </html>
