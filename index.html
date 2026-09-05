@@ -163,11 +163,11 @@
                     <div class="stats" style="margin-top: 1rem;">
                         <div class="stat-item">
                             <span class="stat-label">憲政體制</span>
-                            <span class="stat-value">民主與中央集權兼具</span>
+                            <span class="stat-value" data-site-editable="stat_political_system">民主與中央集權兼具</span>
                         </div>
                         <div class="stat-item">
                             <span class="stat-label">執政黨</span>
-                            <span class="stat-value">資優民主黨 (ZDP)</span>
+                            <span class="stat-value" data-site-editable="stat_ruling_party">資優民主黨 (ZDP)</span>
                         </div>
                     </div>
                 </div>
@@ -178,19 +178,19 @@
                     <div class="stats">
                         <div class="stat-item">
                             <span class="stat-label">登記國民人數</span>
-                            <span class="stat-value">29 位國民</span>
+                            <span class="stat-value" data-site-editable="stat_citizens">29 位國民</span>
                         </div>
                         <div class="stat-item">
                             <span class="stat-label">公布實施法規</span>
-                            <span class="stat-value">5 部條例</span>
+                            <span class="stat-value" data-site-editable="stat_laws">5 部條例</span>
                         </div>
                         <div class="stat-item">
                             <span class="stat-label">內卷惡意刷題取締率</span>
-                            <span class="stat-value" style="color: var(--status-green);">100%</span>
+                            <span class="stat-value" style="color: var(--status-green);" data-site-editable="stat_involution_rate">100%</span>
                         </div>
                         <div class="stat-item">
                             <span class="stat-label">白日夢與發呆人權指數</span>
-                            <span class="stat-value" style="color: var(--primary-500);">99.8%</span>
+                            <span class="stat-value" style="color: var(--primary-500);" data-site-editable="stat_daydream_index">99.8%</span>
                         </div>
                     </div>
                 </div>
@@ -198,7 +198,7 @@
                 <!-- 即時國家簡報 -->
                 <div class="dashboard-card">
                     <h3><span data-site-editable="title_recent_news">近期要聞公報</span> <span>📢</span></h3>
-                    <div class="recent-events">
+                    <div class="recent-events" data-site-editable="news_events">
                         <div class="event-item">
                             <span class="event-date" style="background:#dcfce7; color:#166534;">和平公報</span>
                             <span class="event-text"><strong>停戰協定生效：</strong>已全面停止戰爭，國防警戒回歸常態 DEFCON 5</span>
@@ -245,7 +245,7 @@
                 <div class="briefing-kpi-card">
                     <div class="kpi-icon">👥</div>
                     <div class="kpi-content">
-                        <div class="kpi-value" id="kpiTotalPopulation">48 <span class="kpi-unit">人</span></div>
+                        <div class="kpi-value" id="kpiTotalPopulation"><span data-site-editable="kpi_population">48</span> <span class="kpi-unit">人</span></div>
                         <div class="kpi-label">登記國民人口總量</div>
                         <div class="kpi-sub">創國至今成長率 <strong>+500%</strong></div>
                     </div>
@@ -253,7 +253,7 @@
                 <div class="briefing-kpi-card highlight">
                     <div class="kpi-icon">📜</div>
                     <div class="kpi-content">
-                        <div class="kpi-value" id="kpiConstitutionScore">98.6 <span class="kpi-unit">%</span></div>
+                        <div class="kpi-value" id="kpiConstitutionScore"><span data-site-editable="kpi_constitution_score">98.6</span> <span class="kpi-unit">%</span></div>
                         <div class="kpi-label">大憲章總體滿意度</div>
                         <div class="kpi-sub">反內卷與自主思辨核心條款認同</div>
                     </div>
@@ -416,82 +416,35 @@
                 <div class="section-badge">根本大法 ‧ 四章十條</div>
             </div>
             
-            <div class="constitution">
-                <!-- 第一章 -->
+            <div class="constitution" id="constitutionContent" data-site-editable="constitution_summary">
                 <div class="chapter">
-                    <div class="chapter-title">
-                        <span>第 I 章</span> 總綱
-                    </div>
+                    <div class="chapter-title"><span>第 I 章</span> 總綱</div>
                     <div class="articles-grid">
-                        <div class="article">
-                            <h4>第一條（國體與主權）</h4>
-                            <p>資優民主國基於資優班全體人民之共同意志，為一民主與中央集權兼具之特殊憲政政體。其主權屬於資優班全體人民。</p>
-                        </div>
-                        <div class="article">
-                            <h4>第二條（國土與治權）</h4>
-                            <p>資優民主國之領土，暫以資優班教室及其延伸之學習活動空間為統治權實施範圍。</p>
-                        </div>
-                        <div class="article">
-                            <h4>第三條（實政體制）</h4>
-                            <p>本國於非常時期或建國初期，得實施一黨專政體制，由「資優民主黨」全面領導國家發展，以維護班級紀律與學習秩序。</p>
-                        </div>
+                        <div class="article"><h4>第一條（國體與主權）</h4><p>資優民主國基於資優班全體人民之共同意志，為一民主與中央集權兼具之特殊憲政政體。其主權屬於資優班全體人民。</p></div>
+                        <div class="article"><h4>第二條（國土與治權）</h4><p>資優民主國之領土，暫以資優班教室及其延伸之學習活動空間為統治權實施範圍。</p></div>
+                        <div class="article"><h4>第三條（實政體制）</h4><p>本國於非常時期或建國初期，得實施一黨專政體制，由「資優民主黨」全面領導國家發展，以維護班級紀律與學習秩序。</p></div>
                     </div>
                 </div>
-                
-                <!-- 第二章 -->
                 <div class="chapter">
-                    <div class="chapter-title">
-                        <span>第 II 章</span> 人民之權利與義務
-                    </div>
+                    <div class="chapter-title"><span>第 II 章</span> 人民之權利與義務</div>
                     <div class="articles-grid">
-                        <div class="article">
-                            <h4>第四條（平等原則）</h4>
-                            <p>資優民主國人民，無分性別、座位、智商或入學成績，在法律上一律平等。</p>
-                        </div>
-                        <div class="article">
-                            <h4>第五條（自由權之保障與限制）</h4>
-                            <p>人民之言論、講學、著作及出版自由應予保障。但其言論若涉及惡性內卷、破壞和諧或引發學業焦慮者，受特殊法律之限制。</p>
-                        </div>
-                        <div class="article">
-                            <h4>第六條（應考試與受教育之權利義務）</h4>
-                            <p>人民有依班規及教師指示接受測試與參與各項學術競賽之權利與義務。</p>
-                        </div>
+                        <div class="article"><h4>第四條（平等原則）</h4><p>資優民主國人民，無分性別、座位、智商或入學成績，在法律上一律平等。</p></div>
+                        <div class="article"><h4>第五條（自由權之保障與限制）</h4><p>人民之言論、講學、著作及出版自由應予保障。但其言論若涉及惡性內卷、破壞和諧或引發學業焦慮者，受特殊法律之限制。</p></div>
+                        <div class="article"><h4>第六條（應考試與受教育之權利義務）</h4><p>人民有依班規及教師指示接受測試與參與各項學術競賽之權利與義務。</p></div>
                     </div>
                 </div>
-                
-                <!-- 第三章 -->
                 <div class="chapter">
-                    <div class="chapter-title">
-                        <span>第 III 章</span> 國家元首與政府組織
-                    </div>
+                    <div class="chapter-title"><span>第 III 章</span> 國家元首與政府組織</div>
                     <div class="articles-grid">
-                        <div class="article">
-                            <h4>第七條（總統之職權與產生）</h4>
-                            <p>總統為國家元首，對外代表資優民主國，對內統率國家各項事務。</p>
-                            <p>一、總統由人民直接選舉產生，候選人須獲得法定有效票數方得確認當選。</p>
-                            <p>二、總統有明令公布法律、發布緊急命令以及對卓越人民共和國宣戰之權。</p>
-                        </div>
+                        <div class="article"><h4>第七條（總統之職權與產生）</h4><p>總統為國家元首，對外代表資優民主國，對內統率國家各項事務。</p><p>一、總統由人民直接選舉產生，候選人須獲得法定有效票數方得確認當選。</p><p>二、總統有明令公布法律、發布緊急命令以及對卓越人民共和國宣戰之權。</p></div>
                     </div>
                 </div>
-                
-                <!-- 第四章 -->
                 <div class="chapter">
-                    <div class="chapter-title">
-                        <span>第 IV 章</span> 附則
-                    </div>
+                    <div class="chapter-title"><span>第 IV 章</span> 附則</div>
                     <div class="articles-grid">
-                        <div class="article">
-                            <h4>第八條（憲法之修改與最高性）</h4>
-                            <p>本憲法為資優民主國之根本大法，任何班規或條例與本憲法牴觸者無效。憲法之修改，須經總統核准，並經資優班立法委員過半數之同意，始得變更。</p>
-                        </div>
-                        <div class="article">
-                            <h4>第九條（施行日期）</h4>
-                            <p>本憲法自公布之日起發生效力。</p>
-                        </div>
-                        <div class="article">
-                            <h4>第十條（不溯及既往原則）</h4>
-                            <p>本憲法及依本憲法所制定之各項法律條例，其適用以法律生效後之行為為限。除法律另有特別規定或有利於行為人者外，行為於法律實施前不予追究處罰。</p>
-                        </div>
+                        <div class="article"><h4>第八條（憲法之修改與最高性）</h4><p>本憲法為資優民主國之根本大法，任何班規或條例與本憲法牴觸者無效。憲法之修改，須經總統核准，並經資優班立法委員過半數之同意，始得變更。</p></div>
+                        <div class="article"><h4>第九條（施行日期）</h4><p>本憲法自公布之日起發生效力。</p></div>
+                        <div class="article"><h4>第十條（不溯及既往原則）</h4><p>本憲法及依本憲法所制定之各項法律條例，其適用以法律生效後之行為為限。除法律另有特別規定或有利於行為人者外，行為於法律實施前不予追究處罰。</p></div>
                     </div>
                 </div>
             </div>
@@ -559,7 +512,7 @@
             <div class="government-structure">
                 <div class="position-card executive">
                     <h3>👑 國家元首及精神</h3>
-                    <ul class="position-list">
+                    <ul class="position-list" data-site-editable="government_executive">
                         <li><span>國家元首</span> <strong>總統：蘇◯旭</strong></li>
                         <li><span>副元首</span> <strong>副總統：（從缺）</strong></li>
                         <li><span>精神引領</span> <strong>唯一真神：廖◯茹</strong></li>
@@ -568,7 +521,7 @@
                 
                 <div class="position-card legislative">
                     <h3>⚖️ 五院最高首長</h3>
-                    <ul class="position-list">
+                    <ul class="position-list" data-site-editable="government_legislative">
                         <li><span>最高立法機關</span> <strong>立法院長</strong></li>
                         <li><span>最高行政機關</span> <strong>行政院長</strong></li>
                         <li><span>最高司法機關</span> <strong>司法院長</strong></li>
@@ -577,7 +530,7 @@
                 
                 <div class="position-card ministry">
                     <h3>🏢 行政院核心部會</h3>
-                    <ul class="position-list">
+                    <ul class="position-list" data-site-editable="government_ministry">
                         <li><span>國土與戶籍</span> <strong>內政部長</strong></li>
                         <li><span>國際交流與建交</span> <strong>外交部長</strong></li>
                         <li><span>學習自由保障</span> <strong>反內卷專責委員會</strong></li>
@@ -586,7 +539,7 @@
                 
                 <div class="position-card">
                     <h3>👥 民意代表機關</h3>
-                    <ul class="position-list">
+                    <ul class="position-list" data-site-editable="government_representative">
                         <li><span>民意代表</span> <strong>全體立法委員</strong></li>
                         <li><span>職責</span> <strong>審查法律、預算與宣戰動員案</strong></li>
                         <li><span>組成</span> <strong>全體資優班推派民意代議士</strong></li>
@@ -613,10 +566,10 @@
                 </div>
                 <div class="territory-content">
                     <h3>國家主權領土實施範圍</h3>
-                    <p style="color: var(--text-secondary); line-height: 1.8;">
+                    <p style="color: var(--text-secondary); line-height: 1.8;" data-site-editable="territory_desc">
                         依據憲法第二條規定，資優民主國之統治權目前包含教室核心領土、走廊邊防陣線，以及各直轄學習特區。
                     </p>
-                    <ul class="territory-list">
+                    <ul class="territory-list" data-site-editable="territory_list">
                         <li><strong>首都核心：</strong>鳳甲國中 8年級 資優班教室</li>
                         <li><strong>邊防緩衝區：</strong>教室前後門走廊及公共穿堂防線</li>
                         <li><strong>專屬研究特區：</strong>科學實驗室、電腦教室直轄領空</li>
@@ -657,8 +610,8 @@
                     </p>
                     
                     <div class="join-benefits">
-                        <h4>✨ 國民享有之神聖權益</h4>
-                        <ul>
+                        <h4 data-site-editable="join_benefits_title">✨ 國民享有之神聖權益</h4>
+                        <ul data-site-editable="join_benefits">
                             <li><strong>人權保障：</strong>享有憲法保障之平等權與自由權，免受同儕排名焦慮侵害</li>
                             <li><strong>參政權利：</strong>直接參與國家總統大選與各項公民投票決議</li>
                             <li><strong>法定特權：</strong>憲法保障「發呆課」與「白日夢時間」為不可剝奪之核心人權</li>
@@ -667,9 +620,11 @@
                     </div>
                     
                     <div class="join-documents">
-                        <h4>📜 審核通過後核發之法定證件</h4>
-                        <p><strong>團體班級：</strong>資優民主國班級身分證 + 班級公務護照</p>
-                        <p><strong>一般國民：</strong>資優民主國國民身分證 + 國民護照</p>
+                        <h4 data-site-editable="join_documents_title">📜 審核通過後核發之法定證件</h4>
+                        <div data-site-editable="join_documents">
+                            <p><strong>團體班級：</strong>資優民主國班級身分證 + 班級公務護照</p>
+                            <p><strong>一般國民：</strong>資優民主國國民身分證 + 國民護照</p>
+                        </div>
                     </div>
                 </div>
                 
@@ -944,6 +899,79 @@
                     <div class="site-form-group">
                         <label for="cfg_footer_copy">頁尾版權宣告 (Copyright)</label>
                         <input type="text" id="cfg_footer_copy">
+                    </div>
+
+                    <!-- 加入國民區塊設定 -->
+                    <div class="site-form-group full-width" style="margin-top: 1rem; border-top: 2px dashed var(--border-color); padding-top: 1rem;">
+                        <h4 style="margin: 0 0 0.5rem 0; color: var(--primary-900); font-size: 1.05rem;">🪪 加入國民區塊設定</h4>
+                    </div>
+                    <div class="site-form-group full-width">
+                        <label for="cfg_join_banner_title">入籍公告橫幅標題</label>
+                        <input type="text" id="cfg_join_banner_title">
+                    </div>
+                    <div class="site-form-group full-width">
+                        <label for="cfg_join_banner_desc">入籍公告橫幅說明</label>
+                        <textarea id="cfg_join_banner_desc" rows="2"></textarea>
+                    </div>
+                    <div class="site-form-group full-width">
+                        <label for="cfg_join_benefits">國民權益列表 (HTML)</label>
+                        <textarea id="cfg_join_benefits" rows="4" style="font-family: monospace; font-size: 0.85rem;"></textarea>
+                    </div>
+
+                    <!-- 領土區塊設定 -->
+                    <div class="site-form-group full-width" style="margin-top: 1rem; border-top: 2px dashed var(--border-color); padding-top: 1rem;">
+                        <h4 style="margin: 0 0 0.5rem 0; color: var(--primary-900); font-size: 1.05rem;">🗺️ 領土區塊設定</h4>
+                    </div>
+                    <div class="site-form-group full-width">
+                        <label for="cfg_territory_desc">領土說明文字</label>
+                        <textarea id="cfg_territory_desc" rows="2"></textarea>
+                    </div>
+                    <div class="site-form-group full-width">
+                        <label for="cfg_territory_list">領土範圍列表 (HTML)</label>
+                        <textarea id="cfg_territory_list" rows="3" style="font-family: monospace; font-size: 0.85rem;"></textarea>
+                    </div>
+
+                    <!-- 政府組織區塊設定 -->
+                    <div class="site-form-group full-width" style="margin-top: 1rem; border-top: 2px dashed var(--border-color); padding-top: 1rem;">
+                        <h4 style="margin: 0 0 0.5rem 0; color: var(--primary-900); font-size: 1.05rem;">🏛️ 政府組織區塊設定</h4>
+                    </div>
+                    <div class="site-form-group full-width">
+                        <label for="cfg_government_executive">國家元首名單 (HTML)</label>
+                        <textarea id="cfg_government_executive" rows="3" style="font-family: monospace; font-size: 0.85rem;"></textarea>
+                    </div>
+                    <div class="site-form-group full-width">
+                        <label for="cfg_government_legislative">五院首長名單 (HTML)</label>
+                        <textarea id="cfg_government_legislative" rows="3" style="font-family: monospace; font-size: 0.85rem;"></textarea>
+                    </div>
+
+                    <!-- 儀表板統計設定 -->
+                    <div class="site-form-group full-width" style="margin-top: 1rem; border-top: 2px dashed var(--border-color); padding-top: 1rem;">
+                        <h4 style="margin: 0 0 0.5rem 0; color: var(--primary-900); font-size: 1.05rem;">📊 儀表板統計設定</h4>
+                    </div>
+                    <div class="site-form-group">
+                        <label for="cfg_stat_citizens">國民人數統計</label>
+                        <input type="text" id="cfg_stat_citizens">
+                    </div>
+                    <div class="site-form-group">
+                        <label for="cfg_stat_laws">法規數量統計</label>
+                        <input type="text" id="cfg_stat_laws">
+                    </div>
+                    <div class="site-form-group">
+                        <label for="cfg_kpi_population">KPI 人口數</label>
+                        <input type="text" id="cfg_kpi_population">
+                    </div>
+                    <div class="site-form-group">
+                        <label for="cfg_kpi_constitution_score">KPI 憲法滿意度</label>
+                        <input type="text" id="cfg_kpi_constitution_score">
+                    </div>
+
+                    <!-- 新聞公報設定 -->
+                    <div class="site-form-group full-width" style="margin-top: 1rem; border-top: 2px dashed var(--border-color); padding-top: 1rem;">
+                        <h4 style="margin: 0 0 0.5rem 0; color: var(--primary-900); font-size: 1.05rem;">📢 近期要聞公報 (HTML)</h4>
+                    </div>
+                    <div class="site-form-group full-width">
+                        <label for="cfg_news_events">新聞事件列表</label>
+                        <textarea id="cfg_news_events" rows="5" style="font-family: monospace; font-size: 0.85rem;"></textarea>
                     </div>
                 </div>
 
