@@ -571,13 +571,7 @@ document.addEventListener('DOMContentLoaded', function() {
             });
             const data = await res.json();
             return { success: res.ok && data.success, message: data.message || '密碼驗證失敗' };
-        } catch (err) {
-            // 離線備援
-            if (key.trim() === 'ziyou2026') {
-                return { success: true, message: '授權通過 (離線模式)' };
-            }
-            return { success: false, message: '無法連線，請確認密碼' };
-        }
+        
     }
 
     // 儲存網站內容（localStorage + API）
