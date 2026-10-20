@@ -10,3 +10,5 @@
 - 官方公報式視覺，繁體中文、響應式手機版與原始 HackMD 編纂文件連結。
 
 原始內容來源：<https://hackmd.io/joJDlumQTnavUHiZIxgZig>
+
+正式修訂版憲法的可編輯 Markdown 原稿：[`constitution-official.md`](./constitution-official.md)
