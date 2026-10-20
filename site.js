@@ -76,9 +76,22 @@ function markdownToHtml(markdown) {
 function setupConstitutionMarkdown() {
   const target = document.querySelector('#constitution-md-content')
   if (!target) return
-  fetch('constitution-official.md').then(r => r.ok ? r.text() : Promise.reject(new Error('load failed'))).then(text => { target.innerHTML = markdownToHtml(text) }).catch(() => { target.innerHTML = '<p>無法載入 constitution-official.md，請稍後再試。</p>' })
+  fetch('constitution-official.md').then(r => r.ok ? r.text() : Promise.reject(new Error('load failed'))).then(text => {
+    target.innerHTML = markdownToHtml(text)
+    const copyButton = document.querySelector('#copy-constitution-md')
+    if (copyButton) copyButton.addEventListener('click', async () => {
+      try {
+        await navigator.clipboard.writeText(text)
+      } catch {
+        const helper = document.createElement('textarea'); helper.value = text; document.body.appendChild(helper); helper.select(); document.execCommand('copy'); helper.remove()
+      }
+      copyButton.textContent = '已複製，可貼到 HackMD'
+      copyButton.classList.add('copied')
+      setTimeout(() => { copyButton.textContent = '複製 Markdown'; copyButton.classList.remove('copied') }, 2600)
+    })
+  }).catch(() => { target.innerHTML = '<p>無法載入 constitution-official.md，請稍後再試。</p>' })
 }
-function constitutionPage() { return `<main class="inner-page"><div class="page-intro"><div><span class="kicker"><span class="red-rule"></span>壹・憲法位階 / 115.10.20 正式修訂</span><h1>資優民主國憲法</h1><p>本頁直接讀取並預覽官方 Markdown 原稿 constitution-official.md。</p></div><div class="revision-stamp">修訂<br/><b>02</b><small>通過</small></div></div><div class="markdown-web-wrap"><div class="markdown-source-note">來源文件：<code>constitution-official.md</code>　·　<a href="https://github.com/pengjun0429/ziyou-democracy/blob/main/constitution-official.md" target="_blank" rel="noreferrer">在 GitHub 編輯 ↗</a></div><article id="constitution-md-content" class="markdown-web-preview">正在載入 Markdown 憲法原稿…</article></div></main>` }
+function constitutionPage() { return `<main class="inner-page"><div class="page-intro"><div><span class="kicker"><span class="red-rule"></span>壹・憲法位階 / 115.10.20 正式修訂</span><h1>資優民主國憲法</h1><p>本頁直接讀取並預覽官方 Markdown 原稿 constitution-official.md。</p></div><div class="revision-stamp">修訂<br/><b>02</b><small>通過</small></div></div><div class="markdown-web-wrap"><div class="markdown-source-note">來源文件：<code>constitution-official.md</code>　·　<button class="copy-md-btn" id="copy-constitution-md">複製 Markdown</button>　<a href="https://hackmd.io/new" target="_blank" rel="noreferrer">開啟 HackMD ↗</a></div><article id="constitution-md-content" class="markdown-web-preview">正在載入 Markdown 憲法原稿…</article></div></main>` }
 function lawsPage() { const filtered = allLaws.filter(l => l.id !== 'constitution' && (state.level === '全部' || l.level === state.level) && (!state.query || `${l.title}${l.desc}${l.level}`.toLowerCase().includes(state.query.toLowerCase()))); return `<main class="inner-page laws-page"><div class="page-intro compact"><div><span class="kicker"><span class="red-rule"></span>法規索引 / INDEX</span><h1>把每一條規則放回它的位置</h1><p>以位階、日期與主題快速定位法規。搜尋「內卷」「教育」或「權利」，看看它們各自被安排在哪一層。</p></div></div><div class="filters"><label class="search-box">${icon('search')}<input id="law-search" value="${esc(state.query)}" placeholder="搜尋法規、主題或條文" /></label><div class="filter-pills">${['全部','憲法性特別法','法律位階','行政命令位階'].map(l=>`<button class="pill ${state.level===l?'selected':''}" data-level="${l}">${l}</button>`).join('')}</div></div><div class="index-count">顯示 ${filtered.length} 部法規 <span>／ 共 ${laws.length} 部公開編纂</span></div><section class="law-grid">${filtered.length ? filtered.map(lawCard).join('') : '<div class="empty-state">找不到這一條。也許它正在發呆，請換個關鍵字。</div>'}</section></main>` }
 function historyPage() { return `<main class="inner-page history-page"><div class="page-intro compact"><div><span class="kicker"><span class="red-rule"></span>編纂紀錄 / ARCHIVE</span><h1>一個國家的規則，如何長出來</h1><p>從教室成立到第二次修憲，這裡記下法規如何在班級生活中逐步成形。</p></div></div><section class="timeline">${history.map(([date,title,body],i)=>`<div class="timeline-item ${i===history.length-1?'current':''}"><div class="timeline-date">${date}</div><div class="timeline-dot"></div><div class="timeline-copy"><span>${i===history.length-1?'LATEST AMENDMENT':'PUBLIC RECORD'}</span><h2>${title}</h2><p>${body}</p></div></div>`).join('')}</section><section class="archive-note"><div class="archive-icon">${icon('history')}</div><div><h2>編纂者備註</h2><p>這不是一個要求大家變得一模一樣的國家。修憲的方向，是把「誰可以決定什麼」說清楚，也把「誰可以好好休息」寫進規則裡。</p></div></section></main>` }
 function render() { let body = state.view === 'constitution' ? constitutionPage() : state.view === 'laws' ? lawsPage() : state.view === 'history' ? historyPage() : home(); app.innerHTML = `<div class="site-shell">${header()}${body}${footer()}</div>`; bind() }
